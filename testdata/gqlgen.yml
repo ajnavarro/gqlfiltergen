@@ -1,0 +1,21 @@
+schema:
+  - "testdata/schema.graphql"
+
+exec:
+  filename: testdata/out/ignored.go
+model:
+  filename: testdata/out/generated.go
+
+models:
+  ExtraFieldsTest:
+    extraFields:
+      FieldInternalType:
+        description: "Internal field"
+        type: github.com/99designs/gqlgen/plugin/modelgen/internal/extrafields.Type
+      FieldStringPtr:
+        type: "*string"
+      FieldInt:
+        type: "int64"
+        overrideTags: 'json:"field_int_tag"'
+      FieldIntSlice:
+        type: "[]int64"
