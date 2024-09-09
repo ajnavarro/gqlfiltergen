@@ -57,3 +57,18 @@ type ExternalType {
 
   type_one: TypeOne @filterable
 }
+
+input InputOne {
+  type_two_string_field_filtered: String!
+  type_two_number_field_filtered: Int! 
+  type_two_time_field_filtered: Time! 
+  type_two_boolean_field_filtered: Boolean!
+  type_twoString_field_with_no_filter: String!
+  type_twoNumber_field_with_no_filter: Int!
+  type_twoTime_field_with_no_filter: Time!
+}
+
+type Query {
+  testQuery(filter: String!): [Int!]
+  testQueryObject(filter: InputOne!): [TypeTwo!]
+}

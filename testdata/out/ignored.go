@@ -38,6 +38,7 @@ type Config struct {
 }
 
 type ResolverRoot interface {
+	Query() QueryResolver
 }
 
 type DirectiveRoot struct {
@@ -55,125 +56,10 @@ type ComplexityRoot struct {
 		TypeOne     func(childComplexity int) int
 	}
 
-	FilterBoolean struct {
-		Eq     func(childComplexity int) int
-		Exists func(childComplexity int) int
-	}
-
-	FilterExternalType struct {
-		And         func(childComplexity int) int
-		Not         func(childComplexity int) int
-		NumberFive  func(childComplexity int) int
-		NumberFour  func(childComplexity int) int
-		NumberList  func(childComplexity int) int
-		NumberOne   func(childComplexity int) int
-		NumberThree func(childComplexity int) int
-		NumberTwo   func(childComplexity int) int
-		Or          func(childComplexity int) int
-		TypeOne     func(childComplexity int) int
-	}
-
-	FilterNumber struct {
-		Eq     func(childComplexity int) int
-		Exists func(childComplexity int) int
-		Gt     func(childComplexity int) int
-		Lt     func(childComplexity int) int
-		Neq    func(childComplexity int) int
-	}
-
-	FilterString struct {
-		Eq     func(childComplexity int) int
-		Exists func(childComplexity int) int
-		Like   func(childComplexity int) int
-		Neq    func(childComplexity int) int
-		Nlike  func(childComplexity int) int
-	}
-
-	FilterTime struct {
-		After  func(childComplexity int) int
-		Before func(childComplexity int) int
-		Eq     func(childComplexity int) int
-		Exists func(childComplexity int) int
-		Neq    func(childComplexity int) int
-	}
-
-	FilterTypeOne struct {
-		And                                     func(childComplexity int) int
-		Not                                     func(childComplexity int) int
-		Or                                      func(childComplexity int) int
-		TypeOneBooleanFieldFiltered             func(childComplexity int) int
-		TypeOneBooleanFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneNumberFieldFiltered              func(childComplexity int) int
-		TypeOneNumberFieldFilteredNotMandatory  func(childComplexity int) int
-		TypeOneSliceWithTypeTwos                func(childComplexity int) int
-		TypeOneStringFieldFiltered              func(childComplexity int) int
-		TypeOneStringFieldFilteredNotMandatory  func(childComplexity int) int
-		TypeOneTimeFieldFiltered                func(childComplexity int) int
-		TypeOneTimeFieldFilteredNotMandatory    func(childComplexity int) int
-	}
-
-	FilterTypeThree struct {
-		And                           func(childComplexity int) int
-		Not                           func(childComplexity int) int
-		Or                            func(childComplexity int) int
-		TypeThreeBooleanFieldFiltered func(childComplexity int) int
-		TypeThreeNumberFieldFiltered  func(childComplexity int) int
-		TypeThreeStringFieldFiltered  func(childComplexity int) int
-		TypeThreeTimeFieldFiltered    func(childComplexity int) int
-	}
-
-	FilterTypeTwo struct {
-		And                              func(childComplexity int) int
-		Not                              func(childComplexity int) int
-		Or                               func(childComplexity int) int
-		TypeTwoBooleanFieldFiltered      func(childComplexity int) int
-		TypeTwoNumberFieldFiltered       func(childComplexity int) int
-		TypeTwoSliceWithTypeTwos         func(childComplexity int) int
-		TypeTwoStringFieldFiltered       func(childComplexity int) int
-		TypeTwoTimeFieldFiltered         func(childComplexity int) int
-		TypeTwoWithTypeThree             func(childComplexity int) int
-		TypeTwoWithTypeThreeNotMandatory func(childComplexity int) int
-	}
-
-	NestedFilterTypeOne struct {
-		And                                     func(childComplexity int) int
-		Not                                     func(childComplexity int) int
-		Or                                      func(childComplexity int) int
-		TypeOneBooleanFieldFiltered             func(childComplexity int) int
-		TypeOneBooleanFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneNumberFieldFiltered              func(childComplexity int) int
-		TypeOneNumberFieldFilteredNotMandatory  func(childComplexity int) int
-		TypeOneSliceWithTypeTwos                func(childComplexity int) int
-		TypeOneStringFieldFiltered              func(childComplexity int) int
-		TypeOneStringFieldFilteredNotMandatory  func(childComplexity int) int
-		TypeOneTimeFieldFiltered                func(childComplexity int) int
-		TypeOneTimeFieldFilteredNotMandatory    func(childComplexity int) int
-	}
-
-	NestedFilterTypeThree struct {
-		And                           func(childComplexity int) int
-		Not                           func(childComplexity int) int
-		Or                            func(childComplexity int) int
-		TypeThreeBooleanFieldFiltered func(childComplexity int) int
-		TypeThreeNumberFieldFiltered  func(childComplexity int) int
-		TypeThreeStringFieldFiltered  func(childComplexity int) int
-		TypeThreeTimeFieldFiltered    func(childComplexity int) int
-	}
-
-	NestedFilterTypeTwo struct {
-		And                              func(childComplexity int) int
-		Not                              func(childComplexity int) int
-		Or                               func(childComplexity int) int
-		TypeTwoBooleanFieldFiltered      func(childComplexity int) int
-		TypeTwoNumberFieldFiltered       func(childComplexity int) int
-		TypeTwoSliceWithTypeTwos         func(childComplexity int) int
-		TypeTwoStringFieldFiltered       func(childComplexity int) int
-		TypeTwoTimeFieldFiltered         func(childComplexity int) int
-		TypeTwoWithTypeThree             func(childComplexity int) int
-		TypeTwoWithTypeThreeNotMandatory func(childComplexity int) int
-	}
-
 	Query struct {
+		TestFilter      func(childComplexity int, filter FilterTypeOne) int
+		TestQuery       func(childComplexity int, filter string) int
+		TestQueryObject func(childComplexity int, filter InputOne) int
 	}
 
 	TypeOne struct {
@@ -213,6 +99,12 @@ type ComplexityRoot struct {
 		TypeTwoWithTypeThree             func(childComplexity int) int
 		TypeTwoWithTypeThreeNotMandatory func(childComplexity int) int
 	}
+}
+
+type QueryResolver interface {
+	TestQuery(ctx context.Context, filter string) ([]int, error)
+	TestQueryObject(ctx context.Context, filter InputOne) ([]*TypeTwo, error)
+	TestFilter(ctx context.Context, filter FilterTypeOne) ([]*TypeOne, error)
 }
 
 type executableSchema struct {
@@ -283,600 +175,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.ExternalType.TypeOne(childComplexity), true
 
-	case "FilterBoolean.eq":
-		if e.complexity.FilterBoolean.Eq == nil {
+	case "Query.testFilter":
+		if e.complexity.Query.TestFilter == nil {
 			break
 		}
 
-		return e.complexity.FilterBoolean.Eq(childComplexity), true
-
-	case "FilterBoolean.exists":
-		if e.complexity.FilterBoolean.Exists == nil {
-			break
-		}
-
-		return e.complexity.FilterBoolean.Exists(childComplexity), true
-
-	case "FilterExternalType._and":
-		if e.complexity.FilterExternalType.And == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.And(childComplexity), true
-
-	case "FilterExternalType._not":
-		if e.complexity.FilterExternalType.Not == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.Not(childComplexity), true
-
-	case "FilterExternalType.number_five":
-		if e.complexity.FilterExternalType.NumberFive == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.NumberFive(childComplexity), true
-
-	case "FilterExternalType.number_four":
-		if e.complexity.FilterExternalType.NumberFour == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.NumberFour(childComplexity), true
-
-	case "FilterExternalType.number_list":
-		if e.complexity.FilterExternalType.NumberList == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.NumberList(childComplexity), true
-
-	case "FilterExternalType.number_one":
-		if e.complexity.FilterExternalType.NumberOne == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.NumberOne(childComplexity), true
-
-	case "FilterExternalType.number_three":
-		if e.complexity.FilterExternalType.NumberThree == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.NumberThree(childComplexity), true
-
-	case "FilterExternalType.number_two":
-		if e.complexity.FilterExternalType.NumberTwo == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.NumberTwo(childComplexity), true
-
-	case "FilterExternalType._or":
-		if e.complexity.FilterExternalType.Or == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.Or(childComplexity), true
-
-	case "FilterExternalType.type_one":
-		if e.complexity.FilterExternalType.TypeOne == nil {
-			break
-		}
-
-		return e.complexity.FilterExternalType.TypeOne(childComplexity), true
-
-	case "FilterNumber.eq":
-		if e.complexity.FilterNumber.Eq == nil {
-			break
-		}
-
-		return e.complexity.FilterNumber.Eq(childComplexity), true
-
-	case "FilterNumber.exists":
-		if e.complexity.FilterNumber.Exists == nil {
-			break
-		}
-
-		return e.complexity.FilterNumber.Exists(childComplexity), true
-
-	case "FilterNumber.gt":
-		if e.complexity.FilterNumber.Gt == nil {
-			break
-		}
-
-		return e.complexity.FilterNumber.Gt(childComplexity), true
-
-	case "FilterNumber.lt":
-		if e.complexity.FilterNumber.Lt == nil {
-			break
-		}
-
-		return e.complexity.FilterNumber.Lt(childComplexity), true
-
-	case "FilterNumber.neq":
-		if e.complexity.FilterNumber.Neq == nil {
-			break
-		}
-
-		return e.complexity.FilterNumber.Neq(childComplexity), true
-
-	case "FilterString.eq":
-		if e.complexity.FilterString.Eq == nil {
-			break
-		}
-
-		return e.complexity.FilterString.Eq(childComplexity), true
-
-	case "FilterString.exists":
-		if e.complexity.FilterString.Exists == nil {
-			break
-		}
-
-		return e.complexity.FilterString.Exists(childComplexity), true
-
-	case "FilterString.like":
-		if e.complexity.FilterString.Like == nil {
-			break
-		}
-
-		return e.complexity.FilterString.Like(childComplexity), true
-
-	case "FilterString.neq":
-		if e.complexity.FilterString.Neq == nil {
-			break
-		}
-
-		return e.complexity.FilterString.Neq(childComplexity), true
-
-	case "FilterString.nlike":
-		if e.complexity.FilterString.Nlike == nil {
-			break
-		}
-
-		return e.complexity.FilterString.Nlike(childComplexity), true
-
-	case "FilterTime.after":
-		if e.complexity.FilterTime.After == nil {
-			break
-		}
-
-		return e.complexity.FilterTime.After(childComplexity), true
-
-	case "FilterTime.before":
-		if e.complexity.FilterTime.Before == nil {
-			break
-		}
-
-		return e.complexity.FilterTime.Before(childComplexity), true
-
-	case "FilterTime.eq":
-		if e.complexity.FilterTime.Eq == nil {
-			break
-		}
-
-		return e.complexity.FilterTime.Eq(childComplexity), true
-
-	case "FilterTime.exists":
-		if e.complexity.FilterTime.Exists == nil {
-			break
-		}
-
-		return e.complexity.FilterTime.Exists(childComplexity), true
-
-	case "FilterTime.neq":
-		if e.complexity.FilterTime.Neq == nil {
-			break
-		}
-
-		return e.complexity.FilterTime.Neq(childComplexity), true
-
-	case "FilterTypeOne._and":
-		if e.complexity.FilterTypeOne.And == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.And(childComplexity), true
-
-	case "FilterTypeOne._not":
-		if e.complexity.FilterTypeOne.Not == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.Not(childComplexity), true
-
-	case "FilterTypeOne._or":
-		if e.complexity.FilterTypeOne.Or == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.Or(childComplexity), true
-
-	case "FilterTypeOne.type_one_boolean_field_filtered":
-		if e.complexity.FilterTypeOne.TypeOneBooleanFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneBooleanFieldFiltered(childComplexity), true
-
-	case "FilterTypeOne.type_one_boolean_field_filtered_not_mandatory":
-		if e.complexity.FilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory(childComplexity), true
-
-	case "FilterTypeOne.type_one_number_field_filtered":
-		if e.complexity.FilterTypeOne.TypeOneNumberFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneNumberFieldFiltered(childComplexity), true
-
-	case "FilterTypeOne.type_one_number_field_filtered_not_mandatory":
-		if e.complexity.FilterTypeOne.TypeOneNumberFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneNumberFieldFilteredNotMandatory(childComplexity), true
-
-	case "FilterTypeOne.type_one_slice_with_type_twos":
-		if e.complexity.FilterTypeOne.TypeOneSliceWithTypeTwos == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneSliceWithTypeTwos(childComplexity), true
-
-	case "FilterTypeOne.type_one_string_field_filtered":
-		if e.complexity.FilterTypeOne.TypeOneStringFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneStringFieldFiltered(childComplexity), true
-
-	case "FilterTypeOne.type_one_string_field_filtered_not_mandatory":
-		if e.complexity.FilterTypeOne.TypeOneStringFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneStringFieldFilteredNotMandatory(childComplexity), true
-
-	case "FilterTypeOne.type_one_time_field_filtered":
-		if e.complexity.FilterTypeOne.TypeOneTimeFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneTimeFieldFiltered(childComplexity), true
-
-	case "FilterTypeOne.type_one_time_field_filtered_not_mandatory":
-		if e.complexity.FilterTypeOne.TypeOneTimeFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeOne.TypeOneTimeFieldFilteredNotMandatory(childComplexity), true
-
-	case "FilterTypeThree._and":
-		if e.complexity.FilterTypeThree.And == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.And(childComplexity), true
-
-	case "FilterTypeThree._not":
-		if e.complexity.FilterTypeThree.Not == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.Not(childComplexity), true
-
-	case "FilterTypeThree._or":
-		if e.complexity.FilterTypeThree.Or == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.Or(childComplexity), true
-
-	case "FilterTypeThree.type_three_boolean_field_filtered":
-		if e.complexity.FilterTypeThree.TypeThreeBooleanFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.TypeThreeBooleanFieldFiltered(childComplexity), true
-
-	case "FilterTypeThree.type_three_number_field_filtered":
-		if e.complexity.FilterTypeThree.TypeThreeNumberFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.TypeThreeNumberFieldFiltered(childComplexity), true
-
-	case "FilterTypeThree.type_three_string_field_filtered":
-		if e.complexity.FilterTypeThree.TypeThreeStringFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.TypeThreeStringFieldFiltered(childComplexity), true
-
-	case "FilterTypeThree.type_three_time_field_filtered":
-		if e.complexity.FilterTypeThree.TypeThreeTimeFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeThree.TypeThreeTimeFieldFiltered(childComplexity), true
-
-	case "FilterTypeTwo._and":
-		if e.complexity.FilterTypeTwo.And == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.And(childComplexity), true
-
-	case "FilterTypeTwo._not":
-		if e.complexity.FilterTypeTwo.Not == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.Not(childComplexity), true
-
-	case "FilterTypeTwo._or":
-		if e.complexity.FilterTypeTwo.Or == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.Or(childComplexity), true
-
-	case "FilterTypeTwo.type_two_boolean_field_filtered":
-		if e.complexity.FilterTypeTwo.TypeTwoBooleanFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoBooleanFieldFiltered(childComplexity), true
-
-	case "FilterTypeTwo.type_two_number_field_filtered":
-		if e.complexity.FilterTypeTwo.TypeTwoNumberFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoNumberFieldFiltered(childComplexity), true
-
-	case "FilterTypeTwo.type_two_slice_with_type_twos":
-		if e.complexity.FilterTypeTwo.TypeTwoSliceWithTypeTwos == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoSliceWithTypeTwos(childComplexity), true
-
-	case "FilterTypeTwo.type_two_string_field_filtered":
-		if e.complexity.FilterTypeTwo.TypeTwoStringFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoStringFieldFiltered(childComplexity), true
-
-	case "FilterTypeTwo.type_two_time_field_filtered":
-		if e.complexity.FilterTypeTwo.TypeTwoTimeFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoTimeFieldFiltered(childComplexity), true
-
-	case "FilterTypeTwo.type_two_with_type_three":
-		if e.complexity.FilterTypeTwo.TypeTwoWithTypeThree == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoWithTypeThree(childComplexity), true
-
-	case "FilterTypeTwo.type_two_with_type_three_not_mandatory":
-		if e.complexity.FilterTypeTwo.TypeTwoWithTypeThreeNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.FilterTypeTwo.TypeTwoWithTypeThreeNotMandatory(childComplexity), true
-
-	case "NestedFilterTypeOne._and":
-		if e.complexity.NestedFilterTypeOne.And == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.And(childComplexity), true
-
-	case "NestedFilterTypeOne._not":
-		if e.complexity.NestedFilterTypeOne.Not == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.Not(childComplexity), true
-
-	case "NestedFilterTypeOne._or":
-		if e.complexity.NestedFilterTypeOne.Or == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.Or(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_boolean_field_filtered":
-		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_boolean_field_filtered_not_mandatory":
-		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_number_field_filtered":
-		if e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_number_field_filtered_not_mandatory":
-		if e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFilteredNotMandatory(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_slice_with_type_twos":
-		if e.complexity.NestedFilterTypeOne.TypeOneSliceWithTypeTwos == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneSliceWithTypeTwos(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_string_field_filtered":
-		if e.complexity.NestedFilterTypeOne.TypeOneStringFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneStringFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_string_field_filtered_not_mandatory":
-		if e.complexity.NestedFilterTypeOne.TypeOneStringFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneStringFieldFilteredNotMandatory(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_time_field_filtered":
-		if e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeOne.type_one_time_field_filtered_not_mandatory":
-		if e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFilteredNotMandatory == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFilteredNotMandatory(childComplexity), true
-
-	case "NestedFilterTypeThree._and":
-		if e.complexity.NestedFilterTypeThree.And == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.And(childComplexity), true
-
-	case "NestedFilterTypeThree._not":
-		if e.complexity.NestedFilterTypeThree.Not == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.Not(childComplexity), true
-
-	case "NestedFilterTypeThree._or":
-		if e.complexity.NestedFilterTypeThree.Or == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.Or(childComplexity), true
-
-	case "NestedFilterTypeThree.type_three_boolean_field_filtered":
-		if e.complexity.NestedFilterTypeThree.TypeThreeBooleanFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.TypeThreeBooleanFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeThree.type_three_number_field_filtered":
-		if e.complexity.NestedFilterTypeThree.TypeThreeNumberFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.TypeThreeNumberFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeThree.type_three_string_field_filtered":
-		if e.complexity.NestedFilterTypeThree.TypeThreeStringFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.TypeThreeStringFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeThree.type_three_time_field_filtered":
-		if e.complexity.NestedFilterTypeThree.TypeThreeTimeFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeThree.TypeThreeTimeFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeTwo._and":
-		if e.complexity.NestedFilterTypeTwo.And == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeTwo.And(childComplexity), true
-
-	case "NestedFilterTypeTwo._not":
-		if e.complexity.NestedFilterTypeTwo.Not == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeTwo.Not(childComplexity), true
-
-	case "NestedFilterTypeTwo._or":
-		if e.complexity.NestedFilterTypeTwo.Or == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeTwo.Or(childComplexity), true
-
-	case "NestedFilterTypeTwo.type_two_boolean_field_filtered":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoBooleanFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeTwo.TypeTwoBooleanFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeTwo.type_two_number_field_filtered":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoNumberFieldFiltered == nil {
-			break
-		}
-
-		return e.complexity.NestedFilterTypeTwo.TypeTwoNumberFieldFiltered(childComplexity), true
-
-	case "NestedFilterTypeTwo.type_two_slice_with_type_twos":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoSliceWithTypeTwos == nil {
-			break
+		args, err := ec.field_Query_testFilter_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
 		}
 
-		return e.complexity.NestedFilterTypeTwo.TypeTwoSliceWithTypeTwos(childComplexity), true
+		return e.complexity.Query.TestFilter(childComplexity, args["filter"].(FilterTypeOne)), true
 
-	case "NestedFilterTypeTwo.type_two_string_field_filtered":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoStringFieldFiltered == nil {
+	case "Query.testQuery":
+		if e.complexity.Query.TestQuery == nil {
 			break
 		}
-
-		return e.complexity.NestedFilterTypeTwo.TypeTwoStringFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeTwo.type_two_time_field_filtered":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoTimeFieldFiltered == nil {
-			break
+		args, err := ec.field_Query_testQuery_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
 		}
 
-		return e.complexity.NestedFilterTypeTwo.TypeTwoTimeFieldFiltered(childComplexity), true
+		return e.complexity.Query.TestQuery(childComplexity, args["filter"].(string)), true
 
-	case "NestedFilterTypeTwo.type_two_with_type_three":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThree == nil {
+	case "Query.testQueryObject":
+		if e.complexity.Query.TestQueryObject == nil {
 			break
 		}
 
-		return e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThree(childComplexity), true
-
-	case "NestedFilterTypeTwo.type_two_with_type_three_not_mandatory":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThreeNotMandatory == nil {
-			break
+		args, err := ec.field_Query_testQueryObject_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
 		}
 
-		return e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThreeNotMandatory(childComplexity), true
+		return e.complexity.Query.TestQueryObject(childComplexity, args["filter"].(InputOne)), true
 
 	case "TypeOne.type_one_boolean_field_filtered":
 		if e.complexity.TypeOne.TypeOneBooleanFieldFiltered == nil {
@@ -1088,7 +421,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	rc := graphql.GetOperationContext(ctx)
 	ec := executionContext{rc, e, 0, 0, make(chan graphql.DeferredResult)}
-	inputUnmarshalMap := graphql.BuildUnmarshalerMap()
+	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
+		ec.unmarshalInputFilterBoolean,
+		ec.unmarshalInputFilterExternalType,
+		ec.unmarshalInputFilterNumber,
+		ec.unmarshalInputFilterString,
+		ec.unmarshalInputFilterTime,
+		ec.unmarshalInputFilterTypeOne,
+		ec.unmarshalInputFilterTypeThree,
+		ec.unmarshalInputFilterTypeTwo,
+		ec.unmarshalInputInputOne,
+		ec.unmarshalInputNestedFilterTypeOne,
+		ec.unmarshalInputNestedFilterTypeThree,
+		ec.unmarshalInputNestedFilterTypeTwo,
+	)
 	first := true
 
 	switch rc.Operation.Operation {
@@ -1228,12 +574,27 @@ type ExternalType {
   number_list: [Int!] @filterable
 
   type_one: TypeOne @filterable
+}
+
+input InputOne {
+  type_two_string_field_filtered: String!
+  type_two_number_field_filtered: Int! 
+  type_two_time_field_filtered: Time! 
+  type_two_boolean_field_filtered: Boolean!
+  type_twoString_field_with_no_filter: String!
+  type_twoNumber_field_with_no_filter: Int!
+  type_twoTime_field_with_no_filter: Time!
+}
+
+type Query {
+  testQuery(filter: String!): [Int!]
+  testQueryObject(filter: InputOne!): [TypeTwo!]
 }`, BuiltIn: false},
 	{Name: "../../filtergen.directives.graphql", Input: `directive @filterable on FIELD_DEFINITION`, BuiltIn: false},
 	{Name: "../../filtergen.graphql", Input: `"""
 Filter type for boolean fields. All added filters here are processed as AND operators.
 """
-type FilterBoolean {
+input FilterBoolean {
 	"""
 	Filter a boolean field checking if it exists or not.
 	"""
@@ -1246,7 +607,7 @@ type FilterBoolean {
 """
 filter for ExternalType objects
 """
-type FilterExternalType {
+input FilterExternalType {
 	"""
 	logical operator for ExternalType that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1291,7 +652,7 @@ type FilterExternalType {
 """
 Filter type for number fields. All added filters here are processed as AND operators.
 """
-type FilterNumber {
+input FilterNumber {
 	"""
 	Filter a number field checking if it exists or not.
 	"""
@@ -1316,7 +677,7 @@ type FilterNumber {
 """
 Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.
 """
-type FilterString {
+input FilterString {
 	"""
 	Filter a string field checking if it exists or not.
 	"""
@@ -1341,7 +702,7 @@ type FilterString {
 """
 Filter type for time fields. All added filters here are processed as AND operators.
 """
-type FilterTime {
+input FilterTime {
 	"""
 	Filter a time field checking if it exists or not.
 	"""
@@ -1366,7 +727,7 @@ type FilterTime {
 """
 filter for TypeOne objects
 """
-type FilterTypeOne {
+input FilterTypeOne {
 	"""
 	logical operator for TypeOne that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1419,7 +780,7 @@ type FilterTypeOne {
 """
 filter for TypeThree objects
 """
-type FilterTypeThree {
+input FilterTypeThree {
 	"""
 	logical operator for TypeThree that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1452,7 +813,7 @@ type FilterTypeThree {
 """
 filter for TypeTwo objects
 """
-type FilterTypeTwo {
+input FilterTypeTwo {
 	"""
 	logical operator for TypeTwo that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1497,7 +858,7 @@ type FilterTypeTwo {
 """
 filter for TypeOne objects
 """
-type NestedFilterTypeOne {
+input NestedFilterTypeOne {
 	"""
 	logical operator for TypeOne that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1550,7 +911,7 @@ type NestedFilterTypeOne {
 """
 filter for TypeThree objects
 """
-type NestedFilterTypeThree {
+input NestedFilterTypeThree {
 	"""
 	logical operator for TypeThree that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1583,7 +944,7 @@ type NestedFilterTypeThree {
 """
 filter for TypeTwo objects
 """
-type NestedFilterTypeTwo {
+input NestedFilterTypeTwo {
 	"""
 	logical operator for TypeTwo that will combine two or more conditions, returning true if all of them are true.
 	"""
@@ -1645,6 +1006,51 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_testFilter_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 FilterTypeOne
+	if tmp, ok := rawArgs["filter"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+		arg0, err = ec.unmarshalNFilterTypeOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_testQueryObject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 InputOne
+	if tmp, ok := rawArgs["filter"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+		arg0, err = ec.unmarshalNInputOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐInputOne(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_testQuery_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["filter"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
 	return args, nil
 }
 
@@ -2148,8 +1554,8 @@ func (ec *executionContext) fieldContext_ExternalType_type_one(_ context.Context
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterBoolean_exists(ctx context.Context, field graphql.CollectedField, obj *FilterBoolean) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterBoolean_exists(ctx, field)
+func (ec *executionContext) _Query_testQuery(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_testQuery(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2162,7 +1568,7 @@ func (ec *executionContext) _FilterBoolean_exists(ctx context.Context, field gra
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Exists, nil
+		return ec.resolvers.Query().TestQuery(rctx, fc.Args["filter"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2171,723 +1577,37 @@ func (ec *executionContext) _FilterBoolean_exists(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*bool)
+	res := resTmp.([]int)
 	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
+	return ec.marshalOInt2ᚕintᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterBoolean_exists(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_testQuery(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "FilterBoolean",
+		Object:     "Query",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterBoolean_eq(ctx context.Context, field graphql.CollectedField, obj *FilterBoolean) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterBoolean_eq(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Eq, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*bool)
-	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterBoolean_eq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterBoolean",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType__and(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterExternalType)
-	fc.Result = res
-	return ec.marshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterExternalType__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterExternalType__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterExternalType__not(ctx, field)
-			case "number_one":
-				return ec.fieldContext_FilterExternalType_number_one(ctx, field)
-			case "number_two":
-				return ec.fieldContext_FilterExternalType_number_two(ctx, field)
-			case "number_three":
-				return ec.fieldContext_FilterExternalType_number_three(ctx, field)
-			case "number_four":
-				return ec.fieldContext_FilterExternalType_number_four(ctx, field)
-			case "number_five":
-				return ec.fieldContext_FilterExternalType_number_five(ctx, field)
-			case "number_list":
-				return ec.fieldContext_FilterExternalType_number_list(ctx, field)
-			case "type_one":
-				return ec.fieldContext_FilterExternalType_type_one(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType__or(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterExternalType)
-	fc.Result = res
-	return ec.marshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterExternalType__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterExternalType__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterExternalType__not(ctx, field)
-			case "number_one":
-				return ec.fieldContext_FilterExternalType_number_one(ctx, field)
-			case "number_two":
-				return ec.fieldContext_FilterExternalType_number_two(ctx, field)
-			case "number_three":
-				return ec.fieldContext_FilterExternalType_number_three(ctx, field)
-			case "number_four":
-				return ec.fieldContext_FilterExternalType_number_four(ctx, field)
-			case "number_five":
-				return ec.fieldContext_FilterExternalType_number_five(ctx, field)
-			case "number_list":
-				return ec.fieldContext_FilterExternalType_number_list(ctx, field)
-			case "type_one":
-				return ec.fieldContext_FilterExternalType_type_one(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType__not(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterExternalType)
-	fc.Result = res
-	return ec.marshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterExternalType__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterExternalType__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterExternalType__not(ctx, field)
-			case "number_one":
-				return ec.fieldContext_FilterExternalType_number_one(ctx, field)
-			case "number_two":
-				return ec.fieldContext_FilterExternalType_number_two(ctx, field)
-			case "number_three":
-				return ec.fieldContext_FilterExternalType_number_three(ctx, field)
-			case "number_four":
-				return ec.fieldContext_FilterExternalType_number_four(ctx, field)
-			case "number_five":
-				return ec.fieldContext_FilterExternalType_number_five(ctx, field)
-			case "number_list":
-				return ec.fieldContext_FilterExternalType_number_list(ctx, field)
-			case "type_one":
-				return ec.fieldContext_FilterExternalType_type_one(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_number_one(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_number_one(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NumberOne, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_number_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_number_two(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_number_two(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NumberTwo, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_number_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_number_three(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_number_three(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NumberThree, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_number_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_number_four(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_number_four(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NumberFour, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_number_four(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_number_five(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_number_five(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NumberFive, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_number_five(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_number_list(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_number_list(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.NumberList, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_number_list(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterExternalType_type_one(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_type_one(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOne, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeOne)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterExternalType_type_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterExternalType",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "type_one_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
-			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-			case "type_one_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
-			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-			case "type_one_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
-			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterNumber_exists(ctx context.Context, field graphql.CollectedField, obj *FilterNumber) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterNumber_exists(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Exists, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*bool)
-	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterNumber_exists(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterNumber",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterNumber_eq(ctx context.Context, field graphql.CollectedField, obj *FilterNumber) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterNumber_eq(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Eq, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*int)
-	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterNumber_eq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterNumber",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
 		},
 	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_testQuery_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterNumber_neq(ctx context.Context, field graphql.CollectedField, obj *FilterNumber) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterNumber_neq(ctx, field)
+func (ec *executionContext) _Query_testQueryObject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_testQueryObject(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2900,7 +1620,7 @@ func (ec *executionContext) _FilterNumber_neq(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Neq, nil
+		return ec.resolvers.Query().TestQueryObject(rctx, fc.Args["filter"].(InputOne))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2909,3762 +1629,131 @@ func (ec *executionContext) _FilterNumber_neq(ctx context.Context, field graphql
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*int)
+	res := resTmp.([]*TypeTwo)
 	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+	return ec.marshalOTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwoᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterNumber_neq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_testQueryObject(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "FilterNumber",
+		Object:     "Query",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterNumber_gt(ctx context.Context, field graphql.CollectedField, obj *FilterNumber) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterNumber_gt(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Gt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*int)
-	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterNumber_gt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterNumber",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterNumber_lt(ctx context.Context, field graphql.CollectedField, obj *FilterNumber) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterNumber_lt(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Lt, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*int)
-	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterNumber_lt(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterNumber",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Int does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterString_exists(ctx context.Context, field graphql.CollectedField, obj *FilterString) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterString_exists(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Exists, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*bool)
-	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterString_exists(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterString",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterString_eq(ctx context.Context, field graphql.CollectedField, obj *FilterString) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterString_eq(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Eq, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterString_eq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterString",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterString_neq(ctx context.Context, field graphql.CollectedField, obj *FilterString) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterString_neq(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Neq, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterString_neq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterString",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterString_like(ctx context.Context, field graphql.CollectedField, obj *FilterString) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterString_like(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Like, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterString_like(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterString",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterString_nlike(ctx context.Context, field graphql.CollectedField, obj *FilterString) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterString_nlike(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Nlike, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	fc.Result = res
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterString_nlike(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterString",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTime_exists(ctx context.Context, field graphql.CollectedField, obj *FilterTime) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTime_exists(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Exists, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*bool)
-	fc.Result = res
-	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTime_exists(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTime",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTime_eq(ctx context.Context, field graphql.CollectedField, obj *FilterTime) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTime_eq(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Eq, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTime_eq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTime",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTime_neq(ctx context.Context, field graphql.CollectedField, obj *FilterTime) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTime_neq(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Neq, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTime_neq(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTime",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTime_before(ctx context.Context, field graphql.CollectedField, obj *FilterTime) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTime_before(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Before, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTime_before(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTime",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTime_after(ctx context.Context, field graphql.CollectedField, obj *FilterTime) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTime_after(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.After, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*time.Time)
-	fc.Result = res
-	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTime_after(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTime",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Time does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne__and(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterTypeOne)
-	fc.Result = res
-	return ec.marshalOFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeOne__not(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_twoString_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoString_field_with_no_filter(ctx, field)
+			case "type_twoNumber_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoNumber_field_with_no_filter(ctx, field)
+			case "type_twoTime_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoTime_field_with_no_filter(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_TypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_TypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_TypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TypeTwo", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_testQueryObject_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_testFilter(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_testFilter(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().TestFilter(rctx, fc.Args["filter"].(FilterTypeOne))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*TypeOne)
+	fc.Result = res
+	return ec.marshalOTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOneᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_testFilter(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
 			case "type_one_string_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_string_field_filtered(ctx, field)
 			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 			case "type_one_number_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_number_field_filtered(ctx, field)
 			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 			case "type_one_time_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_time_field_filtered(ctx, field)
 			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
 			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_boolean_field_filtered(ctx, field)
 			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_string_field_with_no_filter":
+				return ec.fieldContext_TypeOne_type_one_string_field_with_no_filter(ctx, field)
+			case "type_one_number_field_with_no_filter":
+				return ec.fieldContext_TypeOne_type_one_number_field_with_no_filter(ctx, field)
+			case "type_one_time_field_with_no_filter":
+				return ec.fieldContext_TypeOne_type_one_time_field_with_no_filter(ctx, field)
 			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
+				return ec.fieldContext_TypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeOne", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TypeOne", field.Name)
 		},
 	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne__or(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
 	defer func() {
 		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
 		}
 	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterTypeOne)
-	fc.Result = res
-	return ec.marshalOFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeOne__not(ctx, field)
-			case "type_one_string_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
-			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-			case "type_one_number_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
-			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-			case "type_one_time_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
-			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeOne", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne__not(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
 	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
+	if fc.Args, err = ec.field_Query_testFilter_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTypeOne)
-	fc.Result = res
-	return ec.marshalOFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeOne__not(ctx, field)
-			case "type_one_string_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
-			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-			case "type_one_number_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
-			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-			case "type_one_time_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
-			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeOne", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneStringFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneStringFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneNumberFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneNumberFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneTimeFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneTimeFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeOne_type_one_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneSliceWithTypeTwos, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeOne_type_one_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree__and(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterTypeThree)
-	fc.Result = res
-	return ec.marshalOFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree__or(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterTypeThree)
-	fc.Result = res
-	return ec.marshalOFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree__not(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTypeThree)
-	fc.Result = res
-	return ec.marshalOFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree_type_three_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeStringFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree_type_three_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree_type_three_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeNumberFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree_type_three_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree_type_three_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeTimeFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree_type_three_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeThree_type_three_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeBooleanFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeThree_type_three_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo__and(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterTypeTwo)
-	fc.Result = res
-	return ec.marshalOFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo__or(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*FilterTypeTwo)
-	fc.Result = res
-	return ec.marshalOFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo__not(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTypeTwo)
-	fc.Result = res
-	return ec.marshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_FilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_FilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_FilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoStringFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoNumberFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoTimeFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoBooleanFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoSliceWithTypeTwos, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_with_type_three(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoWithTypeThree, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_with_type_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoWithTypeThreeNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "FilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne__and(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*NestedFilterTypeOne)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "type_one_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
-			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-			case "type_one_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
-			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-			case "type_one_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
-			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne__or(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*NestedFilterTypeOne)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "type_one_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
-			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-			case "type_one_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
-			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-			case "type_one_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
-			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne__not(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeOne)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "type_one_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
-			case "type_one_string_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-			case "type_one_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
-			case "type_one_number_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-			case "type_one_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
-			case "type_one_time_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-			case "type_one_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-			case "type_one_boolean_field_filtered_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-			case "type_one_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneStringFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneStringFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneNumberFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneNumberFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneTimeFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneTimeFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFieldFilteredNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeOne_type_one_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneSliceWithTypeTwos, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeOne",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree__and(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree__or(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree__not(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree_type_three_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeStringFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree_type_three_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeNumberFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree_type_three_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeTimeFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeThree_type_three_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeBooleanFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeThree",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo__and(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.And, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo__or(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Or, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo__not(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Not, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoStringFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterString)
-	fc.Result = res
-	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterString_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterString_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterString_neq(ctx, field)
-			case "like":
-				return ec.fieldContext_FilterString_like(ctx, field)
-			case "nlike":
-				return ec.fieldContext_FilterString_nlike(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoNumberFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterNumber)
-	fc.Result = res
-	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterNumber_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterNumber_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterNumber_neq(ctx, field)
-			case "gt":
-				return ec.fieldContext_FilterNumber_gt(ctx, field)
-			case "lt":
-				return ec.fieldContext_FilterNumber_lt(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoTimeFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterTime)
-	fc.Result = res
-	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterTime_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterTime_eq(ctx, field)
-			case "neq":
-				return ec.fieldContext_FilterTime_neq(ctx, field)
-			case "before":
-				return ec.fieldContext_FilterTime_before(ctx, field)
-			case "after":
-				return ec.fieldContext_FilterTime_after(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoBooleanFieldFiltered, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*FilterBoolean)
-	fc.Result = res
-	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "exists":
-				return ec.fieldContext_FilterBoolean_exists(ctx, field)
-			case "eq":
-				return ec.fieldContext_FilterBoolean_eq(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoSliceWithTypeTwos, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeTwo)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "type_two_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
-			case "type_two_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
-			case "type_two_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
-			case "type_two_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
-			case "type_two_slice_with_type_twos":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
-			case "type_two_with_type_three":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-			case "type_two_with_type_three_not_mandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_with_type_three(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoWithTypeThree, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_with_type_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoWithTypeThreeNotMandatory, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*NestedFilterTypeThree)
-	fc.Result = res
-	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "NestedFilterTypeTwo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			switch field.Name {
-			case "_and":
-				return ec.fieldContext_NestedFilterTypeThree__and(ctx, field)
-			case "_or":
-				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
-			case "_not":
-				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "type_three_string_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
-			case "type_three_number_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
-			case "type_three_time_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
-			case "type_three_boolean_field_filtered":
-				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
-			}
-			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
-		},
+		return fc, err
 	}
 	return fc, nil
 }
@@ -10308,6 +5397,890 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputFilterBoolean(ctx context.Context, obj interface{}) (FilterBoolean, error) {
+	var it FilterBoolean
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterExternalType(ctx context.Context, obj interface{}) (FilterExternalType, error) {
+	var it FilterExternalType
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "number_one", "number_two", "number_three", "number_four", "number_five", "number_list", "type_one"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "number_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number_one"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberOne = data
+		case "number_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number_two"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberTwo = data
+		case "number_three":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number_three"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberThree = data
+		case "number_four":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number_four"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberFour = data
+		case "number_five":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number_five"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberFive = data
+		case "number_list":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("number_list"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NumberList = data
+		case "type_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one"))
+			data, err := ec.unmarshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOne = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterNumber(ctx context.Context, obj interface{}) (FilterNumber, error) {
+	var it FilterNumber
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq", "neq", "gt", "lt"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		case "neq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Neq = data
+		case "gt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gt"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Gt = data
+		case "lt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lt"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Lt = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterString(ctx context.Context, obj interface{}) (FilterString, error) {
+	var it FilterString
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq", "neq", "like", "nlike"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		case "neq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Neq = data
+		case "like":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("like"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Like = data
+		case "nlike":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nlike"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Nlike = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterTime(ctx context.Context, obj interface{}) (FilterTime, error) {
+	var it FilterTime
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq", "neq", "before", "after"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		case "neq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Neq = data
+		case "before":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Before = data
+		case "after":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.After = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterTypeOne(ctx context.Context, obj interface{}) (FilterTypeOne, error) {
+	var it FilterTypeOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_one_string_field_filtered", "type_one_string_field_filtered_not_mandatory", "type_one_number_field_filtered", "type_one_number_field_filtered_not_mandatory", "type_one_time_field_filtered", "type_one_time_field_filtered_not_mandatory", "type_one_boolean_field_filtered", "type_one_boolean_field_filtered_not_mandatory", "type_one_slice_with_type_twos"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_one_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_string_field_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneStringFieldFiltered = data
+		case "type_one_string_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_string_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneStringFieldFilteredNotMandatory = data
+		case "type_one_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_number_field_filtered"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneNumberFieldFiltered = data
+		case "type_one_number_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_number_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneNumberFieldFilteredNotMandatory = data
+		case "type_one_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_time_field_filtered"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneTimeFieldFiltered = data
+		case "type_one_time_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_time_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneTimeFieldFilteredNotMandatory = data
+		case "type_one_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_boolean_field_filtered"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneBooleanFieldFiltered = data
+		case "type_one_boolean_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_boolean_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneBooleanFieldFilteredNotMandatory = data
+		case "type_one_slice_with_type_twos":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_slice_with_type_twos"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneSliceWithTypeTwos = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterTypeThree(ctx context.Context, obj interface{}) (FilterTypeThree, error) {
+	var it FilterTypeThree
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_three_string_field_filtered", "type_three_number_field_filtered", "type_three_time_field_filtered", "type_three_boolean_field_filtered"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_three_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_string_field_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeStringFieldFiltered = data
+		case "type_three_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_number_field_filtered"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeNumberFieldFiltered = data
+		case "type_three_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_time_field_filtered"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeTimeFieldFiltered = data
+		case "type_three_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_boolean_field_filtered"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeBooleanFieldFiltered = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterTypeTwo(ctx context.Context, obj interface{}) (FilterTypeTwo, error) {
+	var it FilterTypeTwo
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_two_string_field_filtered", "type_two_number_field_filtered", "type_two_time_field_filtered", "type_two_boolean_field_filtered", "type_two_slice_with_type_twos", "type_two_with_type_three", "type_two_with_type_three_not_mandatory"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_two_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_string_field_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoStringFieldFiltered = data
+		case "type_two_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_number_field_filtered"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoNumberFieldFiltered = data
+		case "type_two_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_time_field_filtered"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoTimeFieldFiltered = data
+		case "type_two_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_boolean_field_filtered"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoBooleanFieldFiltered = data
+		case "type_two_slice_with_type_twos":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_slice_with_type_twos"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoSliceWithTypeTwos = data
+		case "type_two_with_type_three":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_with_type_three"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoWithTypeThree = data
+		case "type_two_with_type_three_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_with_type_three_not_mandatory"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoWithTypeThreeNotMandatory = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputInputOne(ctx context.Context, obj interface{}) (InputOne, error) {
+	var it InputOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"type_two_string_field_filtered", "type_two_number_field_filtered", "type_two_time_field_filtered", "type_two_boolean_field_filtered", "type_twoString_field_with_no_filter", "type_twoNumber_field_with_no_filter", "type_twoTime_field_with_no_filter"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "type_two_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_string_field_filtered"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoStringFieldFiltered = data
+		case "type_two_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_number_field_filtered"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoNumberFieldFiltered = data
+		case "type_two_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_time_field_filtered"))
+			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoTimeFieldFiltered = data
+		case "type_two_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_boolean_field_filtered"))
+			data, err := ec.unmarshalNBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoBooleanFieldFiltered = data
+		case "type_twoString_field_with_no_filter":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_twoString_field_with_no_filter"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoStringFieldWithNoFilter = data
+		case "type_twoNumber_field_with_no_filter":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_twoNumber_field_with_no_filter"))
+			data, err := ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoNumberFieldWithNoFilter = data
+		case "type_twoTime_field_with_no_filter":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_twoTime_field_with_no_filter"))
+			data, err := ec.unmarshalNTime2timeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoTimeFieldWithNoFilter = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterTypeOne(ctx context.Context, obj interface{}) (NestedFilterTypeOne, error) {
+	var it NestedFilterTypeOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_one_string_field_filtered", "type_one_string_field_filtered_not_mandatory", "type_one_number_field_filtered", "type_one_number_field_filtered_not_mandatory", "type_one_time_field_filtered", "type_one_time_field_filtered_not_mandatory", "type_one_boolean_field_filtered", "type_one_boolean_field_filtered_not_mandatory", "type_one_slice_with_type_twos"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_one_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_string_field_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneStringFieldFiltered = data
+		case "type_one_string_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_string_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneStringFieldFilteredNotMandatory = data
+		case "type_one_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_number_field_filtered"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneNumberFieldFiltered = data
+		case "type_one_number_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_number_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneNumberFieldFilteredNotMandatory = data
+		case "type_one_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_time_field_filtered"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneTimeFieldFiltered = data
+		case "type_one_time_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_time_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneTimeFieldFilteredNotMandatory = data
+		case "type_one_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_boolean_field_filtered"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneBooleanFieldFiltered = data
+		case "type_one_boolean_field_filtered_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_boolean_field_filtered_not_mandatory"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneBooleanFieldFilteredNotMandatory = data
+		case "type_one_slice_with_type_twos":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_slice_with_type_twos"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneSliceWithTypeTwos = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterTypeThree(ctx context.Context, obj interface{}) (NestedFilterTypeThree, error) {
+	var it NestedFilterTypeThree
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_three_string_field_filtered", "type_three_number_field_filtered", "type_three_time_field_filtered", "type_three_boolean_field_filtered"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_three_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_string_field_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeStringFieldFiltered = data
+		case "type_three_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_number_field_filtered"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeNumberFieldFiltered = data
+		case "type_three_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_time_field_filtered"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeTimeFieldFiltered = data
+		case "type_three_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_three_boolean_field_filtered"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeThreeBooleanFieldFiltered = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterTypeTwo(ctx context.Context, obj interface{}) (NestedFilterTypeTwo, error) {
+	var it NestedFilterTypeTwo
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_two_string_field_filtered", "type_two_number_field_filtered", "type_two_time_field_filtered", "type_two_boolean_field_filtered", "type_two_slice_with_type_twos", "type_two_with_type_three", "type_two_with_type_three_not_mandatory"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_two_string_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_string_field_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoStringFieldFiltered = data
+		case "type_two_number_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_number_field_filtered"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoNumberFieldFiltered = data
+		case "type_two_time_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_time_field_filtered"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoTimeFieldFiltered = data
+		case "type_two_boolean_field_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_boolean_field_filtered"))
+			data, err := ec.unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoBooleanFieldFiltered = data
+		case "type_two_slice_with_type_twos":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_slice_with_type_twos"))
+			data, err := ec.unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoSliceWithTypeTwos = data
+		case "type_two_with_type_three":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_with_type_three"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoWithTypeThree = data
+		case "type_two_with_type_three_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_two_with_type_three_not_mandatory"))
+			data, err := ec.unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTwoWithTypeThreeNotMandatory = data
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -10373,550 +6346,6 @@ func (ec *executionContext) _ExternalType(ctx context.Context, sel ast.Selection
 	return out
 }
 
-var filterBooleanImplementors = []string{"FilterBoolean"}
-
-func (ec *executionContext) _FilterBoolean(ctx context.Context, sel ast.SelectionSet, obj *FilterBoolean) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterBooleanImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterBoolean")
-		case "exists":
-			out.Values[i] = ec._FilterBoolean_exists(ctx, field, obj)
-		case "eq":
-			out.Values[i] = ec._FilterBoolean_eq(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterExternalTypeImplementors = []string{"FilterExternalType"}
-
-func (ec *executionContext) _FilterExternalType(ctx context.Context, sel ast.SelectionSet, obj *FilterExternalType) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterExternalTypeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterExternalType")
-		case "_and":
-			out.Values[i] = ec._FilterExternalType__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._FilterExternalType__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._FilterExternalType__not(ctx, field, obj)
-		case "number_one":
-			out.Values[i] = ec._FilterExternalType_number_one(ctx, field, obj)
-		case "number_two":
-			out.Values[i] = ec._FilterExternalType_number_two(ctx, field, obj)
-		case "number_three":
-			out.Values[i] = ec._FilterExternalType_number_three(ctx, field, obj)
-		case "number_four":
-			out.Values[i] = ec._FilterExternalType_number_four(ctx, field, obj)
-		case "number_five":
-			out.Values[i] = ec._FilterExternalType_number_five(ctx, field, obj)
-		case "number_list":
-			out.Values[i] = ec._FilterExternalType_number_list(ctx, field, obj)
-		case "type_one":
-			out.Values[i] = ec._FilterExternalType_type_one(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterNumberImplementors = []string{"FilterNumber"}
-
-func (ec *executionContext) _FilterNumber(ctx context.Context, sel ast.SelectionSet, obj *FilterNumber) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterNumberImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterNumber")
-		case "exists":
-			out.Values[i] = ec._FilterNumber_exists(ctx, field, obj)
-		case "eq":
-			out.Values[i] = ec._FilterNumber_eq(ctx, field, obj)
-		case "neq":
-			out.Values[i] = ec._FilterNumber_neq(ctx, field, obj)
-		case "gt":
-			out.Values[i] = ec._FilterNumber_gt(ctx, field, obj)
-		case "lt":
-			out.Values[i] = ec._FilterNumber_lt(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterStringImplementors = []string{"FilterString"}
-
-func (ec *executionContext) _FilterString(ctx context.Context, sel ast.SelectionSet, obj *FilterString) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterStringImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterString")
-		case "exists":
-			out.Values[i] = ec._FilterString_exists(ctx, field, obj)
-		case "eq":
-			out.Values[i] = ec._FilterString_eq(ctx, field, obj)
-		case "neq":
-			out.Values[i] = ec._FilterString_neq(ctx, field, obj)
-		case "like":
-			out.Values[i] = ec._FilterString_like(ctx, field, obj)
-		case "nlike":
-			out.Values[i] = ec._FilterString_nlike(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterTimeImplementors = []string{"FilterTime"}
-
-func (ec *executionContext) _FilterTime(ctx context.Context, sel ast.SelectionSet, obj *FilterTime) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterTimeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterTime")
-		case "exists":
-			out.Values[i] = ec._FilterTime_exists(ctx, field, obj)
-		case "eq":
-			out.Values[i] = ec._FilterTime_eq(ctx, field, obj)
-		case "neq":
-			out.Values[i] = ec._FilterTime_neq(ctx, field, obj)
-		case "before":
-			out.Values[i] = ec._FilterTime_before(ctx, field, obj)
-		case "after":
-			out.Values[i] = ec._FilterTime_after(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterTypeOneImplementors = []string{"FilterTypeOne"}
-
-func (ec *executionContext) _FilterTypeOne(ctx context.Context, sel ast.SelectionSet, obj *FilterTypeOne) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterTypeOneImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterTypeOne")
-		case "_and":
-			out.Values[i] = ec._FilterTypeOne__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._FilterTypeOne__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._FilterTypeOne__not(ctx, field, obj)
-		case "type_one_string_field_filtered":
-			out.Values[i] = ec._FilterTypeOne_type_one_string_field_filtered(ctx, field, obj)
-		case "type_one_string_field_filtered_not_mandatory":
-			out.Values[i] = ec._FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_number_field_filtered":
-			out.Values[i] = ec._FilterTypeOne_type_one_number_field_filtered(ctx, field, obj)
-		case "type_one_number_field_filtered_not_mandatory":
-			out.Values[i] = ec._FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_time_field_filtered":
-			out.Values[i] = ec._FilterTypeOne_type_one_time_field_filtered(ctx, field, obj)
-		case "type_one_time_field_filtered_not_mandatory":
-			out.Values[i] = ec._FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_boolean_field_filtered":
-			out.Values[i] = ec._FilterTypeOne_type_one_boolean_field_filtered(ctx, field, obj)
-		case "type_one_boolean_field_filtered_not_mandatory":
-			out.Values[i] = ec._FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_slice_with_type_twos":
-			out.Values[i] = ec._FilterTypeOne_type_one_slice_with_type_twos(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterTypeThreeImplementors = []string{"FilterTypeThree"}
-
-func (ec *executionContext) _FilterTypeThree(ctx context.Context, sel ast.SelectionSet, obj *FilterTypeThree) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterTypeThreeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterTypeThree")
-		case "_and":
-			out.Values[i] = ec._FilterTypeThree__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._FilterTypeThree__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._FilterTypeThree__not(ctx, field, obj)
-		case "type_three_string_field_filtered":
-			out.Values[i] = ec._FilterTypeThree_type_three_string_field_filtered(ctx, field, obj)
-		case "type_three_number_field_filtered":
-			out.Values[i] = ec._FilterTypeThree_type_three_number_field_filtered(ctx, field, obj)
-		case "type_three_time_field_filtered":
-			out.Values[i] = ec._FilterTypeThree_type_three_time_field_filtered(ctx, field, obj)
-		case "type_three_boolean_field_filtered":
-			out.Values[i] = ec._FilterTypeThree_type_three_boolean_field_filtered(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var filterTypeTwoImplementors = []string{"FilterTypeTwo"}
-
-func (ec *executionContext) _FilterTypeTwo(ctx context.Context, sel ast.SelectionSet, obj *FilterTypeTwo) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, filterTypeTwoImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("FilterTypeTwo")
-		case "_and":
-			out.Values[i] = ec._FilterTypeTwo__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._FilterTypeTwo__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._FilterTypeTwo__not(ctx, field, obj)
-		case "type_two_string_field_filtered":
-			out.Values[i] = ec._FilterTypeTwo_type_two_string_field_filtered(ctx, field, obj)
-		case "type_two_number_field_filtered":
-			out.Values[i] = ec._FilterTypeTwo_type_two_number_field_filtered(ctx, field, obj)
-		case "type_two_time_field_filtered":
-			out.Values[i] = ec._FilterTypeTwo_type_two_time_field_filtered(ctx, field, obj)
-		case "type_two_boolean_field_filtered":
-			out.Values[i] = ec._FilterTypeTwo_type_two_boolean_field_filtered(ctx, field, obj)
-		case "type_two_slice_with_type_twos":
-			out.Values[i] = ec._FilterTypeTwo_type_two_slice_with_type_twos(ctx, field, obj)
-		case "type_two_with_type_three":
-			out.Values[i] = ec._FilterTypeTwo_type_two_with_type_three(ctx, field, obj)
-		case "type_two_with_type_three_not_mandatory":
-			out.Values[i] = ec._FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var nestedFilterTypeOneImplementors = []string{"NestedFilterTypeOne"}
-
-func (ec *executionContext) _NestedFilterTypeOne(ctx context.Context, sel ast.SelectionSet, obj *NestedFilterTypeOne) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, nestedFilterTypeOneImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("NestedFilterTypeOne")
-		case "_and":
-			out.Values[i] = ec._NestedFilterTypeOne__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._NestedFilterTypeOne__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._NestedFilterTypeOne__not(ctx, field, obj)
-		case "type_one_string_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_string_field_filtered(ctx, field, obj)
-		case "type_one_string_field_filtered_not_mandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_number_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_number_field_filtered(ctx, field, obj)
-		case "type_one_number_field_filtered_not_mandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_time_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_time_field_filtered(ctx, field, obj)
-		case "type_one_time_field_filtered_not_mandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_boolean_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field, obj)
-		case "type_one_boolean_field_filtered_not_mandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field, obj)
-		case "type_one_slice_with_type_twos":
-			out.Values[i] = ec._NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var nestedFilterTypeThreeImplementors = []string{"NestedFilterTypeThree"}
-
-func (ec *executionContext) _NestedFilterTypeThree(ctx context.Context, sel ast.SelectionSet, obj *NestedFilterTypeThree) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, nestedFilterTypeThreeImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("NestedFilterTypeThree")
-		case "_and":
-			out.Values[i] = ec._NestedFilterTypeThree__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._NestedFilterTypeThree__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._NestedFilterTypeThree__not(ctx, field, obj)
-		case "type_three_string_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeThree_type_three_string_field_filtered(ctx, field, obj)
-		case "type_three_number_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeThree_type_three_number_field_filtered(ctx, field, obj)
-		case "type_three_time_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeThree_type_three_time_field_filtered(ctx, field, obj)
-		case "type_three_boolean_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var nestedFilterTypeTwoImplementors = []string{"NestedFilterTypeTwo"}
-
-func (ec *executionContext) _NestedFilterTypeTwo(ctx context.Context, sel ast.SelectionSet, obj *NestedFilterTypeTwo) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, nestedFilterTypeTwoImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("NestedFilterTypeTwo")
-		case "_and":
-			out.Values[i] = ec._NestedFilterTypeTwo__and(ctx, field, obj)
-		case "_or":
-			out.Values[i] = ec._NestedFilterTypeTwo__or(ctx, field, obj)
-		case "_not":
-			out.Values[i] = ec._NestedFilterTypeTwo__not(ctx, field, obj)
-		case "type_two_string_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field, obj)
-		case "type_two_number_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field, obj)
-		case "type_two_time_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field, obj)
-		case "type_two_boolean_field_filtered":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field, obj)
-		case "type_two_slice_with_type_twos":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field, obj)
-		case "type_two_with_type_three":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_with_type_three(ctx, field, obj)
-		case "type_two_with_type_three_not_mandatory":
-			out.Values[i] = ec._NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field, obj)
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
 var queryImplementors = []string{"Query"}
 
 func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) graphql.Marshaler {
@@ -10936,6 +6365,63 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
+		case "testQuery":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_testQuery(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "testQueryObject":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_testQueryObject(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "testFilter":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_testFilter(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
 		case "__type":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Query___type(ctx, field)
@@ -11540,6 +7026,16 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) unmarshalNFilterTypeOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx context.Context, v interface{}) (FilterTypeOne, error) {
+	res, err := ec.unmarshalInputFilterTypeOne(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNInputOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐInputOne(ctx context.Context, v interface{}) (InputOne, error) {
+	res, err := ec.unmarshalInputInputOne(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
 	res, err := graphql.UnmarshalInt(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -11615,6 +7111,16 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 	return res
 }
 
+func (ec *executionContext) marshalNTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOne(ctx context.Context, sel ast.SelectionSet, v *TypeOne) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TypeOne(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThree(ctx context.Context, sel ast.SelectionSet, v *TypeThree) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -11661,6 +7167,16 @@ func (ec *executionContext) marshalNTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgql
 	wg.Wait()
 
 	return ret
+}
+
+func (ec *executionContext) marshalNTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx context.Context, sel ast.SelectionSet, v *TypeTwo) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._TypeTwo(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -11942,224 +7458,148 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
-func (ec *executionContext) marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx context.Context, sel ast.SelectionSet, v *FilterBoolean) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx context.Context, v interface{}) (*FilterBoolean, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterBoolean(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterBoolean(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx context.Context, sel ast.SelectionSet, v []*FilterExternalType) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx context.Context, v interface{}) ([]*FilterExternalType, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*FilterExternalType, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx context.Context, sel ast.SelectionSet, v *FilterExternalType) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx context.Context, v interface{}) (*FilterExternalType, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterExternalType(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterExternalType(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx context.Context, sel ast.SelectionSet, v *FilterNumber) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx context.Context, v interface{}) (*FilterNumber, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterNumber(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterNumber(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx context.Context, sel ast.SelectionSet, v *FilterString) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx context.Context, v interface{}) (*FilterString, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterString(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterString(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx context.Context, sel ast.SelectionSet, v *FilterTime) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx context.Context, v interface{}) (*FilterTime, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterTime(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterTime(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx context.Context, sel ast.SelectionSet, v []*FilterTypeOne) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx context.Context, v interface{}) ([]*FilterTypeOne, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*FilterTypeOne, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalOFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx context.Context, sel ast.SelectionSet, v *FilterTypeOne) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeOne(ctx context.Context, v interface{}) (*FilterTypeOne, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterTypeOne(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterTypeOne(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx context.Context, sel ast.SelectionSet, v []*FilterTypeThree) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx context.Context, v interface{}) ([]*FilterTypeThree, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*FilterTypeThree, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalOFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx context.Context, sel ast.SelectionSet, v *FilterTypeThree) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx context.Context, v interface{}) (*FilterTypeThree, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterTypeThree(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterTypeThree(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx context.Context, sel ast.SelectionSet, v []*FilterTypeTwo) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx context.Context, v interface{}) ([]*FilterTypeTwo, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*FilterTypeTwo, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx context.Context, sel ast.SelectionSet, v *FilterTypeTwo) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeTwo(ctx context.Context, v interface{}) (*FilterTypeTwo, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._FilterTypeTwo(ctx, sel, v)
+	res, err := ec.unmarshalInputFilterTypeTwo(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOInt2ᚕintᚄ(ctx context.Context, v interface{}) ([]int, error) {
@@ -12232,148 +7672,88 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, sel ast.SelectionSet, v []*NestedFilterTypeOne) graphql.Marshaler {
+func (ec *executionContext) unmarshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, v interface{}) ([]*NestedFilterTypeOne, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*NestedFilterTypeOne, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, sel ast.SelectionSet, v *NestedFilterTypeOne) graphql.Marshaler {
+func (ec *executionContext) unmarshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, v interface{}) (*NestedFilterTypeOne, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._NestedFilterTypeOne(ctx, sel, v)
+	res, err := ec.unmarshalInputNestedFilterTypeOne(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx context.Context, sel ast.SelectionSet, v []*NestedFilterTypeThree) graphql.Marshaler {
+func (ec *executionContext) unmarshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx context.Context, v interface{}) ([]*NestedFilterTypeThree, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*NestedFilterTypeThree, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx context.Context, sel ast.SelectionSet, v *NestedFilterTypeThree) graphql.Marshaler {
+func (ec *executionContext) unmarshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx context.Context, v interface{}) (*NestedFilterTypeThree, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._NestedFilterTypeThree(ctx, sel, v)
+	res, err := ec.unmarshalInputNestedFilterTypeThree(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalONestedFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx context.Context, sel ast.SelectionSet, v []*NestedFilterTypeTwo) graphql.Marshaler {
+func (ec *executionContext) unmarshalONestedFilterTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx context.Context, v interface{}) ([]*NestedFilterTypeTwo, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
 	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
+	var err error
+	res := make([]*NestedFilterTypeTwo, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
 		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
 	}
-	wg.Wait()
-
-	return ret
+	return res, nil
 }
 
-func (ec *executionContext) marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx context.Context, sel ast.SelectionSet, v *NestedFilterTypeTwo) graphql.Marshaler {
+func (ec *executionContext) unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx context.Context, v interface{}) (*NestedFilterTypeTwo, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	return ec._NestedFilterTypeTwo(ctx, sel, v)
+	res, err := ec.unmarshalInputNestedFilterTypeTwo(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
@@ -12408,6 +7788,53 @@ func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel
 	return res
 }
 
+func (ec *executionContext) marshalOTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOneᚄ(ctx context.Context, sel ast.SelectionSet, v []*TypeOne) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOne(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) marshalOTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOne(ctx context.Context, sel ast.SelectionSet, v *TypeOne) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -12420,6 +7847,53 @@ func (ec *executionContext) marshalOTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlf
 		return graphql.Null
 	}
 	return ec._TypeThree(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwoᚄ(ctx context.Context, sel ast.SelectionSet, v []*TypeTwo) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) marshalOTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx context.Context, sel ast.SelectionSet, v *TypeTwo) graphql.Marshaler {

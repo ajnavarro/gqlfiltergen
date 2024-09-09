@@ -16,7 +16,11 @@ func TestFiltersGeneration(t *testing.T) {
 	cfg, err := config.LoadConfig("testdata/gqlgen.yml")
 	require.NoError(t, err)
 
-	p := &Plugin{}
+	p := NewPlugin(&Options{
+		Queries: []string{
+			"testFilter(filter: FilterTypeOne!): [TypeOne!]",
+		},
+	})
 
 	err = api.Generate(cfg,
 		api.AddPlugin(p),

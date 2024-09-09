@@ -115,7 +115,7 @@ func processField(name, typeName string) *ast.FieldDefinition {
 
 func filterDefinition(filterName, objectName string) *ast.Definition {
 	return &ast.Definition{
-		Kind:        ast.Object,
+		Kind:        ast.InputObject,
 		Name:        filterName,
 		Description: fmt.Sprintf("filter for %s objects", objectName),
 		Fields: ast.FieldList{
@@ -146,7 +146,7 @@ const (
 )
 
 var filterString = &ast.Definition{
-	Kind:        ast.Object,
+	Kind:        ast.InputObject,
 	Description: "Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.",
 	Name:        filterStringName,
 	Fields: ast.FieldList{
@@ -179,7 +179,7 @@ var filterString = &ast.Definition{
 }
 
 var filterNumber = &ast.Definition{
-	Kind:        ast.Object,
+	Kind:        ast.InputObject,
 	Description: "Filter type for number fields. All added filters here are processed as AND operators.",
 	Name:        filterNumberName,
 	Fields: ast.FieldList{
@@ -212,7 +212,7 @@ var filterNumber = &ast.Definition{
 }
 
 var filterTime = &ast.Definition{
-	Kind:        ast.Object,
+	Kind:        ast.InputObject,
 	Description: "Filter type for time fields. All added filters here are processed as AND operators.",
 	Name:        filterTimeName,
 	Fields: ast.FieldList{
@@ -245,7 +245,7 @@ var filterTime = &ast.Definition{
 }
 
 var filterBoolean = &ast.Definition{
-	Kind:        ast.Object,
+	Kind:        ast.InputObject,
 	Description: "Filter type for boolean fields. All added filters here are processed as AND operators.",
 	Name:        filterBooleanName,
 	Fields: ast.FieldList{

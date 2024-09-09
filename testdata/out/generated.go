@@ -150,6 +150,16 @@ type FilterTypeTwo struct {
 	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }
 
+type InputOne struct {
+	TypeTwoStringFieldFiltered     string    `json:"type_two_string_field_filtered"`
+	TypeTwoNumberFieldFiltered     int       `json:"type_two_number_field_filtered"`
+	TypeTwoTimeFieldFiltered       time.Time `json:"type_two_time_field_filtered"`
+	TypeTwoBooleanFieldFiltered    bool      `json:"type_two_boolean_field_filtered"`
+	TypeTwoStringFieldWithNoFilter string    `json:"type_twoString_field_with_no_filter"`
+	TypeTwoNumberFieldWithNoFilter int       `json:"type_twoNumber_field_with_no_filter"`
+	TypeTwoTimeFieldWithNoFilter   time.Time `json:"type_twoTime_field_with_no_filter"`
+}
+
 // filter for TypeOne objects
 type NestedFilterTypeOne struct {
 	// logical operator for TypeOne that will combine two or more conditions, returning true if all of them are true.
