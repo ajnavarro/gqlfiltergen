@@ -123,7 +123,11 @@ func sholudProcess(cd ast.DirectiveList) bool {
 }
 
 func (f *Plugin) MutateConfig(cfg *config.Config) error {
-	return f.injectUserQueries(cfg.Schema)
+	if err := f.injectUserQueries(cfg); err != nil {
+		return err
+	}
+
+	return cfg.LoadSchema()
 }
 
 func (f *Plugin) GenerateCode(data *codegen.Data) error {
@@ -172,13 +176,17 @@ func preprocessRequestType(typ string, qs []string) string {
     `, typ, strings.Join(qs, "\n"))
 }
 
-func (f *Plugin) injectUserQueries(orig *ast.Schema) error {
+func (f *Plugin) injectUserQueries(cfg *config.Config) error {
+	orig := cfg.Schema
+
 	qs := preprocessRequestType(queryName, f.opts.Queries)
 	ss := preprocessRequestType(subscriptionName, f.opts.Subscriptions)
 
-	schema, err := parser.ParseSchema(&ast.Source{
+	source := &ast.Source{
 		Input: qs + "\n" + ss,
-	})
+	}
+
+	schema, err := parser.ParseSchema(source)
 	if err != nil {
 		return fmt.Errorf("error injecting user-defined queries: %w", err)
 	}
@@ -197,6 +205,19 @@ func (f *Plugin) injectUserQueries(orig *ast.Schema) error {
 				ost.Fields = append(ost.Fields, f)
 			}
 		}
+	}
+
+	var buf bytes.Buffer
+	form := formatter.NewFormatter(&buf, formatter.WithComments())
+	form.FormatSchema(orig)
+
+	// TODO: might be a better way to do it
+	// we need to overwrite sources to correctly generate resolvers for the queries and subscriptions that we injected
+	cfg.Sources = []*ast.Source{
+		{
+			Name:  "all",
+			Input: buf.String(),
+		},
 	}
 
 	return nil

@@ -516,82 +516,17 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema.graphql", Input: `
-scalar Time
-
-type TypeOne {
-  type_one_string_field_filtered: String! @filterable
-  type_one_string_field_filtered_not_mandatory: String @filterable
-  type_one_number_field_filtered: Int! @filterable
-  type_one_number_field_filtered_not_mandatory: Int @filterable
-  type_one_time_field_filtered: Time! @filterable
-  type_one_time_field_filtered_not_mandatory: Time @filterable
-  type_one_boolean_field_filtered: Boolean! @filterable
-  type_one_boolean_field_filtered_not_mandatory: Boolean @filterable
-
-  type_one_string_field_with_no_filter: String!
-  type_one_number_field_with_no_filter: Int!
-  type_one_time_field_with_no_filter: Time!
-
-  type_one_slice_with_type_twos: [TypeTwo]! @filterable
-}
-
-type TypeTwo {
-  type_two_string_field_filtered: String! @filterable
-  type_two_number_field_filtered: Int! @filterable
-  type_two_time_field_filtered: Time! @filterable
-  type_two_boolean_field_filtered: Boolean! @filterable
-
-  type_twoString_field_with_no_filter: String!
-  type_twoNumber_field_with_no_filter: Int!
-  type_twoTime_field_with_no_filter: Time!
-
-  type_two_slice_with_type_twos: [TypeTwo]! @filterable
-
-  type_two_with_type_three: TypeThree! @filterable
-  type_two_with_type_three_not_mandatory: TypeThree @filterable
-
-}
-
-type TypeThree {
-  type_three_string_field_filtered: String! @filterable
-  type_three_number_field_filtered: Int! @filterable
-  type_three_time_field_filtered: Time! @filterable
-  type_three_boolean_field_filtered: Boolean! @filterable
-
-  type_three_string_field_with_no_filter: String!
-  type_three_number_field_with_no_filter: Int!
-  type_three_time_field_with_no_filter: Time!
-}
-
+	{Name: "../../all", Input: `directive @filterable on FIELD_DEFINITION
 type ExternalType {
-  number_one: Int! @filterable
-  number_two: Int! @filterable
-  number_three: Int! @filterable
-  number_four: Int @filterable
-  number_five: Int @filterable
-  
-  number_list: [Int!] @filterable
-
-  type_one: TypeOne @filterable
+	number_one: Int! @filterable
+	number_two: Int! @filterable
+	number_three: Int! @filterable
+	number_four: Int @filterable
+	number_five: Int @filterable
+	number_list: [Int!] @filterable
+	type_one: TypeOne @filterable
 }
-
-input InputOne {
-  type_two_string_field_filtered: String!
-  type_two_number_field_filtered: Int! 
-  type_two_time_field_filtered: Time! 
-  type_two_boolean_field_filtered: Boolean!
-  type_twoString_field_with_no_filter: String!
-  type_twoNumber_field_with_no_filter: Int!
-  type_twoTime_field_with_no_filter: Time!
-}
-
-type Query {
-  testQuery(filter: String!): [Int!]
-  testQueryObject(filter: InputOne!): [TypeTwo!]
-}`, BuiltIn: false},
-	{Name: "../../filtergen.directives.graphql", Input: `directive @filterable on FIELD_DEFINITION`, BuiltIn: false},
-	{Name: "../../filtergen.graphql", Input: `"""
+"""
 Filter type for boolean fields. All added filters here are processed as AND operators.
 """
 input FilterBoolean {
@@ -855,6 +790,15 @@ input FilterTypeTwo {
 	"""
 	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
 }
+input InputOne {
+	type_two_string_field_filtered: String!
+	type_two_number_field_filtered: Int!
+	type_two_time_field_filtered: Time!
+	type_two_boolean_field_filtered: Boolean!
+	type_twoString_field_with_no_filter: String!
+	type_twoNumber_field_with_no_filter: Int!
+	type_twoTime_field_with_no_filter: Time!
+}
 """
 filter for TypeOne objects
 """
@@ -985,6 +929,47 @@ input NestedFilterTypeTwo {
 	filter for type_two_with_type_three_not_mandatory field.
 	"""
 	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
+}
+type Query {
+	testQuery(filter: String!): [Int!]
+	testQueryObject(filter: InputOne!): [TypeTwo!]
+	testFilter(filter: FilterTypeOne!): [TypeOne!]
+}
+scalar Time
+type TypeOne {
+	type_one_string_field_filtered: String! @filterable
+	type_one_string_field_filtered_not_mandatory: String @filterable
+	type_one_number_field_filtered: Int! @filterable
+	type_one_number_field_filtered_not_mandatory: Int @filterable
+	type_one_time_field_filtered: Time! @filterable
+	type_one_time_field_filtered_not_mandatory: Time @filterable
+	type_one_boolean_field_filtered: Boolean! @filterable
+	type_one_boolean_field_filtered_not_mandatory: Boolean @filterable
+	type_one_string_field_with_no_filter: String!
+	type_one_number_field_with_no_filter: Int!
+	type_one_time_field_with_no_filter: Time!
+	type_one_slice_with_type_twos: [TypeTwo]! @filterable
+}
+type TypeThree {
+	type_three_string_field_filtered: String! @filterable
+	type_three_number_field_filtered: Int! @filterable
+	type_three_time_field_filtered: Time! @filterable
+	type_three_boolean_field_filtered: Boolean! @filterable
+	type_three_string_field_with_no_filter: String!
+	type_three_number_field_with_no_filter: Int!
+	type_three_time_field_with_no_filter: Time!
+}
+type TypeTwo {
+	type_two_string_field_filtered: String! @filterable
+	type_two_number_field_filtered: Int! @filterable
+	type_two_time_field_filtered: Time! @filterable
+	type_two_boolean_field_filtered: Boolean! @filterable
+	type_twoString_field_with_no_filter: String!
+	type_twoNumber_field_with_no_filter: Int!
+	type_twoTime_field_with_no_filter: Time!
+	type_two_slice_with_type_twos: [TypeTwo]! @filterable
+	type_two_with_type_three: TypeThree! @filterable
+	type_two_with_type_three_not_mandatory: TypeThree @filterable
 }
 `, BuiltIn: false},
 }
