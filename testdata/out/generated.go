@@ -22,20 +22,20 @@ type FilterExternalType struct {
 	Or []*FilterExternalType `json:"_or,omitempty"`
 	// logical operator for ExternalType that will reverse conditions.
 	Not *FilterExternalType `json:"_not,omitempty"`
-	// filter for numberOne field.
-	NumberOne *FilterNumber `json:"numberOne,omitempty"`
-	// filter for numberTwo field.
-	NumberTwo *FilterNumber `json:"numberTwo,omitempty"`
-	// filter for numberThree field.
-	NumberThree *FilterNumber `json:"numberThree,omitempty"`
-	// filter for numberFour field.
-	NumberFour *FilterNumber `json:"numberFour,omitempty"`
-	// filter for numberFive field.
-	NumberFive *FilterNumber `json:"numberFive,omitempty"`
-	// filter for numberList field.
-	NumberList *FilterNumber `json:"numberList,omitempty"`
-	// filter for typeOne field.
-	TypeOne *NestedFilterTypeOne `json:"typeOne,omitempty"`
+	// filter for number_one field.
+	NumberOne *FilterNumber `json:"number_one,omitempty"`
+	// filter for number_two field.
+	NumberTwo *FilterNumber `json:"number_two,omitempty"`
+	// filter for number_three field.
+	NumberThree *FilterNumber `json:"number_three,omitempty"`
+	// filter for number_four field.
+	NumberFour *FilterNumber `json:"number_four,omitempty"`
+	// filter for number_five field.
+	NumberFive *FilterNumber `json:"number_five,omitempty"`
+	// filter for number_list field.
+	NumberList *FilterNumber `json:"number_list,omitempty"`
+	// filter for type_one field.
+	TypeOne *NestedFilterTypeOne `json:"type_one,omitempty"`
 }
 
 // Filter type for number fields. All added filters here are processed as AND operators.
@@ -88,24 +88,24 @@ type FilterTypeOne struct {
 	Or []*FilterTypeOne `json:"_or,omitempty"`
 	// logical operator for TypeOne that will reverse conditions.
 	Not *FilterTypeOne `json:"_not,omitempty"`
-	// filter for typeOneStringFieldFiltered field.
-	TypeOneStringFieldFiltered *FilterString `json:"typeOneStringFieldFiltered,omitempty"`
-	// filter for typeOneStringFieldFilteredNotMandatory field.
-	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"typeOneStringFieldFilteredNotMandatory,omitempty"`
-	// filter for typeOneNumberFieldFiltered field.
-	TypeOneNumberFieldFiltered *FilterNumber `json:"typeOneNumberFieldFiltered,omitempty"`
-	// filter for typeOneNumberFieldFilteredNotMandatory field.
-	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"typeOneNumberFieldFilteredNotMandatory,omitempty"`
-	// filter for typeOneTimeFieldFiltered field.
-	TypeOneTimeFieldFiltered *FilterTime `json:"typeOneTimeFieldFiltered,omitempty"`
-	// filter for typeOneTimeFieldFilteredNotMandatory field.
-	TypeOneTimeFieldFilteredNotMandatory *FilterTime `json:"typeOneTimeFieldFilteredNotMandatory,omitempty"`
-	// filter for typeOneBooleanFiltered field.
-	TypeOneBooleanFiltered *FilterBoolean `json:"typeOneBooleanFiltered,omitempty"`
-	// filter for typeOneBooleanFilteredNotMandatory field.
-	TypeOneBooleanFilteredNotMandatory *FilterBoolean `json:"typeOneBooleanFilteredNotMandatory,omitempty"`
-	// filter for typeOneSliceWithTypeTwos field.
-	TypeOneSliceWithTypeTwos *NestedFilterTypeTwo `json:"typeOneSliceWithTypeTwos,omitempty"`
+	// filter for type_one_string_field_filtered field.
+	TypeOneStringFieldFiltered *FilterString `json:"type_one_string_field_filtered,omitempty"`
+	// filter for type_one_string_field_filtered_not_mandatory field.
+	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_number_field_filtered field.
+	TypeOneNumberFieldFiltered *FilterNumber `json:"type_one_number_field_filtered,omitempty"`
+	// filter for type_one_number_field_filtered_not_mandatory field.
+	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_time_field_filtered field.
+	TypeOneTimeFieldFiltered *FilterTime `json:"type_one_time_field_filtered,omitempty"`
+	// filter for type_one_time_field_filtered_not_mandatory field.
+	TypeOneTimeFieldFilteredNotMandatory *FilterTime `json:"type_one_time_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_boolean_field_filtered field.
+	TypeOneBooleanFieldFiltered *FilterBoolean `json:"type_one_boolean_field_filtered,omitempty"`
+	// filter for type_one_boolean_field_filtered_not_mandatory field.
+	TypeOneBooleanFieldFilteredNotMandatory *FilterBoolean `json:"type_one_boolean_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_slice_with_type_twos field.
+	TypeOneSliceWithTypeTwos *NestedFilterTypeTwo `json:"type_one_slice_with_type_twos,omitempty"`
 }
 
 // filter for TypeThree objects
@@ -116,14 +116,14 @@ type FilterTypeThree struct {
 	Or []*FilterTypeThree `json:"_or,omitempty"`
 	// logical operator for TypeThree that will reverse conditions.
 	Not *FilterTypeThree `json:"_not,omitempty"`
-	// filter for typeThreeStringFieldFiltered field.
-	TypeThreeStringFieldFiltered *FilterString `json:"typeThreeStringFieldFiltered,omitempty"`
-	// filter for typeThreeNumberFieldFiltered field.
-	TypeThreeNumberFieldFiltered *FilterNumber `json:"typeThreeNumberFieldFiltered,omitempty"`
-	// filter for typeThreeTimeFieldFiltered field.
-	TypeThreeTimeFieldFiltered *FilterTime `json:"typeThreeTimeFieldFiltered,omitempty"`
-	// filter for typeThreeBooleanFiltered field.
-	TypeThreeBooleanFiltered *FilterBoolean `json:"typeThreeBooleanFiltered,omitempty"`
+	// filter for type_three_string_field_filtered field.
+	TypeThreeStringFieldFiltered *FilterString `json:"type_three_string_field_filtered,omitempty"`
+	// filter for type_three_number_field_filtered field.
+	TypeThreeNumberFieldFiltered *FilterNumber `json:"type_three_number_field_filtered,omitempty"`
+	// filter for type_three_time_field_filtered field.
+	TypeThreeTimeFieldFiltered *FilterTime `json:"type_three_time_field_filtered,omitempty"`
+	// filter for type_three_boolean_field_filtered field.
+	TypeThreeBooleanFieldFiltered *FilterBoolean `json:"type_three_boolean_field_filtered,omitempty"`
 }
 
 // filter for TypeTwo objects
@@ -134,20 +134,20 @@ type FilterTypeTwo struct {
 	Or []*FilterTypeTwo `json:"_or,omitempty"`
 	// logical operator for TypeTwo that will reverse conditions.
 	Not *FilterTypeTwo `json:"_not,omitempty"`
-	// filter for typeTwoStringFieldFiltered field.
-	TypeTwoStringFieldFiltered *FilterString `json:"typeTwoStringFieldFiltered,omitempty"`
-	// filter for typeTwoNumberFieldFiltered field.
-	TypeTwoNumberFieldFiltered *FilterNumber `json:"typeTwoNumberFieldFiltered,omitempty"`
-	// filter for typeTwoTimeFieldFiltered field.
-	TypeTwoTimeFieldFiltered *FilterTime `json:"typeTwoTimeFieldFiltered,omitempty"`
-	// filter for typeTwoBooleanFiltered field.
-	TypeTwoBooleanFiltered *FilterBoolean `json:"typeTwoBooleanFiltered,omitempty"`
-	// filter for typeTwoSliceWithTypeTwos field.
-	TypeTwoSliceWithTypeTwos *NestedFilterTypeTwo `json:"typeTwoSliceWithTypeTwos,omitempty"`
-	// filter for typeTwoWithTypeThree field.
-	TypeTwoWithTypeThree *NestedFilterTypeThree `json:"typeTwoWithTypeThree,omitempty"`
-	// filter for typeTwoWithTypeThreeNotMandatory field.
-	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"typeTwoWithTypeThreeNotMandatory,omitempty"`
+	// filter for type_two_string_field_filtered field.
+	TypeTwoStringFieldFiltered *FilterString `json:"type_two_string_field_filtered,omitempty"`
+	// filter for type_two_number_field_filtered field.
+	TypeTwoNumberFieldFiltered *FilterNumber `json:"type_two_number_field_filtered,omitempty"`
+	// filter for type_two_time_field_filtered field.
+	TypeTwoTimeFieldFiltered *FilterTime `json:"type_two_time_field_filtered,omitempty"`
+	// filter for type_two_boolean_field_filtered field.
+	TypeTwoBooleanFieldFiltered *FilterBoolean `json:"type_two_boolean_field_filtered,omitempty"`
+	// filter for type_two_slice_with_type_twos field.
+	TypeTwoSliceWithTypeTwos *NestedFilterTypeTwo `json:"type_two_slice_with_type_twos,omitempty"`
+	// filter for type_two_with_type_three field.
+	TypeTwoWithTypeThree *NestedFilterTypeThree `json:"type_two_with_type_three,omitempty"`
+	// filter for type_two_with_type_three_not_mandatory field.
+	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }
 
 // filter for TypeOne objects
@@ -158,24 +158,24 @@ type NestedFilterTypeOne struct {
 	Or []*NestedFilterTypeOne `json:"_or,omitempty"`
 	// logical operator for TypeOne that will reverse conditions.
 	Not *NestedFilterTypeOne `json:"_not,omitempty"`
-	// filter for typeOneStringFieldFiltered field.
-	TypeOneStringFieldFiltered *FilterString `json:"typeOneStringFieldFiltered,omitempty"`
-	// filter for typeOneStringFieldFilteredNotMandatory field.
-	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"typeOneStringFieldFilteredNotMandatory,omitempty"`
-	// filter for typeOneNumberFieldFiltered field.
-	TypeOneNumberFieldFiltered *FilterNumber `json:"typeOneNumberFieldFiltered,omitempty"`
-	// filter for typeOneNumberFieldFilteredNotMandatory field.
-	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"typeOneNumberFieldFilteredNotMandatory,omitempty"`
-	// filter for typeOneTimeFieldFiltered field.
-	TypeOneTimeFieldFiltered *FilterTime `json:"typeOneTimeFieldFiltered,omitempty"`
-	// filter for typeOneTimeFieldFilteredNotMandatory field.
-	TypeOneTimeFieldFilteredNotMandatory *FilterTime `json:"typeOneTimeFieldFilteredNotMandatory,omitempty"`
-	// filter for typeOneBooleanFiltered field.
-	TypeOneBooleanFiltered *FilterBoolean `json:"typeOneBooleanFiltered,omitempty"`
-	// filter for typeOneBooleanFilteredNotMandatory field.
-	TypeOneBooleanFilteredNotMandatory *FilterBoolean `json:"typeOneBooleanFilteredNotMandatory,omitempty"`
-	// filter for typeOneSliceWithTypeTwos field.
-	TypeOneSliceWithTypeTwos *NestedFilterTypeTwo `json:"typeOneSliceWithTypeTwos,omitempty"`
+	// filter for type_one_string_field_filtered field.
+	TypeOneStringFieldFiltered *FilterString `json:"type_one_string_field_filtered,omitempty"`
+	// filter for type_one_string_field_filtered_not_mandatory field.
+	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_number_field_filtered field.
+	TypeOneNumberFieldFiltered *FilterNumber `json:"type_one_number_field_filtered,omitempty"`
+	// filter for type_one_number_field_filtered_not_mandatory field.
+	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_time_field_filtered field.
+	TypeOneTimeFieldFiltered *FilterTime `json:"type_one_time_field_filtered,omitempty"`
+	// filter for type_one_time_field_filtered_not_mandatory field.
+	TypeOneTimeFieldFilteredNotMandatory *FilterTime `json:"type_one_time_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_boolean_field_filtered field.
+	TypeOneBooleanFieldFiltered *FilterBoolean `json:"type_one_boolean_field_filtered,omitempty"`
+	// filter for type_one_boolean_field_filtered_not_mandatory field.
+	TypeOneBooleanFieldFilteredNotMandatory *FilterBoolean `json:"type_one_boolean_field_filtered_not_mandatory,omitempty"`
+	// filter for type_one_slice_with_type_twos field.
+	TypeOneSliceWithTypeTwos *NestedFilterTypeTwo `json:"type_one_slice_with_type_twos,omitempty"`
 }
 
 // filter for TypeThree objects
@@ -186,14 +186,14 @@ type NestedFilterTypeThree struct {
 	Or []*NestedFilterTypeThree `json:"_or,omitempty"`
 	// logical operator for TypeThree that will reverse conditions.
 	Not *NestedFilterTypeThree `json:"_not,omitempty"`
-	// filter for typeThreeStringFieldFiltered field.
-	TypeThreeStringFieldFiltered *FilterString `json:"typeThreeStringFieldFiltered,omitempty"`
-	// filter for typeThreeNumberFieldFiltered field.
-	TypeThreeNumberFieldFiltered *FilterNumber `json:"typeThreeNumberFieldFiltered,omitempty"`
-	// filter for typeThreeTimeFieldFiltered field.
-	TypeThreeTimeFieldFiltered *FilterTime `json:"typeThreeTimeFieldFiltered,omitempty"`
-	// filter for typeThreeBooleanFiltered field.
-	TypeThreeBooleanFiltered *FilterBoolean `json:"typeThreeBooleanFiltered,omitempty"`
+	// filter for type_three_string_field_filtered field.
+	TypeThreeStringFieldFiltered *FilterString `json:"type_three_string_field_filtered,omitempty"`
+	// filter for type_three_number_field_filtered field.
+	TypeThreeNumberFieldFiltered *FilterNumber `json:"type_three_number_field_filtered,omitempty"`
+	// filter for type_three_time_field_filtered field.
+	TypeThreeTimeFieldFiltered *FilterTime `json:"type_three_time_field_filtered,omitempty"`
+	// filter for type_three_boolean_field_filtered field.
+	TypeThreeBooleanFieldFiltered *FilterBoolean `json:"type_three_boolean_field_filtered,omitempty"`
 }
 
 // filter for TypeTwo objects
@@ -204,59 +204,59 @@ type NestedFilterTypeTwo struct {
 	Or []*NestedFilterTypeTwo `json:"_or,omitempty"`
 	// logical operator for TypeTwo that will reverse conditions.
 	Not *NestedFilterTypeTwo `json:"_not,omitempty"`
-	// filter for typeTwoStringFieldFiltered field.
-	TypeTwoStringFieldFiltered *FilterString `json:"typeTwoStringFieldFiltered,omitempty"`
-	// filter for typeTwoNumberFieldFiltered field.
-	TypeTwoNumberFieldFiltered *FilterNumber `json:"typeTwoNumberFieldFiltered,omitempty"`
-	// filter for typeTwoTimeFieldFiltered field.
-	TypeTwoTimeFieldFiltered *FilterTime `json:"typeTwoTimeFieldFiltered,omitempty"`
-	// filter for typeTwoBooleanFiltered field.
-	TypeTwoBooleanFiltered *FilterBoolean `json:"typeTwoBooleanFiltered,omitempty"`
-	// filter for typeTwoSliceWithTypeTwos field.
-	TypeTwoSliceWithTypeTwos *NestedFilterTypeTwo `json:"typeTwoSliceWithTypeTwos,omitempty"`
-	// filter for typeTwoWithTypeThree field.
-	TypeTwoWithTypeThree *NestedFilterTypeThree `json:"typeTwoWithTypeThree,omitempty"`
-	// filter for typeTwoWithTypeThreeNotMandatory field.
-	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"typeTwoWithTypeThreeNotMandatory,omitempty"`
+	// filter for type_two_string_field_filtered field.
+	TypeTwoStringFieldFiltered *FilterString `json:"type_two_string_field_filtered,omitempty"`
+	// filter for type_two_number_field_filtered field.
+	TypeTwoNumberFieldFiltered *FilterNumber `json:"type_two_number_field_filtered,omitempty"`
+	// filter for type_two_time_field_filtered field.
+	TypeTwoTimeFieldFiltered *FilterTime `json:"type_two_time_field_filtered,omitempty"`
+	// filter for type_two_boolean_field_filtered field.
+	TypeTwoBooleanFieldFiltered *FilterBoolean `json:"type_two_boolean_field_filtered,omitempty"`
+	// filter for type_two_slice_with_type_twos field.
+	TypeTwoSliceWithTypeTwos *NestedFilterTypeTwo `json:"type_two_slice_with_type_twos,omitempty"`
+	// filter for type_two_with_type_three field.
+	TypeTwoWithTypeThree *NestedFilterTypeThree `json:"type_two_with_type_three,omitempty"`
+	// filter for type_two_with_type_three_not_mandatory field.
+	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }
 
 type Query struct {
 }
 
 type TypeOne struct {
-	TypeOneStringFieldFiltered             string     `json:"typeOneStringFieldFiltered"`
-	TypeOneStringFieldFilteredNotMandatory *string    `json:"typeOneStringFieldFilteredNotMandatory,omitempty"`
-	TypeOneNumberFieldFiltered             int        `json:"typeOneNumberFieldFiltered"`
-	TypeOneNumberFieldFilteredNotMandatory *int       `json:"typeOneNumberFieldFilteredNotMandatory,omitempty"`
-	TypeOneTimeFieldFiltered               time.Time  `json:"typeOneTimeFieldFiltered"`
-	TypeOneTimeFieldFilteredNotMandatory   *time.Time `json:"typeOneTimeFieldFilteredNotMandatory,omitempty"`
-	TypeOneBooleanFiltered                 bool       `json:"typeOneBooleanFiltered"`
-	TypeOneBooleanFilteredNotMandatory     *bool      `json:"typeOneBooleanFilteredNotMandatory,omitempty"`
-	TypeOneStringFieldWithNoFilter         string     `json:"typeOneStringFieldWithNoFilter"`
-	TypeOneNumberFieldWithNoFilter         int        `json:"typeOneNumberFieldWithNoFilter"`
-	TypeOneTimeFieldWithNoFilter           time.Time  `json:"typeOneTimeFieldWithNoFilter"`
-	TypeOneSliceWithTypeTwos               []*TypeTwo `json:"typeOneSliceWithTypeTwos"`
+	TypeOneStringFieldFiltered              string     `json:"type_one_string_field_filtered"`
+	TypeOneStringFieldFilteredNotMandatory  *string    `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
+	TypeOneNumberFieldFiltered              int        `json:"type_one_number_field_filtered"`
+	TypeOneNumberFieldFilteredNotMandatory  *int       `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
+	TypeOneTimeFieldFiltered                time.Time  `json:"type_one_time_field_filtered"`
+	TypeOneTimeFieldFilteredNotMandatory    *time.Time `json:"type_one_time_field_filtered_not_mandatory,omitempty"`
+	TypeOneBooleanFieldFiltered             bool       `json:"type_one_boolean_field_filtered"`
+	TypeOneBooleanFieldFilteredNotMandatory *bool      `json:"type_one_boolean_field_filtered_not_mandatory,omitempty"`
+	TypeOneStringFieldWithNoFilter          string     `json:"type_one_string_field_with_no_filter"`
+	TypeOneNumberFieldWithNoFilter          int        `json:"type_one_number_field_with_no_filter"`
+	TypeOneTimeFieldWithNoFilter            time.Time  `json:"type_one_time_field_with_no_filter"`
+	TypeOneSliceWithTypeTwos                []*TypeTwo `json:"type_one_slice_with_type_twos"`
 }
 
 type TypeThree struct {
-	TypeThreeStringFieldFiltered     string    `json:"typeThreeStringFieldFiltered"`
-	TypeThreeNumberFieldFiltered     int       `json:"typeThreeNumberFieldFiltered"`
-	TypeThreeTimeFieldFiltered       time.Time `json:"typeThreeTimeFieldFiltered"`
-	TypeThreeBooleanFiltered         bool      `json:"typeThreeBooleanFiltered"`
-	TypeThreeStringFieldWithNoFilter string    `json:"typeThreeStringFieldWithNoFilter"`
-	TypeThreeNumberFieldWithNoFilter int       `json:"typeThreeNumberFieldWithNoFilter"`
-	TypeThreeTimeFieldWithNoFilter   time.Time `json:"typeThreeTimeFieldWithNoFilter"`
+	TypeThreeStringFieldFiltered     string    `json:"type_three_string_field_filtered"`
+	TypeThreeNumberFieldFiltered     int       `json:"type_three_number_field_filtered"`
+	TypeThreeTimeFieldFiltered       time.Time `json:"type_three_time_field_filtered"`
+	TypeThreeBooleanFieldFiltered    bool      `json:"type_three_boolean_field_filtered"`
+	TypeThreeStringFieldWithNoFilter string    `json:"type_three_string_field_with_no_filter"`
+	TypeThreeNumberFieldWithNoFilter int       `json:"type_three_number_field_with_no_filter"`
+	TypeThreeTimeFieldWithNoFilter   time.Time `json:"type_three_time_field_with_no_filter"`
 }
 
 type TypeTwo struct {
-	TypeTwoStringFieldFiltered       string     `json:"typeTwoStringFieldFiltered"`
-	TypeTwoNumberFieldFiltered       int        `json:"typeTwoNumberFieldFiltered"`
-	TypeTwoTimeFieldFiltered         time.Time  `json:"typeTwoTimeFieldFiltered"`
-	TypeTwoBooleanFiltered           bool       `json:"typeTwoBooleanFiltered"`
-	TypeTwoStringFieldWithNoFilter   string     `json:"typeTwoStringFieldWithNoFilter"`
-	TypeTwoNumberFieldWithNoFilter   int        `json:"typeTwoNumberFieldWithNoFilter"`
-	TypeTwoTimeFieldWithNoFilter     time.Time  `json:"typeTwoTimeFieldWithNoFilter"`
-	TypeTwoSliceWithTypeTwos         []*TypeTwo `json:"typeTwoSliceWithTypeTwos"`
-	TypeTwoWithTypeThree             *TypeThree `json:"typeTwoWithTypeThree"`
-	TypeTwoWithTypeThreeNotMandatory *TypeThree `json:"typeTwoWithTypeThreeNotMandatory,omitempty"`
+	TypeTwoStringFieldFiltered       string     `json:"type_two_string_field_filtered"`
+	TypeTwoNumberFieldFiltered       int        `json:"type_two_number_field_filtered"`
+	TypeTwoTimeFieldFiltered         time.Time  `json:"type_two_time_field_filtered"`
+	TypeTwoBooleanFieldFiltered      bool       `json:"type_two_boolean_field_filtered"`
+	TypeTwoStringFieldWithNoFilter   string     `json:"type_twoString_field_with_no_filter"`
+	TypeTwoNumberFieldWithNoFilter   int        `json:"type_twoNumber_field_with_no_filter"`
+	TypeTwoTimeFieldWithNoFilter     time.Time  `json:"type_twoTime_field_with_no_filter"`
+	TypeTwoSliceWithTypeTwos         []*TypeTwo `json:"type_two_slice_with_type_twos"`
+	TypeTwoWithTypeThree             *TypeThree `json:"type_two_with_type_three"`
+	TypeTwoWithTypeThreeNotMandatory *TypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }

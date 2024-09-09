@@ -73,7 +73,7 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 		objDef.Fields = append(objDef.Fields, fd)
 
 		tf := &FieldMapping{
-			FilterField:        f.Name,
+			Field:              f.Name,
 			TypeName:           fd.Type.Name(),
 			IsSlice:            isSlice,
 			IsNested:           isNested,

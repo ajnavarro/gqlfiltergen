@@ -4,7 +4,6 @@ import (
 	"bytes"
 	_ "embed"
 	"path"
-	"strings"
 
 	"github.com/99designs/gqlgen/codegen"
 	"github.com/99designs/gqlgen/codegen/templates"
@@ -116,7 +115,7 @@ func (f *Plugin) GenerateCode(data *codegen.Data) error {
 
 		for _, f := range t.Fields {
 			for _, of := range dataObj.Fields {
-				if strings.ToLower(f.FilterField) == strings.ToLower(of.GoFieldName) {
+				if f.Field == of.FieldDefinition.Name {
 					f.FilterField = of.GoFieldName
 					f.IsMethod = of.IsMethod()
 				}

@@ -8,7 +8,8 @@ const (
 
 // FieldMapping defines field mapping struct to pass data to the template
 type FieldMapping struct {
-	FilterField        string // Name of the filter field in FilterTypeOne
+	FilterField        string // Name of the field from the struct
+	Field              string // Name of the field from the schema
 	TypeName           string // Type name
 	IsPointer          bool   // Set if the field will be a pointer or not
 	IsSlice            bool   // Whether the field is a slice or not

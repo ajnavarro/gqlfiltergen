@@ -2,58 +2,58 @@
 scalar Time
 
 type TypeOne {
-  typeOneStringFieldFiltered: String! @filterable
-  typeOneStringFieldFilteredNotMandatory: String @filterable
-  typeOneNumberFieldFiltered: Int! @filterable
-  typeOneNumberFieldFilteredNotMandatory: Int @filterable
-  typeOneTimeFieldFiltered: Time! @filterable
-  typeOneTimeFieldFilteredNotMandatory: Time @filterable
-  typeOneBooleanFiltered: Boolean! @filterable
-  typeOneBooleanFilteredNotMandatory: Boolean @filterable
+  type_one_string_field_filtered: String! @filterable
+  type_one_string_field_filtered_not_mandatory: String @filterable
+  type_one_number_field_filtered: Int! @filterable
+  type_one_number_field_filtered_not_mandatory: Int @filterable
+  type_one_time_field_filtered: Time! @filterable
+  type_one_time_field_filtered_not_mandatory: Time @filterable
+  type_one_boolean_field_filtered: Boolean! @filterable
+  type_one_boolean_field_filtered_not_mandatory: Boolean @filterable
 
-  typeOneStringFieldWithNoFilter: String!
-  typeOneNumberFieldWithNoFilter: Int!
-  typeOneTimeFieldWithNoFilter: Time!
+  type_one_string_field_with_no_filter: String!
+  type_one_number_field_with_no_filter: Int!
+  type_one_time_field_with_no_filter: Time!
 
-  typeOneSliceWithTypeTwos: [TypeTwo]! @filterable
+  type_one_slice_with_type_twos: [TypeTwo]! @filterable
 }
 
 type TypeTwo {
-  typeTwoStringFieldFiltered: String! @filterable
-  typeTwoNumberFieldFiltered: Int! @filterable
-  typeTwoTimeFieldFiltered: Time! @filterable
-  typeTwoBooleanFiltered: Boolean! @filterable
+  type_two_string_field_filtered: String! @filterable
+  type_two_number_field_filtered: Int! @filterable
+  type_two_time_field_filtered: Time! @filterable
+  type_two_boolean_field_filtered: Boolean! @filterable
 
-  typeTwoStringFieldWithNoFilter: String!
-  typeTwoNumberFieldWithNoFilter: Int!
-  typeTwoTimeFieldWithNoFilter: Time!
+  type_twoString_field_with_no_filter: String!
+  type_twoNumber_field_with_no_filter: Int!
+  type_twoTime_field_with_no_filter: Time!
 
-  typeTwoSliceWithTypeTwos: [TypeTwo]! @filterable
+  type_two_slice_with_type_twos: [TypeTwo]! @filterable
 
-  typeTwoWithTypeThree: TypeThree! @filterable
-  typeTwoWithTypeThreeNotMandatory: TypeThree @filterable
+  type_two_with_type_three: TypeThree! @filterable
+  type_two_with_type_three_not_mandatory: TypeThree @filterable
 
 }
 
 type TypeThree {
-  typeThreeStringFieldFiltered: String! @filterable
-  typeThreeNumberFieldFiltered: Int! @filterable
-  typeThreeTimeFieldFiltered: Time! @filterable
-  typeThreeBooleanFiltered: Boolean! @filterable
+  type_three_string_field_filtered: String! @filterable
+  type_three_number_field_filtered: Int! @filterable
+  type_three_time_field_filtered: Time! @filterable
+  type_three_boolean_field_filtered: Boolean! @filterable
 
-  typeThreeStringFieldWithNoFilter: String!
-  typeThreeNumberFieldWithNoFilter: Int!
-  typeThreeTimeFieldWithNoFilter: Time!
+  type_three_string_field_with_no_filter: String!
+  type_three_number_field_with_no_filter: Int!
+  type_three_time_field_with_no_filter: Time!
 }
 
 type ExternalType {
-  numberOne: Int! @filterable
-  numberTwo: Int! @filterable
-  numberThree: Int! @filterable
-  numberFour: Int @filterable
-  numberFive: Int @filterable
+  number_one: Int! @filterable
+  number_two: Int! @filterable
+  number_three: Int! @filterable
+  number_four: Int @filterable
+  number_five: Int @filterable
   
-  numberList: [Int!] @filterable
+  number_list: [Int!] @filterable
 
-  typeOne: TypeOne @filterable
+  type_one: TypeOne @filterable
 }

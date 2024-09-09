@@ -98,35 +98,35 @@ type ComplexityRoot struct {
 	}
 
 	FilterTypeOne struct {
-		And                                    func(childComplexity int) int
-		Not                                    func(childComplexity int) int
-		Or                                     func(childComplexity int) int
-		TypeOneBooleanFiltered                 func(childComplexity int) int
-		TypeOneBooleanFilteredNotMandatory     func(childComplexity int) int
-		TypeOneNumberFieldFiltered             func(childComplexity int) int
-		TypeOneNumberFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneSliceWithTypeTwos               func(childComplexity int) int
-		TypeOneStringFieldFiltered             func(childComplexity int) int
-		TypeOneStringFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneTimeFieldFiltered               func(childComplexity int) int
-		TypeOneTimeFieldFilteredNotMandatory   func(childComplexity int) int
+		And                                     func(childComplexity int) int
+		Not                                     func(childComplexity int) int
+		Or                                      func(childComplexity int) int
+		TypeOneBooleanFieldFiltered             func(childComplexity int) int
+		TypeOneBooleanFieldFilteredNotMandatory func(childComplexity int) int
+		TypeOneNumberFieldFiltered              func(childComplexity int) int
+		TypeOneNumberFieldFilteredNotMandatory  func(childComplexity int) int
+		TypeOneSliceWithTypeTwos                func(childComplexity int) int
+		TypeOneStringFieldFiltered              func(childComplexity int) int
+		TypeOneStringFieldFilteredNotMandatory  func(childComplexity int) int
+		TypeOneTimeFieldFiltered                func(childComplexity int) int
+		TypeOneTimeFieldFilteredNotMandatory    func(childComplexity int) int
 	}
 
 	FilterTypeThree struct {
-		And                          func(childComplexity int) int
-		Not                          func(childComplexity int) int
-		Or                           func(childComplexity int) int
-		TypeThreeBooleanFiltered     func(childComplexity int) int
-		TypeThreeNumberFieldFiltered func(childComplexity int) int
-		TypeThreeStringFieldFiltered func(childComplexity int) int
-		TypeThreeTimeFieldFiltered   func(childComplexity int) int
+		And                           func(childComplexity int) int
+		Not                           func(childComplexity int) int
+		Or                            func(childComplexity int) int
+		TypeThreeBooleanFieldFiltered func(childComplexity int) int
+		TypeThreeNumberFieldFiltered  func(childComplexity int) int
+		TypeThreeStringFieldFiltered  func(childComplexity int) int
+		TypeThreeTimeFieldFiltered    func(childComplexity int) int
 	}
 
 	FilterTypeTwo struct {
 		And                              func(childComplexity int) int
 		Not                              func(childComplexity int) int
 		Or                               func(childComplexity int) int
-		TypeTwoBooleanFiltered           func(childComplexity int) int
+		TypeTwoBooleanFieldFiltered      func(childComplexity int) int
 		TypeTwoNumberFieldFiltered       func(childComplexity int) int
 		TypeTwoSliceWithTypeTwos         func(childComplexity int) int
 		TypeTwoStringFieldFiltered       func(childComplexity int) int
@@ -136,35 +136,35 @@ type ComplexityRoot struct {
 	}
 
 	NestedFilterTypeOne struct {
-		And                                    func(childComplexity int) int
-		Not                                    func(childComplexity int) int
-		Or                                     func(childComplexity int) int
-		TypeOneBooleanFiltered                 func(childComplexity int) int
-		TypeOneBooleanFilteredNotMandatory     func(childComplexity int) int
-		TypeOneNumberFieldFiltered             func(childComplexity int) int
-		TypeOneNumberFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneSliceWithTypeTwos               func(childComplexity int) int
-		TypeOneStringFieldFiltered             func(childComplexity int) int
-		TypeOneStringFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneTimeFieldFiltered               func(childComplexity int) int
-		TypeOneTimeFieldFilteredNotMandatory   func(childComplexity int) int
+		And                                     func(childComplexity int) int
+		Not                                     func(childComplexity int) int
+		Or                                      func(childComplexity int) int
+		TypeOneBooleanFieldFiltered             func(childComplexity int) int
+		TypeOneBooleanFieldFilteredNotMandatory func(childComplexity int) int
+		TypeOneNumberFieldFiltered              func(childComplexity int) int
+		TypeOneNumberFieldFilteredNotMandatory  func(childComplexity int) int
+		TypeOneSliceWithTypeTwos                func(childComplexity int) int
+		TypeOneStringFieldFiltered              func(childComplexity int) int
+		TypeOneStringFieldFilteredNotMandatory  func(childComplexity int) int
+		TypeOneTimeFieldFiltered                func(childComplexity int) int
+		TypeOneTimeFieldFilteredNotMandatory    func(childComplexity int) int
 	}
 
 	NestedFilterTypeThree struct {
-		And                          func(childComplexity int) int
-		Not                          func(childComplexity int) int
-		Or                           func(childComplexity int) int
-		TypeThreeBooleanFiltered     func(childComplexity int) int
-		TypeThreeNumberFieldFiltered func(childComplexity int) int
-		TypeThreeStringFieldFiltered func(childComplexity int) int
-		TypeThreeTimeFieldFiltered   func(childComplexity int) int
+		And                           func(childComplexity int) int
+		Not                           func(childComplexity int) int
+		Or                            func(childComplexity int) int
+		TypeThreeBooleanFieldFiltered func(childComplexity int) int
+		TypeThreeNumberFieldFiltered  func(childComplexity int) int
+		TypeThreeStringFieldFiltered  func(childComplexity int) int
+		TypeThreeTimeFieldFiltered    func(childComplexity int) int
 	}
 
 	NestedFilterTypeTwo struct {
 		And                              func(childComplexity int) int
 		Not                              func(childComplexity int) int
 		Or                               func(childComplexity int) int
-		TypeTwoBooleanFiltered           func(childComplexity int) int
+		TypeTwoBooleanFieldFiltered      func(childComplexity int) int
 		TypeTwoNumberFieldFiltered       func(childComplexity int) int
 		TypeTwoSliceWithTypeTwos         func(childComplexity int) int
 		TypeTwoStringFieldFiltered       func(childComplexity int) int
@@ -177,22 +177,22 @@ type ComplexityRoot struct {
 	}
 
 	TypeOne struct {
-		TypeOneBooleanFiltered                 func(childComplexity int) int
-		TypeOneBooleanFilteredNotMandatory     func(childComplexity int) int
-		TypeOneNumberFieldFiltered             func(childComplexity int) int
-		TypeOneNumberFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneNumberFieldWithNoFilter         func(childComplexity int) int
-		TypeOneSliceWithTypeTwos               func(childComplexity int) int
-		TypeOneStringFieldFiltered             func(childComplexity int) int
-		TypeOneStringFieldFilteredNotMandatory func(childComplexity int) int
-		TypeOneStringFieldWithNoFilter         func(childComplexity int) int
-		TypeOneTimeFieldFiltered               func(childComplexity int) int
-		TypeOneTimeFieldFilteredNotMandatory   func(childComplexity int) int
-		TypeOneTimeFieldWithNoFilter           func(childComplexity int) int
+		TypeOneBooleanFieldFiltered             func(childComplexity int) int
+		TypeOneBooleanFieldFilteredNotMandatory func(childComplexity int) int
+		TypeOneNumberFieldFiltered              func(childComplexity int) int
+		TypeOneNumberFieldFilteredNotMandatory  func(childComplexity int) int
+		TypeOneNumberFieldWithNoFilter          func(childComplexity int) int
+		TypeOneSliceWithTypeTwos                func(childComplexity int) int
+		TypeOneStringFieldFiltered              func(childComplexity int) int
+		TypeOneStringFieldFilteredNotMandatory  func(childComplexity int) int
+		TypeOneStringFieldWithNoFilter          func(childComplexity int) int
+		TypeOneTimeFieldFiltered                func(childComplexity int) int
+		TypeOneTimeFieldFilteredNotMandatory    func(childComplexity int) int
+		TypeOneTimeFieldWithNoFilter            func(childComplexity int) int
 	}
 
 	TypeThree struct {
-		TypeThreeBooleanFiltered         func(childComplexity int) int
+		TypeThreeBooleanFieldFiltered    func(childComplexity int) int
 		TypeThreeNumberFieldFiltered     func(childComplexity int) int
 		TypeThreeNumberFieldWithNoFilter func(childComplexity int) int
 		TypeThreeStringFieldFiltered     func(childComplexity int) int
@@ -202,7 +202,7 @@ type ComplexityRoot struct {
 	}
 
 	TypeTwo struct {
-		TypeTwoBooleanFiltered           func(childComplexity int) int
+		TypeTwoBooleanFieldFiltered      func(childComplexity int) int
 		TypeTwoNumberFieldFiltered       func(childComplexity int) int
 		TypeTwoNumberFieldWithNoFilter   func(childComplexity int) int
 		TypeTwoSliceWithTypeTwos         func(childComplexity int) int
@@ -234,49 +234,49 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "ExternalType.numberFive":
+	case "ExternalType.number_five":
 		if e.complexity.ExternalType.NumberFive == nil {
 			break
 		}
 
 		return e.complexity.ExternalType.NumberFive(childComplexity), true
 
-	case "ExternalType.numberFour":
+	case "ExternalType.number_four":
 		if e.complexity.ExternalType.NumberFour == nil {
 			break
 		}
 
 		return e.complexity.ExternalType.NumberFour(childComplexity), true
 
-	case "ExternalType.numberList":
+	case "ExternalType.number_list":
 		if e.complexity.ExternalType.NumberList == nil {
 			break
 		}
 
 		return e.complexity.ExternalType.NumberList(childComplexity), true
 
-	case "ExternalType.numberOne":
+	case "ExternalType.number_one":
 		if e.complexity.ExternalType.NumberOne == nil {
 			break
 		}
 
 		return e.complexity.ExternalType.NumberOne(childComplexity), true
 
-	case "ExternalType.numberThree":
+	case "ExternalType.number_three":
 		if e.complexity.ExternalType.NumberThree == nil {
 			break
 		}
 
 		return e.complexity.ExternalType.NumberThree(childComplexity), true
 
-	case "ExternalType.numberTwo":
+	case "ExternalType.number_two":
 		if e.complexity.ExternalType.NumberTwo == nil {
 			break
 		}
 
 		return e.complexity.ExternalType.NumberTwo(childComplexity), true
 
-	case "ExternalType.typeOne":
+	case "ExternalType.type_one":
 		if e.complexity.ExternalType.TypeOne == nil {
 			break
 		}
@@ -311,42 +311,42 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FilterExternalType.Not(childComplexity), true
 
-	case "FilterExternalType.numberFive":
+	case "FilterExternalType.number_five":
 		if e.complexity.FilterExternalType.NumberFive == nil {
 			break
 		}
 
 		return e.complexity.FilterExternalType.NumberFive(childComplexity), true
 
-	case "FilterExternalType.numberFour":
+	case "FilterExternalType.number_four":
 		if e.complexity.FilterExternalType.NumberFour == nil {
 			break
 		}
 
 		return e.complexity.FilterExternalType.NumberFour(childComplexity), true
 
-	case "FilterExternalType.numberList":
+	case "FilterExternalType.number_list":
 		if e.complexity.FilterExternalType.NumberList == nil {
 			break
 		}
 
 		return e.complexity.FilterExternalType.NumberList(childComplexity), true
 
-	case "FilterExternalType.numberOne":
+	case "FilterExternalType.number_one":
 		if e.complexity.FilterExternalType.NumberOne == nil {
 			break
 		}
 
 		return e.complexity.FilterExternalType.NumberOne(childComplexity), true
 
-	case "FilterExternalType.numberThree":
+	case "FilterExternalType.number_three":
 		if e.complexity.FilterExternalType.NumberThree == nil {
 			break
 		}
 
 		return e.complexity.FilterExternalType.NumberThree(childComplexity), true
 
-	case "FilterExternalType.numberTwo":
+	case "FilterExternalType.number_two":
 		if e.complexity.FilterExternalType.NumberTwo == nil {
 			break
 		}
@@ -360,7 +360,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FilterExternalType.Or(childComplexity), true
 
-	case "FilterExternalType.typeOne":
+	case "FilterExternalType.type_one":
 		if e.complexity.FilterExternalType.TypeOne == nil {
 			break
 		}
@@ -493,63 +493,63 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FilterTypeOne.Or(childComplexity), true
 
-	case "FilterTypeOne.typeOneBooleanFiltered":
-		if e.complexity.FilterTypeOne.TypeOneBooleanFiltered == nil {
+	case "FilterTypeOne.type_one_boolean_field_filtered":
+		if e.complexity.FilterTypeOne.TypeOneBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.FilterTypeOne.TypeOneBooleanFiltered(childComplexity), true
+		return e.complexity.FilterTypeOne.TypeOneBooleanFieldFiltered(childComplexity), true
 
-	case "FilterTypeOne.typeOneBooleanFilteredNotMandatory":
-		if e.complexity.FilterTypeOne.TypeOneBooleanFilteredNotMandatory == nil {
+	case "FilterTypeOne.type_one_boolean_field_filtered_not_mandatory":
+		if e.complexity.FilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory == nil {
 			break
 		}
 
-		return e.complexity.FilterTypeOne.TypeOneBooleanFilteredNotMandatory(childComplexity), true
+		return e.complexity.FilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory(childComplexity), true
 
-	case "FilterTypeOne.typeOneNumberFieldFiltered":
+	case "FilterTypeOne.type_one_number_field_filtered":
 		if e.complexity.FilterTypeOne.TypeOneNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeOne.TypeOneNumberFieldFiltered(childComplexity), true
 
-	case "FilterTypeOne.typeOneNumberFieldFilteredNotMandatory":
+	case "FilterTypeOne.type_one_number_field_filtered_not_mandatory":
 		if e.complexity.FilterTypeOne.TypeOneNumberFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeOne.TypeOneNumberFieldFilteredNotMandatory(childComplexity), true
 
-	case "FilterTypeOne.typeOneSliceWithTypeTwos":
+	case "FilterTypeOne.type_one_slice_with_type_twos":
 		if e.complexity.FilterTypeOne.TypeOneSliceWithTypeTwos == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeOne.TypeOneSliceWithTypeTwos(childComplexity), true
 
-	case "FilterTypeOne.typeOneStringFieldFiltered":
+	case "FilterTypeOne.type_one_string_field_filtered":
 		if e.complexity.FilterTypeOne.TypeOneStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeOne.TypeOneStringFieldFiltered(childComplexity), true
 
-	case "FilterTypeOne.typeOneStringFieldFilteredNotMandatory":
+	case "FilterTypeOne.type_one_string_field_filtered_not_mandatory":
 		if e.complexity.FilterTypeOne.TypeOneStringFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeOne.TypeOneStringFieldFilteredNotMandatory(childComplexity), true
 
-	case "FilterTypeOne.typeOneTimeFieldFiltered":
+	case "FilterTypeOne.type_one_time_field_filtered":
 		if e.complexity.FilterTypeOne.TypeOneTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeOne.TypeOneTimeFieldFiltered(childComplexity), true
 
-	case "FilterTypeOne.typeOneTimeFieldFilteredNotMandatory":
+	case "FilterTypeOne.type_one_time_field_filtered_not_mandatory":
 		if e.complexity.FilterTypeOne.TypeOneTimeFieldFilteredNotMandatory == nil {
 			break
 		}
@@ -577,28 +577,28 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FilterTypeThree.Or(childComplexity), true
 
-	case "FilterTypeThree.typeThreeBooleanFiltered":
-		if e.complexity.FilterTypeThree.TypeThreeBooleanFiltered == nil {
+	case "FilterTypeThree.type_three_boolean_field_filtered":
+		if e.complexity.FilterTypeThree.TypeThreeBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.FilterTypeThree.TypeThreeBooleanFiltered(childComplexity), true
+		return e.complexity.FilterTypeThree.TypeThreeBooleanFieldFiltered(childComplexity), true
 
-	case "FilterTypeThree.typeThreeNumberFieldFiltered":
+	case "FilterTypeThree.type_three_number_field_filtered":
 		if e.complexity.FilterTypeThree.TypeThreeNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeThree.TypeThreeNumberFieldFiltered(childComplexity), true
 
-	case "FilterTypeThree.typeThreeStringFieldFiltered":
+	case "FilterTypeThree.type_three_string_field_filtered":
 		if e.complexity.FilterTypeThree.TypeThreeStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeThree.TypeThreeStringFieldFiltered(childComplexity), true
 
-	case "FilterTypeThree.typeThreeTimeFieldFiltered":
+	case "FilterTypeThree.type_three_time_field_filtered":
 		if e.complexity.FilterTypeThree.TypeThreeTimeFieldFiltered == nil {
 			break
 		}
@@ -626,49 +626,49 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FilterTypeTwo.Or(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoBooleanFiltered":
-		if e.complexity.FilterTypeTwo.TypeTwoBooleanFiltered == nil {
+	case "FilterTypeTwo.type_two_boolean_field_filtered":
+		if e.complexity.FilterTypeTwo.TypeTwoBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.FilterTypeTwo.TypeTwoBooleanFiltered(childComplexity), true
+		return e.complexity.FilterTypeTwo.TypeTwoBooleanFieldFiltered(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoNumberFieldFiltered":
+	case "FilterTypeTwo.type_two_number_field_filtered":
 		if e.complexity.FilterTypeTwo.TypeTwoNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeTwo.TypeTwoNumberFieldFiltered(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoSliceWithTypeTwos":
+	case "FilterTypeTwo.type_two_slice_with_type_twos":
 		if e.complexity.FilterTypeTwo.TypeTwoSliceWithTypeTwos == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeTwo.TypeTwoSliceWithTypeTwos(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoStringFieldFiltered":
+	case "FilterTypeTwo.type_two_string_field_filtered":
 		if e.complexity.FilterTypeTwo.TypeTwoStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeTwo.TypeTwoStringFieldFiltered(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoTimeFieldFiltered":
+	case "FilterTypeTwo.type_two_time_field_filtered":
 		if e.complexity.FilterTypeTwo.TypeTwoTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeTwo.TypeTwoTimeFieldFiltered(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoWithTypeThree":
+	case "FilterTypeTwo.type_two_with_type_three":
 		if e.complexity.FilterTypeTwo.TypeTwoWithTypeThree == nil {
 			break
 		}
 
 		return e.complexity.FilterTypeTwo.TypeTwoWithTypeThree(childComplexity), true
 
-	case "FilterTypeTwo.typeTwoWithTypeThreeNotMandatory":
+	case "FilterTypeTwo.type_two_with_type_three_not_mandatory":
 		if e.complexity.FilterTypeTwo.TypeTwoWithTypeThreeNotMandatory == nil {
 			break
 		}
@@ -696,63 +696,63 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.NestedFilterTypeOne.Or(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneBooleanFiltered":
-		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFiltered == nil {
+	case "NestedFilterTypeOne.type_one_boolean_field_filtered":
+		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFiltered(childComplexity), true
+		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneBooleanFilteredNotMandatory":
-		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFilteredNotMandatory == nil {
+	case "NestedFilterTypeOne.type_one_boolean_field_filtered_not_mandatory":
+		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory == nil {
 			break
 		}
 
-		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFilteredNotMandatory(childComplexity), true
+		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFieldFilteredNotMandatory(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneNumberFieldFiltered":
+	case "NestedFilterTypeOne.type_one_number_field_filtered":
 		if e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneNumberFieldFilteredNotMandatory":
+	case "NestedFilterTypeOne.type_one_number_field_filtered_not_mandatory":
 		if e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFilteredNotMandatory(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneSliceWithTypeTwos":
+	case "NestedFilterTypeOne.type_one_slice_with_type_twos":
 		if e.complexity.NestedFilterTypeOne.TypeOneSliceWithTypeTwos == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeOne.TypeOneSliceWithTypeTwos(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneStringFieldFiltered":
+	case "NestedFilterTypeOne.type_one_string_field_filtered":
 		if e.complexity.NestedFilterTypeOne.TypeOneStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeOne.TypeOneStringFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneStringFieldFilteredNotMandatory":
+	case "NestedFilterTypeOne.type_one_string_field_filtered_not_mandatory":
 		if e.complexity.NestedFilterTypeOne.TypeOneStringFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeOne.TypeOneStringFieldFilteredNotMandatory(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneTimeFieldFiltered":
+	case "NestedFilterTypeOne.type_one_time_field_filtered":
 		if e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeOne.typeOneTimeFieldFilteredNotMandatory":
+	case "NestedFilterTypeOne.type_one_time_field_filtered_not_mandatory":
 		if e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFilteredNotMandatory == nil {
 			break
 		}
@@ -780,28 +780,28 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.NestedFilterTypeThree.Or(childComplexity), true
 
-	case "NestedFilterTypeThree.typeThreeBooleanFiltered":
-		if e.complexity.NestedFilterTypeThree.TypeThreeBooleanFiltered == nil {
+	case "NestedFilterTypeThree.type_three_boolean_field_filtered":
+		if e.complexity.NestedFilterTypeThree.TypeThreeBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.NestedFilterTypeThree.TypeThreeBooleanFiltered(childComplexity), true
+		return e.complexity.NestedFilterTypeThree.TypeThreeBooleanFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeThree.typeThreeNumberFieldFiltered":
+	case "NestedFilterTypeThree.type_three_number_field_filtered":
 		if e.complexity.NestedFilterTypeThree.TypeThreeNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeThree.TypeThreeNumberFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeThree.typeThreeStringFieldFiltered":
+	case "NestedFilterTypeThree.type_three_string_field_filtered":
 		if e.complexity.NestedFilterTypeThree.TypeThreeStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeThree.TypeThreeStringFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeThree.typeThreeTimeFieldFiltered":
+	case "NestedFilterTypeThree.type_three_time_field_filtered":
 		if e.complexity.NestedFilterTypeThree.TypeThreeTimeFieldFiltered == nil {
 			break
 		}
@@ -829,252 +829,252 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.NestedFilterTypeTwo.Or(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoBooleanFiltered":
-		if e.complexity.NestedFilterTypeTwo.TypeTwoBooleanFiltered == nil {
+	case "NestedFilterTypeTwo.type_two_boolean_field_filtered":
+		if e.complexity.NestedFilterTypeTwo.TypeTwoBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.NestedFilterTypeTwo.TypeTwoBooleanFiltered(childComplexity), true
+		return e.complexity.NestedFilterTypeTwo.TypeTwoBooleanFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoNumberFieldFiltered":
+	case "NestedFilterTypeTwo.type_two_number_field_filtered":
 		if e.complexity.NestedFilterTypeTwo.TypeTwoNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeTwo.TypeTwoNumberFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoSliceWithTypeTwos":
+	case "NestedFilterTypeTwo.type_two_slice_with_type_twos":
 		if e.complexity.NestedFilterTypeTwo.TypeTwoSliceWithTypeTwos == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeTwo.TypeTwoSliceWithTypeTwos(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoStringFieldFiltered":
+	case "NestedFilterTypeTwo.type_two_string_field_filtered":
 		if e.complexity.NestedFilterTypeTwo.TypeTwoStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeTwo.TypeTwoStringFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoTimeFieldFiltered":
+	case "NestedFilterTypeTwo.type_two_time_field_filtered":
 		if e.complexity.NestedFilterTypeTwo.TypeTwoTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeTwo.TypeTwoTimeFieldFiltered(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoWithTypeThree":
+	case "NestedFilterTypeTwo.type_two_with_type_three":
 		if e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThree == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThree(childComplexity), true
 
-	case "NestedFilterTypeTwo.typeTwoWithTypeThreeNotMandatory":
+	case "NestedFilterTypeTwo.type_two_with_type_three_not_mandatory":
 		if e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThreeNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.NestedFilterTypeTwo.TypeTwoWithTypeThreeNotMandatory(childComplexity), true
 
-	case "TypeOne.typeOneBooleanFiltered":
-		if e.complexity.TypeOne.TypeOneBooleanFiltered == nil {
+	case "TypeOne.type_one_boolean_field_filtered":
+		if e.complexity.TypeOne.TypeOneBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.TypeOne.TypeOneBooleanFiltered(childComplexity), true
+		return e.complexity.TypeOne.TypeOneBooleanFieldFiltered(childComplexity), true
 
-	case "TypeOne.typeOneBooleanFilteredNotMandatory":
-		if e.complexity.TypeOne.TypeOneBooleanFilteredNotMandatory == nil {
+	case "TypeOne.type_one_boolean_field_filtered_not_mandatory":
+		if e.complexity.TypeOne.TypeOneBooleanFieldFilteredNotMandatory == nil {
 			break
 		}
 
-		return e.complexity.TypeOne.TypeOneBooleanFilteredNotMandatory(childComplexity), true
+		return e.complexity.TypeOne.TypeOneBooleanFieldFilteredNotMandatory(childComplexity), true
 
-	case "TypeOne.typeOneNumberFieldFiltered":
+	case "TypeOne.type_one_number_field_filtered":
 		if e.complexity.TypeOne.TypeOneNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneNumberFieldFiltered(childComplexity), true
 
-	case "TypeOne.typeOneNumberFieldFilteredNotMandatory":
+	case "TypeOne.type_one_number_field_filtered_not_mandatory":
 		if e.complexity.TypeOne.TypeOneNumberFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneNumberFieldFilteredNotMandatory(childComplexity), true
 
-	case "TypeOne.typeOneNumberFieldWithNoFilter":
+	case "TypeOne.type_one_number_field_with_no_filter":
 		if e.complexity.TypeOne.TypeOneNumberFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneNumberFieldWithNoFilter(childComplexity), true
 
-	case "TypeOne.typeOneSliceWithTypeTwos":
+	case "TypeOne.type_one_slice_with_type_twos":
 		if e.complexity.TypeOne.TypeOneSliceWithTypeTwos == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneSliceWithTypeTwos(childComplexity), true
 
-	case "TypeOne.typeOneStringFieldFiltered":
+	case "TypeOne.type_one_string_field_filtered":
 		if e.complexity.TypeOne.TypeOneStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneStringFieldFiltered(childComplexity), true
 
-	case "TypeOne.typeOneStringFieldFilteredNotMandatory":
+	case "TypeOne.type_one_string_field_filtered_not_mandatory":
 		if e.complexity.TypeOne.TypeOneStringFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneStringFieldFilteredNotMandatory(childComplexity), true
 
-	case "TypeOne.typeOneStringFieldWithNoFilter":
+	case "TypeOne.type_one_string_field_with_no_filter":
 		if e.complexity.TypeOne.TypeOneStringFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneStringFieldWithNoFilter(childComplexity), true
 
-	case "TypeOne.typeOneTimeFieldFiltered":
+	case "TypeOne.type_one_time_field_filtered":
 		if e.complexity.TypeOne.TypeOneTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneTimeFieldFiltered(childComplexity), true
 
-	case "TypeOne.typeOneTimeFieldFilteredNotMandatory":
+	case "TypeOne.type_one_time_field_filtered_not_mandatory":
 		if e.complexity.TypeOne.TypeOneTimeFieldFilteredNotMandatory == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneTimeFieldFilteredNotMandatory(childComplexity), true
 
-	case "TypeOne.typeOneTimeFieldWithNoFilter":
+	case "TypeOne.type_one_time_field_with_no_filter":
 		if e.complexity.TypeOne.TypeOneTimeFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeOne.TypeOneTimeFieldWithNoFilter(childComplexity), true
 
-	case "TypeThree.typeThreeBooleanFiltered":
-		if e.complexity.TypeThree.TypeThreeBooleanFiltered == nil {
+	case "TypeThree.type_three_boolean_field_filtered":
+		if e.complexity.TypeThree.TypeThreeBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.TypeThree.TypeThreeBooleanFiltered(childComplexity), true
+		return e.complexity.TypeThree.TypeThreeBooleanFieldFiltered(childComplexity), true
 
-	case "TypeThree.typeThreeNumberFieldFiltered":
+	case "TypeThree.type_three_number_field_filtered":
 		if e.complexity.TypeThree.TypeThreeNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeThree.TypeThreeNumberFieldFiltered(childComplexity), true
 
-	case "TypeThree.typeThreeNumberFieldWithNoFilter":
+	case "TypeThree.type_three_number_field_with_no_filter":
 		if e.complexity.TypeThree.TypeThreeNumberFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeThree.TypeThreeNumberFieldWithNoFilter(childComplexity), true
 
-	case "TypeThree.typeThreeStringFieldFiltered":
+	case "TypeThree.type_three_string_field_filtered":
 		if e.complexity.TypeThree.TypeThreeStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeThree.TypeThreeStringFieldFiltered(childComplexity), true
 
-	case "TypeThree.typeThreeStringFieldWithNoFilter":
+	case "TypeThree.type_three_string_field_with_no_filter":
 		if e.complexity.TypeThree.TypeThreeStringFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeThree.TypeThreeStringFieldWithNoFilter(childComplexity), true
 
-	case "TypeThree.typeThreeTimeFieldFiltered":
+	case "TypeThree.type_three_time_field_filtered":
 		if e.complexity.TypeThree.TypeThreeTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeThree.TypeThreeTimeFieldFiltered(childComplexity), true
 
-	case "TypeThree.typeThreeTimeFieldWithNoFilter":
+	case "TypeThree.type_three_time_field_with_no_filter":
 		if e.complexity.TypeThree.TypeThreeTimeFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeThree.TypeThreeTimeFieldWithNoFilter(childComplexity), true
 
-	case "TypeTwo.typeTwoBooleanFiltered":
-		if e.complexity.TypeTwo.TypeTwoBooleanFiltered == nil {
+	case "TypeTwo.type_two_boolean_field_filtered":
+		if e.complexity.TypeTwo.TypeTwoBooleanFieldFiltered == nil {
 			break
 		}
 
-		return e.complexity.TypeTwo.TypeTwoBooleanFiltered(childComplexity), true
+		return e.complexity.TypeTwo.TypeTwoBooleanFieldFiltered(childComplexity), true
 
-	case "TypeTwo.typeTwoNumberFieldFiltered":
+	case "TypeTwo.type_two_number_field_filtered":
 		if e.complexity.TypeTwo.TypeTwoNumberFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoNumberFieldFiltered(childComplexity), true
 
-	case "TypeTwo.typeTwoNumberFieldWithNoFilter":
+	case "TypeTwo.type_twoNumber_field_with_no_filter":
 		if e.complexity.TypeTwo.TypeTwoNumberFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoNumberFieldWithNoFilter(childComplexity), true
 
-	case "TypeTwo.typeTwoSliceWithTypeTwos":
+	case "TypeTwo.type_two_slice_with_type_twos":
 		if e.complexity.TypeTwo.TypeTwoSliceWithTypeTwos == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoSliceWithTypeTwos(childComplexity), true
 
-	case "TypeTwo.typeTwoStringFieldFiltered":
+	case "TypeTwo.type_two_string_field_filtered":
 		if e.complexity.TypeTwo.TypeTwoStringFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoStringFieldFiltered(childComplexity), true
 
-	case "TypeTwo.typeTwoStringFieldWithNoFilter":
+	case "TypeTwo.type_twoString_field_with_no_filter":
 		if e.complexity.TypeTwo.TypeTwoStringFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoStringFieldWithNoFilter(childComplexity), true
 
-	case "TypeTwo.typeTwoTimeFieldFiltered":
+	case "TypeTwo.type_two_time_field_filtered":
 		if e.complexity.TypeTwo.TypeTwoTimeFieldFiltered == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoTimeFieldFiltered(childComplexity), true
 
-	case "TypeTwo.typeTwoTimeFieldWithNoFilter":
+	case "TypeTwo.type_twoTime_field_with_no_filter":
 		if e.complexity.TypeTwo.TypeTwoTimeFieldWithNoFilter == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoTimeFieldWithNoFilter(childComplexity), true
 
-	case "TypeTwo.typeTwoWithTypeThree":
+	case "TypeTwo.type_two_with_type_three":
 		if e.complexity.TypeTwo.TypeTwoWithTypeThree == nil {
 			break
 		}
 
 		return e.complexity.TypeTwo.TypeTwoWithTypeThree(childComplexity), true
 
-	case "TypeTwo.typeTwoWithTypeThreeNotMandatory":
+	case "TypeTwo.type_two_with_type_three_not_mandatory":
 		if e.complexity.TypeTwo.TypeTwoWithTypeThreeNotMandatory == nil {
 			break
 		}
@@ -1174,60 +1174,60 @@ var sources = []*ast.Source{
 scalar Time
 
 type TypeOne {
-  typeOneStringFieldFiltered: String! @filterable
-  typeOneStringFieldFilteredNotMandatory: String @filterable
-  typeOneNumberFieldFiltered: Int! @filterable
-  typeOneNumberFieldFilteredNotMandatory: Int @filterable
-  typeOneTimeFieldFiltered: Time! @filterable
-  typeOneTimeFieldFilteredNotMandatory: Time @filterable
-  typeOneBooleanFiltered: Boolean! @filterable
-  typeOneBooleanFilteredNotMandatory: Boolean @filterable
+  type_one_string_field_filtered: String! @filterable
+  type_one_string_field_filtered_not_mandatory: String @filterable
+  type_one_number_field_filtered: Int! @filterable
+  type_one_number_field_filtered_not_mandatory: Int @filterable
+  type_one_time_field_filtered: Time! @filterable
+  type_one_time_field_filtered_not_mandatory: Time @filterable
+  type_one_boolean_field_filtered: Boolean! @filterable
+  type_one_boolean_field_filtered_not_mandatory: Boolean @filterable
 
-  typeOneStringFieldWithNoFilter: String!
-  typeOneNumberFieldWithNoFilter: Int!
-  typeOneTimeFieldWithNoFilter: Time!
+  type_one_string_field_with_no_filter: String!
+  type_one_number_field_with_no_filter: Int!
+  type_one_time_field_with_no_filter: Time!
 
-  typeOneSliceWithTypeTwos: [TypeTwo]! @filterable
+  type_one_slice_with_type_twos: [TypeTwo]! @filterable
 }
 
 type TypeTwo {
-  typeTwoStringFieldFiltered: String! @filterable
-  typeTwoNumberFieldFiltered: Int! @filterable
-  typeTwoTimeFieldFiltered: Time! @filterable
-  typeTwoBooleanFiltered: Boolean! @filterable
+  type_two_string_field_filtered: String! @filterable
+  type_two_number_field_filtered: Int! @filterable
+  type_two_time_field_filtered: Time! @filterable
+  type_two_boolean_field_filtered: Boolean! @filterable
 
-  typeTwoStringFieldWithNoFilter: String!
-  typeTwoNumberFieldWithNoFilter: Int!
-  typeTwoTimeFieldWithNoFilter: Time!
+  type_twoString_field_with_no_filter: String!
+  type_twoNumber_field_with_no_filter: Int!
+  type_twoTime_field_with_no_filter: Time!
 
-  typeTwoSliceWithTypeTwos: [TypeTwo]! @filterable
+  type_two_slice_with_type_twos: [TypeTwo]! @filterable
 
-  typeTwoWithTypeThree: TypeThree! @filterable
-  typeTwoWithTypeThreeNotMandatory: TypeThree @filterable
+  type_two_with_type_three: TypeThree! @filterable
+  type_two_with_type_three_not_mandatory: TypeThree @filterable
 
 }
 
 type TypeThree {
-  typeThreeStringFieldFiltered: String! @filterable
-  typeThreeNumberFieldFiltered: Int! @filterable
-  typeThreeTimeFieldFiltered: Time! @filterable
-  typeThreeBooleanFiltered: Boolean! @filterable
+  type_three_string_field_filtered: String! @filterable
+  type_three_number_field_filtered: Int! @filterable
+  type_three_time_field_filtered: Time! @filterable
+  type_three_boolean_field_filtered: Boolean! @filterable
 
-  typeThreeStringFieldWithNoFilter: String!
-  typeThreeNumberFieldWithNoFilter: Int!
-  typeThreeTimeFieldWithNoFilter: Time!
+  type_three_string_field_with_no_filter: String!
+  type_three_number_field_with_no_filter: Int!
+  type_three_time_field_with_no_filter: Time!
 }
 
 type ExternalType {
-  numberOne: Int! @filterable
-  numberTwo: Int! @filterable
-  numberThree: Int! @filterable
-  numberFour: Int @filterable
-  numberFive: Int @filterable
+  number_one: Int! @filterable
+  number_two: Int! @filterable
+  number_three: Int! @filterable
+  number_four: Int @filterable
+  number_five: Int @filterable
   
-  numberList: [Int!] @filterable
+  number_list: [Int!] @filterable
 
-  typeOne: TypeOne @filterable
+  type_one: TypeOne @filterable
 }`, BuiltIn: false},
 	{Name: "../../filtergen.directives.graphql", Input: `directive @filterable on FIELD_DEFINITION`, BuiltIn: false},
 	{Name: "../../filtergen.graphql", Input: `"""
@@ -1260,33 +1260,33 @@ type FilterExternalType {
 	"""
 	_not: FilterExternalType
 	"""
-	filter for numberOne field.
+	filter for number_one field.
 	"""
-	numberOne: FilterNumber
+	number_one: FilterNumber
 	"""
-	filter for numberTwo field.
+	filter for number_two field.
 	"""
-	numberTwo: FilterNumber
+	number_two: FilterNumber
 	"""
-	filter for numberThree field.
+	filter for number_three field.
 	"""
-	numberThree: FilterNumber
+	number_three: FilterNumber
 	"""
-	filter for numberFour field.
+	filter for number_four field.
 	"""
-	numberFour: FilterNumber
+	number_four: FilterNumber
 	"""
-	filter for numberFive field.
+	filter for number_five field.
 	"""
-	numberFive: FilterNumber
+	number_five: FilterNumber
 	"""
-	filter for numberList field.
+	filter for number_list field.
 	"""
-	numberList: FilterNumber
+	number_list: FilterNumber
 	"""
-	filter for typeOne field.
+	filter for type_one field.
 	"""
-	typeOne: NestedFilterTypeOne
+	type_one: NestedFilterTypeOne
 }
 """
 Filter type for number fields. All added filters here are processed as AND operators.
@@ -1380,41 +1380,41 @@ type FilterTypeOne {
 	"""
 	_not: FilterTypeOne
 	"""
-	filter for typeOneStringFieldFiltered field.
+	filter for type_one_string_field_filtered field.
 	"""
-	typeOneStringFieldFiltered: FilterString
+	type_one_string_field_filtered: FilterString
 	"""
-	filter for typeOneStringFieldFilteredNotMandatory field.
+	filter for type_one_string_field_filtered_not_mandatory field.
 	"""
-	typeOneStringFieldFilteredNotMandatory: FilterString
+	type_one_string_field_filtered_not_mandatory: FilterString
 	"""
-	filter for typeOneNumberFieldFiltered field.
+	filter for type_one_number_field_filtered field.
 	"""
-	typeOneNumberFieldFiltered: FilterNumber
+	type_one_number_field_filtered: FilterNumber
 	"""
-	filter for typeOneNumberFieldFilteredNotMandatory field.
+	filter for type_one_number_field_filtered_not_mandatory field.
 	"""
-	typeOneNumberFieldFilteredNotMandatory: FilterNumber
+	type_one_number_field_filtered_not_mandatory: FilterNumber
 	"""
-	filter for typeOneTimeFieldFiltered field.
+	filter for type_one_time_field_filtered field.
 	"""
-	typeOneTimeFieldFiltered: FilterTime
+	type_one_time_field_filtered: FilterTime
 	"""
-	filter for typeOneTimeFieldFilteredNotMandatory field.
+	filter for type_one_time_field_filtered_not_mandatory field.
 	"""
-	typeOneTimeFieldFilteredNotMandatory: FilterTime
+	type_one_time_field_filtered_not_mandatory: FilterTime
 	"""
-	filter for typeOneBooleanFiltered field.
+	filter for type_one_boolean_field_filtered field.
 	"""
-	typeOneBooleanFiltered: FilterBoolean
+	type_one_boolean_field_filtered: FilterBoolean
 	"""
-	filter for typeOneBooleanFilteredNotMandatory field.
+	filter for type_one_boolean_field_filtered_not_mandatory field.
 	"""
-	typeOneBooleanFilteredNotMandatory: FilterBoolean
+	type_one_boolean_field_filtered_not_mandatory: FilterBoolean
 	"""
-	filter for typeOneSliceWithTypeTwos field.
+	filter for type_one_slice_with_type_twos field.
 	"""
-	typeOneSliceWithTypeTwos: NestedFilterTypeTwo
+	type_one_slice_with_type_twos: NestedFilterTypeTwo
 }
 """
 filter for TypeThree objects
@@ -1433,21 +1433,21 @@ type FilterTypeThree {
 	"""
 	_not: FilterTypeThree
 	"""
-	filter for typeThreeStringFieldFiltered field.
+	filter for type_three_string_field_filtered field.
 	"""
-	typeThreeStringFieldFiltered: FilterString
+	type_three_string_field_filtered: FilterString
 	"""
-	filter for typeThreeNumberFieldFiltered field.
+	filter for type_three_number_field_filtered field.
 	"""
-	typeThreeNumberFieldFiltered: FilterNumber
+	type_three_number_field_filtered: FilterNumber
 	"""
-	filter for typeThreeTimeFieldFiltered field.
+	filter for type_three_time_field_filtered field.
 	"""
-	typeThreeTimeFieldFiltered: FilterTime
+	type_three_time_field_filtered: FilterTime
 	"""
-	filter for typeThreeBooleanFiltered field.
+	filter for type_three_boolean_field_filtered field.
 	"""
-	typeThreeBooleanFiltered: FilterBoolean
+	type_three_boolean_field_filtered: FilterBoolean
 }
 """
 filter for TypeTwo objects
@@ -1466,33 +1466,33 @@ type FilterTypeTwo {
 	"""
 	_not: FilterTypeTwo
 	"""
-	filter for typeTwoStringFieldFiltered field.
+	filter for type_two_string_field_filtered field.
 	"""
-	typeTwoStringFieldFiltered: FilterString
+	type_two_string_field_filtered: FilterString
 	"""
-	filter for typeTwoNumberFieldFiltered field.
+	filter for type_two_number_field_filtered field.
 	"""
-	typeTwoNumberFieldFiltered: FilterNumber
+	type_two_number_field_filtered: FilterNumber
 	"""
-	filter for typeTwoTimeFieldFiltered field.
+	filter for type_two_time_field_filtered field.
 	"""
-	typeTwoTimeFieldFiltered: FilterTime
+	type_two_time_field_filtered: FilterTime
 	"""
-	filter for typeTwoBooleanFiltered field.
+	filter for type_two_boolean_field_filtered field.
 	"""
-	typeTwoBooleanFiltered: FilterBoolean
+	type_two_boolean_field_filtered: FilterBoolean
 	"""
-	filter for typeTwoSliceWithTypeTwos field.
+	filter for type_two_slice_with_type_twos field.
 	"""
-	typeTwoSliceWithTypeTwos: NestedFilterTypeTwo
+	type_two_slice_with_type_twos: NestedFilterTypeTwo
 	"""
-	filter for typeTwoWithTypeThree field.
+	filter for type_two_with_type_three field.
 	"""
-	typeTwoWithTypeThree: NestedFilterTypeThree
+	type_two_with_type_three: NestedFilterTypeThree
 	"""
-	filter for typeTwoWithTypeThreeNotMandatory field.
+	filter for type_two_with_type_three_not_mandatory field.
 	"""
-	typeTwoWithTypeThreeNotMandatory: NestedFilterTypeThree
+	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
 }
 """
 filter for TypeOne objects
@@ -1511,41 +1511,41 @@ type NestedFilterTypeOne {
 	"""
 	_not: NestedFilterTypeOne
 	"""
-	filter for typeOneStringFieldFiltered field.
+	filter for type_one_string_field_filtered field.
 	"""
-	typeOneStringFieldFiltered: FilterString
+	type_one_string_field_filtered: FilterString
 	"""
-	filter for typeOneStringFieldFilteredNotMandatory field.
+	filter for type_one_string_field_filtered_not_mandatory field.
 	"""
-	typeOneStringFieldFilteredNotMandatory: FilterString
+	type_one_string_field_filtered_not_mandatory: FilterString
 	"""
-	filter for typeOneNumberFieldFiltered field.
+	filter for type_one_number_field_filtered field.
 	"""
-	typeOneNumberFieldFiltered: FilterNumber
+	type_one_number_field_filtered: FilterNumber
 	"""
-	filter for typeOneNumberFieldFilteredNotMandatory field.
+	filter for type_one_number_field_filtered_not_mandatory field.
 	"""
-	typeOneNumberFieldFilteredNotMandatory: FilterNumber
+	type_one_number_field_filtered_not_mandatory: FilterNumber
 	"""
-	filter for typeOneTimeFieldFiltered field.
+	filter for type_one_time_field_filtered field.
 	"""
-	typeOneTimeFieldFiltered: FilterTime
+	type_one_time_field_filtered: FilterTime
 	"""
-	filter for typeOneTimeFieldFilteredNotMandatory field.
+	filter for type_one_time_field_filtered_not_mandatory field.
 	"""
-	typeOneTimeFieldFilteredNotMandatory: FilterTime
+	type_one_time_field_filtered_not_mandatory: FilterTime
 	"""
-	filter for typeOneBooleanFiltered field.
+	filter for type_one_boolean_field_filtered field.
 	"""
-	typeOneBooleanFiltered: FilterBoolean
+	type_one_boolean_field_filtered: FilterBoolean
 	"""
-	filter for typeOneBooleanFilteredNotMandatory field.
+	filter for type_one_boolean_field_filtered_not_mandatory field.
 	"""
-	typeOneBooleanFilteredNotMandatory: FilterBoolean
+	type_one_boolean_field_filtered_not_mandatory: FilterBoolean
 	"""
-	filter for typeOneSliceWithTypeTwos field.
+	filter for type_one_slice_with_type_twos field.
 	"""
-	typeOneSliceWithTypeTwos: NestedFilterTypeTwo
+	type_one_slice_with_type_twos: NestedFilterTypeTwo
 }
 """
 filter for TypeThree objects
@@ -1564,21 +1564,21 @@ type NestedFilterTypeThree {
 	"""
 	_not: NestedFilterTypeThree
 	"""
-	filter for typeThreeStringFieldFiltered field.
+	filter for type_three_string_field_filtered field.
 	"""
-	typeThreeStringFieldFiltered: FilterString
+	type_three_string_field_filtered: FilterString
 	"""
-	filter for typeThreeNumberFieldFiltered field.
+	filter for type_three_number_field_filtered field.
 	"""
-	typeThreeNumberFieldFiltered: FilterNumber
+	type_three_number_field_filtered: FilterNumber
 	"""
-	filter for typeThreeTimeFieldFiltered field.
+	filter for type_three_time_field_filtered field.
 	"""
-	typeThreeTimeFieldFiltered: FilterTime
+	type_three_time_field_filtered: FilterTime
 	"""
-	filter for typeThreeBooleanFiltered field.
+	filter for type_three_boolean_field_filtered field.
 	"""
-	typeThreeBooleanFiltered: FilterBoolean
+	type_three_boolean_field_filtered: FilterBoolean
 }
 """
 filter for TypeTwo objects
@@ -1597,33 +1597,33 @@ type NestedFilterTypeTwo {
 	"""
 	_not: NestedFilterTypeTwo
 	"""
-	filter for typeTwoStringFieldFiltered field.
+	filter for type_two_string_field_filtered field.
 	"""
-	typeTwoStringFieldFiltered: FilterString
+	type_two_string_field_filtered: FilterString
 	"""
-	filter for typeTwoNumberFieldFiltered field.
+	filter for type_two_number_field_filtered field.
 	"""
-	typeTwoNumberFieldFiltered: FilterNumber
+	type_two_number_field_filtered: FilterNumber
 	"""
-	filter for typeTwoTimeFieldFiltered field.
+	filter for type_two_time_field_filtered field.
 	"""
-	typeTwoTimeFieldFiltered: FilterTime
+	type_two_time_field_filtered: FilterTime
 	"""
-	filter for typeTwoBooleanFiltered field.
+	filter for type_two_boolean_field_filtered field.
 	"""
-	typeTwoBooleanFiltered: FilterBoolean
+	type_two_boolean_field_filtered: FilterBoolean
 	"""
-	filter for typeTwoSliceWithTypeTwos field.
+	filter for type_two_slice_with_type_twos field.
 	"""
-	typeTwoSliceWithTypeTwos: NestedFilterTypeTwo
+	type_two_slice_with_type_twos: NestedFilterTypeTwo
 	"""
-	filter for typeTwoWithTypeThree field.
+	filter for type_two_with_type_three field.
 	"""
-	typeTwoWithTypeThree: NestedFilterTypeThree
+	type_two_with_type_three: NestedFilterTypeThree
 	"""
-	filter for typeTwoWithTypeThreeNotMandatory field.
+	filter for type_two_with_type_three_not_mandatory field.
 	"""
-	typeTwoWithTypeThreeNotMandatory: NestedFilterTypeThree
+	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
 }
 `, BuiltIn: false},
 }
@@ -1686,8 +1686,8 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _ExternalType_numberOne(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_numberOne(ctx, field)
+func (ec *executionContext) _ExternalType_number_one(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_number_one(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1737,7 +1737,7 @@ func (ec *executionContext) _ExternalType_numberOne(ctx context.Context, field g
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_numberOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_number_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -1750,8 +1750,8 @@ func (ec *executionContext) fieldContext_ExternalType_numberOne(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _ExternalType_numberTwo(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_numberTwo(ctx, field)
+func (ec *executionContext) _ExternalType_number_two(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_number_two(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1801,7 +1801,7 @@ func (ec *executionContext) _ExternalType_numberTwo(ctx context.Context, field g
 	return ec.marshalNInt2int64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_numberTwo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_number_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -1814,8 +1814,8 @@ func (ec *executionContext) fieldContext_ExternalType_numberTwo(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _ExternalType_numberThree(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_numberThree(ctx, field)
+func (ec *executionContext) _ExternalType_number_three(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_number_three(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1865,7 +1865,7 @@ func (ec *executionContext) _ExternalType_numberThree(ctx context.Context, field
 	return ec.marshalNInt2int32(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_numberThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_number_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -1878,8 +1878,8 @@ func (ec *executionContext) fieldContext_ExternalType_numberThree(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _ExternalType_numberFour(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_numberFour(ctx, field)
+func (ec *executionContext) _ExternalType_number_four(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_number_four(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1926,7 +1926,7 @@ func (ec *executionContext) _ExternalType_numberFour(ctx context.Context, field 
 	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_numberFour(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_number_four(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -1939,8 +1939,8 @@ func (ec *executionContext) fieldContext_ExternalType_numberFour(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _ExternalType_numberFive(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_numberFive(ctx, field)
+func (ec *executionContext) _ExternalType_number_five(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_number_five(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1987,7 +1987,7 @@ func (ec *executionContext) _ExternalType_numberFive(ctx context.Context, field 
 	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_numberFive(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_number_five(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -2000,8 +2000,8 @@ func (ec *executionContext) fieldContext_ExternalType_numberFive(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _ExternalType_numberList(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_numberList(ctx, field)
+func (ec *executionContext) _ExternalType_number_list(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_number_list(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2048,7 +2048,7 @@ func (ec *executionContext) _ExternalType_numberList(ctx context.Context, field 
 	return ec.marshalOInt2ᚕintᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_numberList(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_number_list(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -2061,8 +2061,8 @@ func (ec *executionContext) fieldContext_ExternalType_numberList(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _ExternalType_typeOne(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_ExternalType_typeOne(ctx, field)
+func (ec *executionContext) _ExternalType_type_one(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_type_one(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2109,7 +2109,7 @@ func (ec *executionContext) _ExternalType_typeOne(ctx context.Context, field gra
 	return ec.marshalOTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOne(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_ExternalType_typeOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_ExternalType_type_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "ExternalType",
 		Field:      field,
@@ -2117,30 +2117,30 @@ func (ec *executionContext) fieldContext_ExternalType_typeOne(_ context.Context,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_TypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_TypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_TypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_TypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_TypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_TypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_TypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_TypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneStringFieldWithNoFilter":
-				return ec.fieldContext_TypeOne_typeOneStringFieldWithNoFilter(ctx, field)
-			case "typeOneNumberFieldWithNoFilter":
-				return ec.fieldContext_TypeOne_typeOneNumberFieldWithNoFilter(ctx, field)
-			case "typeOneTimeFieldWithNoFilter":
-				return ec.fieldContext_TypeOne_typeOneTimeFieldWithNoFilter(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_TypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_TypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_TypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_TypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_TypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_TypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_TypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_string_field_with_no_filter":
+				return ec.fieldContext_TypeOne_type_one_string_field_with_no_filter(ctx, field)
+			case "type_one_number_field_with_no_filter":
+				return ec.fieldContext_TypeOne_type_one_number_field_with_no_filter(ctx, field)
+			case "type_one_time_field_with_no_filter":
+				return ec.fieldContext_TypeOne_type_one_time_field_with_no_filter(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_TypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeOne", field.Name)
 		},
@@ -2272,20 +2272,20 @@ func (ec *executionContext) fieldContext_FilterExternalType__and(_ context.Conte
 				return ec.fieldContext_FilterExternalType__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterExternalType__not(ctx, field)
-			case "numberOne":
-				return ec.fieldContext_FilterExternalType_numberOne(ctx, field)
-			case "numberTwo":
-				return ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
-			case "numberThree":
-				return ec.fieldContext_FilterExternalType_numberThree(ctx, field)
-			case "numberFour":
-				return ec.fieldContext_FilterExternalType_numberFour(ctx, field)
-			case "numberFive":
-				return ec.fieldContext_FilterExternalType_numberFive(ctx, field)
-			case "numberList":
-				return ec.fieldContext_FilterExternalType_numberList(ctx, field)
-			case "typeOne":
-				return ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+			case "number_one":
+				return ec.fieldContext_FilterExternalType_number_one(ctx, field)
+			case "number_two":
+				return ec.fieldContext_FilterExternalType_number_two(ctx, field)
+			case "number_three":
+				return ec.fieldContext_FilterExternalType_number_three(ctx, field)
+			case "number_four":
+				return ec.fieldContext_FilterExternalType_number_four(ctx, field)
+			case "number_five":
+				return ec.fieldContext_FilterExternalType_number_five(ctx, field)
+			case "number_list":
+				return ec.fieldContext_FilterExternalType_number_list(ctx, field)
+			case "type_one":
+				return ec.fieldContext_FilterExternalType_type_one(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
 		},
@@ -2335,20 +2335,20 @@ func (ec *executionContext) fieldContext_FilterExternalType__or(_ context.Contex
 				return ec.fieldContext_FilterExternalType__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterExternalType__not(ctx, field)
-			case "numberOne":
-				return ec.fieldContext_FilterExternalType_numberOne(ctx, field)
-			case "numberTwo":
-				return ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
-			case "numberThree":
-				return ec.fieldContext_FilterExternalType_numberThree(ctx, field)
-			case "numberFour":
-				return ec.fieldContext_FilterExternalType_numberFour(ctx, field)
-			case "numberFive":
-				return ec.fieldContext_FilterExternalType_numberFive(ctx, field)
-			case "numberList":
-				return ec.fieldContext_FilterExternalType_numberList(ctx, field)
-			case "typeOne":
-				return ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+			case "number_one":
+				return ec.fieldContext_FilterExternalType_number_one(ctx, field)
+			case "number_two":
+				return ec.fieldContext_FilterExternalType_number_two(ctx, field)
+			case "number_three":
+				return ec.fieldContext_FilterExternalType_number_three(ctx, field)
+			case "number_four":
+				return ec.fieldContext_FilterExternalType_number_four(ctx, field)
+			case "number_five":
+				return ec.fieldContext_FilterExternalType_number_five(ctx, field)
+			case "number_list":
+				return ec.fieldContext_FilterExternalType_number_list(ctx, field)
+			case "type_one":
+				return ec.fieldContext_FilterExternalType_type_one(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
 		},
@@ -2398,20 +2398,20 @@ func (ec *executionContext) fieldContext_FilterExternalType__not(_ context.Conte
 				return ec.fieldContext_FilterExternalType__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterExternalType__not(ctx, field)
-			case "numberOne":
-				return ec.fieldContext_FilterExternalType_numberOne(ctx, field)
-			case "numberTwo":
-				return ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
-			case "numberThree":
-				return ec.fieldContext_FilterExternalType_numberThree(ctx, field)
-			case "numberFour":
-				return ec.fieldContext_FilterExternalType_numberFour(ctx, field)
-			case "numberFive":
-				return ec.fieldContext_FilterExternalType_numberFive(ctx, field)
-			case "numberList":
-				return ec.fieldContext_FilterExternalType_numberList(ctx, field)
-			case "typeOne":
-				return ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+			case "number_one":
+				return ec.fieldContext_FilterExternalType_number_one(ctx, field)
+			case "number_two":
+				return ec.fieldContext_FilterExternalType_number_two(ctx, field)
+			case "number_three":
+				return ec.fieldContext_FilterExternalType_number_three(ctx, field)
+			case "number_four":
+				return ec.fieldContext_FilterExternalType_number_four(ctx, field)
+			case "number_five":
+				return ec.fieldContext_FilterExternalType_number_five(ctx, field)
+			case "number_list":
+				return ec.fieldContext_FilterExternalType_number_list(ctx, field)
+			case "type_one":
+				return ec.fieldContext_FilterExternalType_type_one(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
 		},
@@ -2419,8 +2419,8 @@ func (ec *executionContext) fieldContext_FilterExternalType__not(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_numberOne(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_numberOne(ctx, field)
+func (ec *executionContext) _FilterExternalType_number_one(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_number_one(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2447,7 +2447,7 @@ func (ec *executionContext) _FilterExternalType_numberOne(ctx context.Context, f
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_numberOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_number_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2472,8 +2472,8 @@ func (ec *executionContext) fieldContext_FilterExternalType_numberOne(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_numberTwo(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
+func (ec *executionContext) _FilterExternalType_number_two(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_number_two(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2500,7 +2500,7 @@ func (ec *executionContext) _FilterExternalType_numberTwo(ctx context.Context, f
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_numberTwo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_number_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2525,8 +2525,8 @@ func (ec *executionContext) fieldContext_FilterExternalType_numberTwo(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_numberThree(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_numberThree(ctx, field)
+func (ec *executionContext) _FilterExternalType_number_three(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_number_three(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2553,7 +2553,7 @@ func (ec *executionContext) _FilterExternalType_numberThree(ctx context.Context,
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_numberThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_number_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2578,8 +2578,8 @@ func (ec *executionContext) fieldContext_FilterExternalType_numberThree(_ contex
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_numberFour(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_numberFour(ctx, field)
+func (ec *executionContext) _FilterExternalType_number_four(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_number_four(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2606,7 +2606,7 @@ func (ec *executionContext) _FilterExternalType_numberFour(ctx context.Context, 
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_numberFour(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_number_four(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2631,8 +2631,8 @@ func (ec *executionContext) fieldContext_FilterExternalType_numberFour(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_numberFive(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_numberFive(ctx, field)
+func (ec *executionContext) _FilterExternalType_number_five(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_number_five(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2659,7 +2659,7 @@ func (ec *executionContext) _FilterExternalType_numberFive(ctx context.Context, 
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_numberFive(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_number_five(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2684,8 +2684,8 @@ func (ec *executionContext) fieldContext_FilterExternalType_numberFive(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_numberList(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_numberList(ctx, field)
+func (ec *executionContext) _FilterExternalType_number_list(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_number_list(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2712,7 +2712,7 @@ func (ec *executionContext) _FilterExternalType_numberList(ctx context.Context, 
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_numberList(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_number_list(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2737,8 +2737,8 @@ func (ec *executionContext) fieldContext_FilterExternalType_numberList(_ context
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterExternalType_typeOne(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+func (ec *executionContext) _FilterExternalType_type_one(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_type_one(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2765,7 +2765,7 @@ func (ec *executionContext) _FilterExternalType_typeOne(ctx context.Context, fie
 	return ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterExternalType_typeOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterExternalType_type_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterExternalType",
 		Field:      field,
@@ -2779,24 +2779,24 @@ func (ec *executionContext) fieldContext_FilterExternalType_typeOne(_ context.Co
 				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
 		},
@@ -3461,24 +3461,24 @@ func (ec *executionContext) fieldContext_FilterTypeOne__and(_ context.Context, f
 				return ec.fieldContext_FilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_FilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeOne", field.Name)
 		},
@@ -3528,24 +3528,24 @@ func (ec *executionContext) fieldContext_FilterTypeOne__or(_ context.Context, fi
 				return ec.fieldContext_FilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_FilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeOne", field.Name)
 		},
@@ -3595,24 +3595,24 @@ func (ec *executionContext) fieldContext_FilterTypeOne__not(_ context.Context, f
 				return ec.fieldContext_FilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_FilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_FilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_FilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeOne", field.Name)
 		},
@@ -3620,8 +3620,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne__not(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3648,7 +3648,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneStringFieldFiltered(ctx contex
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3673,8 +3673,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneStringFieldFiltere
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3701,7 +3701,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneStringFieldFilteredNotMandator
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneStringFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_string_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3726,8 +3726,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneStringFieldFiltere
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3754,7 +3754,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneNumberFieldFiltered(ctx contex
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3779,8 +3779,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneNumberFieldFiltere
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3807,7 +3807,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneNumberFieldFilteredNotMandator
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_number_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3832,8 +3832,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneNumberFieldFiltere
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3860,7 +3860,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneTimeFieldFiltered(ctx context.
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3885,8 +3885,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneTimeFieldFiltered(
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3913,7 +3913,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_time_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3938,8 +3938,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneTimeFieldFilteredN
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneBooleanFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3952,7 +3952,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneBooleanFiltered(ctx context.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFiltered, nil
+		return obj.TypeOneBooleanFieldFiltered, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3966,7 +3966,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneBooleanFiltered(ctx context.Co
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -3985,8 +3985,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneBooleanFiltered(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -3999,7 +3999,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneBooleanFilteredNotMandatory(ct
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFilteredNotMandatory, nil
+		return obj.TypeOneBooleanFieldFilteredNotMandatory, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4013,7 +4013,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneBooleanFilteredNotMandatory(ct
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneBooleanFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -4032,8 +4032,8 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneBooleanFilteredNot
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeOne_typeOneSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+func (ec *executionContext) _FilterTypeOne_type_one_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *FilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4060,7 +4060,7 @@ func (ec *executionContext) _FilterTypeOne_typeOneSliceWithTypeTwos(ctx context.
 	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeOne_typeOneSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeOne_type_one_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeOne",
 		Field:      field,
@@ -4074,20 +4074,20 @@ func (ec *executionContext) fieldContext_FilterTypeOne_typeOneSliceWithTypeTwos(
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -4137,14 +4137,14 @@ func (ec *executionContext) fieldContext_FilterTypeThree__and(_ context.Context,
 				return ec.fieldContext_FilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeThree", field.Name)
 		},
@@ -4194,14 +4194,14 @@ func (ec *executionContext) fieldContext_FilterTypeThree__or(_ context.Context, 
 				return ec.fieldContext_FilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeThree", field.Name)
 		},
@@ -4251,14 +4251,14 @@ func (ec *executionContext) fieldContext_FilterTypeThree__not(_ context.Context,
 				return ec.fieldContext_FilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_FilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeThree", field.Name)
 		},
@@ -4266,8 +4266,8 @@ func (ec *executionContext) fieldContext_FilterTypeThree__not(_ context.Context,
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeThree_typeThreeStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeThree_type_three_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeThree_type_three_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4294,7 +4294,7 @@ func (ec *executionContext) _FilterTypeThree_typeThreeStringFieldFiltered(ctx co
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeThree_type_three_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeThree",
 		Field:      field,
@@ -4319,8 +4319,8 @@ func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeStringFieldFil
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeThree_typeThreeNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeThree_type_three_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeThree_type_three_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4347,7 +4347,7 @@ func (ec *executionContext) _FilterTypeThree_typeThreeNumberFieldFiltered(ctx co
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeThree_type_three_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeThree",
 		Field:      field,
@@ -4372,8 +4372,8 @@ func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeNumberFieldFil
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeThree_typeThreeTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeThree_type_three_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeThree_type_three_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4400,7 +4400,7 @@ func (ec *executionContext) _FilterTypeThree_typeThreeTimeFieldFiltered(ctx cont
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeThree_type_three_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeThree",
 		Field:      field,
@@ -4425,8 +4425,8 @@ func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeTimeFieldFilte
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeThree_typeThreeBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeThree_type_three_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4439,7 +4439,7 @@ func (ec *executionContext) _FilterTypeThree_typeThreeBooleanFiltered(ctx contex
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeBooleanFiltered, nil
+		return obj.TypeThreeBooleanFieldFiltered, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4453,7 +4453,7 @@ func (ec *executionContext) _FilterTypeThree_typeThreeBooleanFiltered(ctx contex
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeThree_typeThreeBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeThree_type_three_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeThree",
 		Field:      field,
@@ -4514,20 +4514,20 @@ func (ec *executionContext) fieldContext_FilterTypeTwo__and(_ context.Context, f
 				return ec.fieldContext_FilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeTwo", field.Name)
 		},
@@ -4577,20 +4577,20 @@ func (ec *executionContext) fieldContext_FilterTypeTwo__or(_ context.Context, fi
 				return ec.fieldContext_FilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeTwo", field.Name)
 		},
@@ -4640,20 +4640,20 @@ func (ec *executionContext) fieldContext_FilterTypeTwo__not(_ context.Context, f
 				return ec.fieldContext_FilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_FilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_FilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type FilterTypeTwo", field.Name)
 		},
@@ -4661,8 +4661,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo__not(_ context.Context, f
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4689,7 +4689,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoStringFieldFiltered(ctx contex
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -4714,8 +4714,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoStringFieldFiltere
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4742,7 +4742,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoNumberFieldFiltered(ctx contex
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -4767,8 +4767,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoNumberFieldFiltere
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4795,7 +4795,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoTimeFieldFiltered(ctx context.
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -4820,8 +4820,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoTimeFieldFiltered(
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4834,7 +4834,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoBooleanFiltered(ctx context.Co
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoBooleanFiltered, nil
+		return obj.TypeTwoBooleanFieldFiltered, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4848,7 +4848,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoBooleanFiltered(ctx context.Co
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -4867,8 +4867,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoBooleanFiltered(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4895,7 +4895,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx context.
 	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -4909,20 +4909,20 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -4930,8 +4930,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoSliceWithTypeTwos(
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoWithTypeThree(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThree(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_with_type_three(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_with_type_three(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -4958,7 +4958,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoWithTypeThree(ctx context.Cont
 	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoWithTypeThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_with_type_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -4972,14 +4972,14 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoWithTypeThree(_ co
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -4987,8 +4987,8 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoWithTypeThree(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+func (ec *executionContext) _FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *FilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5015,7 +5015,7 @@ func (ec *executionContext) _FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx 
 	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_FilterTypeTwo_type_two_with_type_three_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "FilterTypeTwo",
 		Field:      field,
@@ -5029,14 +5029,14 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMa
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -5086,24 +5086,24 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne__and(_ context.Cont
 				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
 		},
@@ -5153,24 +5153,24 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne__or(_ context.Conte
 				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
 		},
@@ -5220,24 +5220,24 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne__not(_ context.Cont
 				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
-			case "typeOneStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
-			case "typeOneStringFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
-			case "typeOneNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
-			case "typeOneNumberFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
-			case "typeOneTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
-			case "typeOneTimeFieldFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
-			case "typeOneBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
-			case "typeOneBooleanFilteredNotMandatory":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
-			case "typeOneSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			case "type_one_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
+			case "type_one_string_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
+			case "type_one_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_number_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
+			case "type_one_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
+			case "type_one_time_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
+			case "type_one_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
+			case "type_one_boolean_field_filtered_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
+			case "type_one_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
 		},
@@ -5245,8 +5245,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne__not(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5273,7 +5273,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneStringFieldFiltered(ctx 
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5298,8 +5298,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneStringFieldF
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5326,7 +5326,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneStringFieldFilteredNotMa
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5351,8 +5351,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneStringFieldF
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5379,7 +5379,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx 
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5404,8 +5404,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneNumberFieldF
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5432,7 +5432,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneNumberFieldFilteredNotMa
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5457,8 +5457,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneNumberFieldF
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5485,7 +5485,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx co
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5510,8 +5510,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneTimeFieldFil
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5538,7 +5538,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneTimeFieldFilteredNotMand
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5563,8 +5563,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneTimeFieldFil
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5577,7 +5577,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFiltered(ctx cont
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFiltered, nil
+		return obj.TypeOneBooleanFieldFiltered, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5591,7 +5591,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFiltered(ctx cont
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5610,8 +5610,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneBooleanFilte
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5624,7 +5624,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFilteredNotMandat
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeOneBooleanFilteredNotMandatory, nil
+		return obj.TypeOneBooleanFieldFilteredNotMandatory, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5638,7 +5638,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFilteredNotMandat
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5657,8 +5657,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneBooleanFilte
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+func (ec *executionContext) _NestedFilterTypeOne_type_one_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5685,7 +5685,7 @@ func (ec *executionContext) _NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx co
 	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_type_one_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeOne",
 		Field:      field,
@@ -5699,20 +5699,20 @@ func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneSliceWithTyp
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -5762,14 +5762,14 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree__and(_ context.Co
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -5819,14 +5819,14 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree__or(_ context.Con
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -5876,14 +5876,14 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree__not(_ context.Co
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -5891,8 +5891,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree__not(_ context.Co
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeThree_type_three_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5919,7 +5919,7 @@ func (ec *executionContext) _NestedFilterTypeThree_typeThreeStringFieldFiltered(
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeThree",
 		Field:      field,
@@ -5944,8 +5944,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeStringFi
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeThree_type_three_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -5972,7 +5972,7 @@ func (ec *executionContext) _NestedFilterTypeThree_typeThreeNumberFieldFiltered(
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeThree",
 		Field:      field,
@@ -5997,8 +5997,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeNumberFi
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeThree_type_three_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6025,7 +6025,7 @@ func (ec *executionContext) _NestedFilterTypeThree_typeThreeTimeFieldFiltered(ct
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeThree",
 		Field:      field,
@@ -6050,8 +6050,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeTimeFiel
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeThree_typeThreeBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeThree_type_three_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6064,7 +6064,7 @@ func (ec *executionContext) _NestedFilterTypeThree_typeThreeBooleanFiltered(ctx 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeThreeBooleanFiltered, nil
+		return obj.TypeThreeBooleanFieldFiltered, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6078,7 +6078,7 @@ func (ec *executionContext) _NestedFilterTypeThree_typeThreeBooleanFiltered(ctx 
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeThree",
 		Field:      field,
@@ -6139,20 +6139,20 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo__and(_ context.Cont
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -6202,20 +6202,20 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo__or(_ context.Conte
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -6265,20 +6265,20 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo__not(_ context.Cont
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -6286,8 +6286,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo__not(_ context.Cont
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6314,7 +6314,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx 
 	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6339,8 +6339,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoStringFieldF
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6367,7 +6367,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx 
 	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6392,8 +6392,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldF
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6420,7 +6420,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx co
 	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6445,8 +6445,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFil
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6459,7 +6459,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx cont
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TypeTwoBooleanFiltered, nil
+		return obj.TypeTwoBooleanFieldFiltered, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -6473,7 +6473,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx cont
 	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6492,8 +6492,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoBooleanFilte
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6520,7 +6520,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx co
 	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6534,20 +6534,20 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTyp
 				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
@@ -6555,8 +6555,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTyp
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoWithTypeThree(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_with_type_three(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6583,7 +6583,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoWithTypeThree(ctx contex
 	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_with_type_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6597,14 +6597,14 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThre
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -6612,8 +6612,8 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThre
 	return fc, nil
 }
 
-func (ec *executionContext) _NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+func (ec *executionContext) _NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6640,7 +6640,7 @@ func (ec *executionContext) _NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandator
 	return ec.marshalONestedFilterTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "NestedFilterTypeTwo",
 		Field:      field,
@@ -6654,14 +6654,14 @@ func (ec *executionContext) fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThre
 				return ec.fieldContext_NestedFilterTypeThree__or(ctx, field)
 			case "_not":
 				return ec.fieldContext_NestedFilterTypeThree__not(ctx, field)
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
 		},
@@ -6798,8 +6798,8 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneStringFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6849,7 +6849,7 @@ func (ec *executionContext) _TypeOne_typeOneStringFieldFiltered(ctx context.Cont
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -6862,8 +6862,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneStringFieldFiltered(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneStringFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_string_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6910,7 +6910,7 @@ func (ec *executionContext) _TypeOne_typeOneStringFieldFilteredNotMandatory(ctx 
 	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneStringFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -6923,8 +6923,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneStringFieldFilteredNotMa
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -6974,7 +6974,7 @@ func (ec *executionContext) _TypeOne_typeOneNumberFieldFiltered(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -6987,8 +6987,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneNumberFieldFiltered(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneNumberFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_number_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7035,7 +7035,7 @@ func (ec *executionContext) _TypeOne_typeOneNumberFieldFilteredNotMandatory(ctx 
 	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneNumberFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7048,8 +7048,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneNumberFieldFilteredNotMa
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7099,7 +7099,7 @@ func (ec *executionContext) _TypeOne_typeOneTimeFieldFiltered(ctx context.Contex
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7112,8 +7112,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneTimeFieldFiltered(_ cont
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneTimeFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_time_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_time_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7160,7 +7160,7 @@ func (ec *executionContext) _TypeOne_typeOneTimeFieldFilteredNotMandatory(ctx co
 	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneTimeFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_time_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7173,8 +7173,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneTimeFieldFilteredNotMand
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneBooleanFiltered(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7188,7 +7188,7 @@ func (ec *executionContext) _TypeOne_typeOneBooleanFiltered(ctx context.Context,
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		directive0 := func(rctx context.Context) (interface{}, error) {
 			ctx = rctx // use context from middleware stack in children
-			return obj.TypeOneBooleanFiltered, nil
+			return obj.TypeOneBooleanFieldFiltered, nil
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
 			if ec.directives.Filterable == nil {
@@ -7224,7 +7224,7 @@ func (ec *executionContext) _TypeOne_typeOneBooleanFiltered(ctx context.Context,
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7237,8 +7237,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneBooleanFiltered(_ contex
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneBooleanFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_boolean_field_filtered_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7252,7 +7252,7 @@ func (ec *executionContext) _TypeOne_typeOneBooleanFilteredNotMandatory(ctx cont
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		directive0 := func(rctx context.Context) (interface{}, error) {
 			ctx = rctx // use context from middleware stack in children
-			return obj.TypeOneBooleanFilteredNotMandatory, nil
+			return obj.TypeOneBooleanFieldFilteredNotMandatory, nil
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
 			if ec.directives.Filterable == nil {
@@ -7285,7 +7285,7 @@ func (ec *executionContext) _TypeOne_typeOneBooleanFilteredNotMandatory(ctx cont
 	return ec.marshalOBoolean2ᚖbool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneBooleanFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_boolean_field_filtered_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7298,8 +7298,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneBooleanFilteredNotMandat
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneStringFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneStringFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_string_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_string_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7329,7 +7329,7 @@ func (ec *executionContext) _TypeOne_typeOneStringFieldWithNoFilter(ctx context.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneStringFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_string_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7342,8 +7342,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneStringFieldWithNoFilter(
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneNumberFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneNumberFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_number_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_number_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7373,7 +7373,7 @@ func (ec *executionContext) _TypeOne_typeOneNumberFieldWithNoFilter(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneNumberFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_number_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7386,8 +7386,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneNumberFieldWithNoFilter(
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneTimeFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneTimeFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_time_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_time_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7417,7 +7417,7 @@ func (ec *executionContext) _TypeOne_typeOneTimeFieldWithNoFilter(ctx context.Co
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneTimeFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_time_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7430,8 +7430,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneTimeFieldWithNoFilter(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeOne_typeOneSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeOne_typeOneSliceWithTypeTwos(ctx, field)
+func (ec *executionContext) _TypeOne_type_one_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_slice_with_type_twos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7481,7 +7481,7 @@ func (ec *executionContext) _TypeOne_typeOneSliceWithTypeTwos(ctx context.Contex
 	return ec.marshalNTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeOne_typeOneSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeOne_type_one_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeOne",
 		Field:      field,
@@ -7489,26 +7489,26 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneSliceWithTypeTwos(_ cont
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoStringFieldWithNoFilter":
-				return ec.fieldContext_TypeTwo_typeTwoStringFieldWithNoFilter(ctx, field)
-			case "typeTwoNumberFieldWithNoFilter":
-				return ec.fieldContext_TypeTwo_typeTwoNumberFieldWithNoFilter(ctx, field)
-			case "typeTwoTimeFieldWithNoFilter":
-				return ec.fieldContext_TypeTwo_typeTwoTimeFieldWithNoFilter(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_TypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_TypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_TypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_twoString_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoString_field_with_no_filter(ctx, field)
+			case "type_twoNumber_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoNumber_field_with_no_filter(ctx, field)
+			case "type_twoTime_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoTime_field_with_no_filter(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_TypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_TypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_TypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeTwo", field.Name)
 		},
@@ -7516,8 +7516,8 @@ func (ec *executionContext) fieldContext_TypeOne_typeOneSliceWithTypeTwos(_ cont
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeStringFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7567,7 +7567,7 @@ func (ec *executionContext) _TypeThree_typeThreeStringFieldFiltered(ctx context.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7580,8 +7580,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeStringFieldFiltered(
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7631,7 +7631,7 @@ func (ec *executionContext) _TypeThree_typeThreeNumberFieldFiltered(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7644,8 +7644,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeNumberFieldFiltered(
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7695,7 +7695,7 @@ func (ec *executionContext) _TypeThree_typeThreeTimeFieldFiltered(ctx context.Co
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7708,8 +7708,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeTimeFieldFiltered(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeBooleanFiltered(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7723,7 +7723,7 @@ func (ec *executionContext) _TypeThree_typeThreeBooleanFiltered(ctx context.Cont
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		directive0 := func(rctx context.Context) (interface{}, error) {
 			ctx = rctx // use context from middleware stack in children
-			return obj.TypeThreeBooleanFiltered, nil
+			return obj.TypeThreeBooleanFieldFiltered, nil
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
 			if ec.directives.Filterable == nil {
@@ -7759,7 +7759,7 @@ func (ec *executionContext) _TypeThree_typeThreeBooleanFiltered(ctx context.Cont
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7772,8 +7772,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeBooleanFiltered(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeStringFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeStringFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_string_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_string_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7803,7 +7803,7 @@ func (ec *executionContext) _TypeThree_typeThreeStringFieldWithNoFilter(ctx cont
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeStringFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_string_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7816,8 +7816,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeStringFieldWithNoFil
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeNumberFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeNumberFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_number_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_number_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7847,7 +7847,7 @@ func (ec *executionContext) _TypeThree_typeThreeNumberFieldWithNoFilter(ctx cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeNumberFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_number_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7860,8 +7860,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeNumberFieldWithNoFil
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeThree_typeThreeTimeFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeThree_typeThreeTimeFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeThree_type_three_time_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_three_time_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7891,7 +7891,7 @@ func (ec *executionContext) _TypeThree_typeThreeTimeFieldWithNoFilter(ctx contex
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeThree_typeThreeTimeFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeThree_type_three_time_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeThree",
 		Field:      field,
@@ -7904,8 +7904,8 @@ func (ec *executionContext) fieldContext_TypeThree_typeThreeTimeFieldWithNoFilte
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoStringFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_string_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -7955,7 +7955,7 @@ func (ec *executionContext) _TypeTwo_typeTwoStringFieldFiltered(ctx context.Cont
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_string_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -7968,8 +7968,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoStringFieldFiltered(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoNumberFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_number_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_number_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8019,7 +8019,7 @@ func (ec *executionContext) _TypeTwo_typeTwoNumberFieldFiltered(ctx context.Cont
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_number_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8032,8 +8032,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoNumberFieldFiltered(_ co
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoTimeFieldFiltered(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_time_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_time_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8083,7 +8083,7 @@ func (ec *executionContext) _TypeTwo_typeTwoTimeFieldFiltered(ctx context.Contex
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_time_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8096,8 +8096,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoTimeFieldFiltered(_ cont
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoBooleanFiltered(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_boolean_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_boolean_field_filtered(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8111,7 +8111,7 @@ func (ec *executionContext) _TypeTwo_typeTwoBooleanFiltered(ctx context.Context,
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		directive0 := func(rctx context.Context) (interface{}, error) {
 			ctx = rctx // use context from middleware stack in children
-			return obj.TypeTwoBooleanFiltered, nil
+			return obj.TypeTwoBooleanFieldFiltered, nil
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
 			if ec.directives.Filterable == nil {
@@ -8147,7 +8147,7 @@ func (ec *executionContext) _TypeTwo_typeTwoBooleanFiltered(ctx context.Context,
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_boolean_field_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8160,8 +8160,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoBooleanFiltered(_ contex
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoStringFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoStringFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeTwo_type_twoString_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_twoString_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8191,7 +8191,7 @@ func (ec *executionContext) _TypeTwo_typeTwoStringFieldWithNoFilter(ctx context.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoStringFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_twoString_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8204,8 +8204,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoStringFieldWithNoFilter(
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoNumberFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoNumberFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeTwo_type_twoNumber_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_twoNumber_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8235,7 +8235,7 @@ func (ec *executionContext) _TypeTwo_typeTwoNumberFieldWithNoFilter(ctx context.
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoNumberFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_twoNumber_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8248,8 +8248,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoNumberFieldWithNoFilter(
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoTimeFieldWithNoFilter(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoTimeFieldWithNoFilter(ctx, field)
+func (ec *executionContext) _TypeTwo_type_twoTime_field_with_no_filter(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_twoTime_field_with_no_filter(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8279,7 +8279,7 @@ func (ec *executionContext) _TypeTwo_typeTwoTimeFieldWithNoFilter(ctx context.Co
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoTimeFieldWithNoFilter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_twoTime_field_with_no_filter(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8292,8 +8292,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoTimeFieldWithNoFilter(_ 
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_slice_with_type_twos(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_slice_with_type_twos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8343,7 +8343,7 @@ func (ec *executionContext) _TypeTwo_typeTwoSliceWithTypeTwos(ctx context.Contex
 	return ec.marshalNTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8351,26 +8351,26 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoSliceWithTypeTwos(_ cont
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "typeTwoStringFieldFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoStringFieldFiltered(ctx, field)
-			case "typeTwoNumberFieldFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoNumberFieldFiltered(ctx, field)
-			case "typeTwoTimeFieldFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoTimeFieldFiltered(ctx, field)
-			case "typeTwoBooleanFiltered":
-				return ec.fieldContext_TypeTwo_typeTwoBooleanFiltered(ctx, field)
-			case "typeTwoStringFieldWithNoFilter":
-				return ec.fieldContext_TypeTwo_typeTwoStringFieldWithNoFilter(ctx, field)
-			case "typeTwoNumberFieldWithNoFilter":
-				return ec.fieldContext_TypeTwo_typeTwoNumberFieldWithNoFilter(ctx, field)
-			case "typeTwoTimeFieldWithNoFilter":
-				return ec.fieldContext_TypeTwo_typeTwoTimeFieldWithNoFilter(ctx, field)
-			case "typeTwoSliceWithTypeTwos":
-				return ec.fieldContext_TypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
-			case "typeTwoWithTypeThree":
-				return ec.fieldContext_TypeTwo_typeTwoWithTypeThree(ctx, field)
-			case "typeTwoWithTypeThreeNotMandatory":
-				return ec.fieldContext_TypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			case "type_two_string_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_string_field_filtered(ctx, field)
+			case "type_two_number_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_number_field_filtered(ctx, field)
+			case "type_two_time_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_time_field_filtered(ctx, field)
+			case "type_two_boolean_field_filtered":
+				return ec.fieldContext_TypeTwo_type_two_boolean_field_filtered(ctx, field)
+			case "type_twoString_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoString_field_with_no_filter(ctx, field)
+			case "type_twoNumber_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoNumber_field_with_no_filter(ctx, field)
+			case "type_twoTime_field_with_no_filter":
+				return ec.fieldContext_TypeTwo_type_twoTime_field_with_no_filter(ctx, field)
+			case "type_two_slice_with_type_twos":
+				return ec.fieldContext_TypeTwo_type_two_slice_with_type_twos(ctx, field)
+			case "type_two_with_type_three":
+				return ec.fieldContext_TypeTwo_type_two_with_type_three(ctx, field)
+			case "type_two_with_type_three_not_mandatory":
+				return ec.fieldContext_TypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeTwo", field.Name)
 		},
@@ -8378,8 +8378,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoSliceWithTypeTwos(_ cont
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoWithTypeThree(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoWithTypeThree(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_with_type_three(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_with_type_three(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8429,7 +8429,7 @@ func (ec *executionContext) _TypeTwo_typeTwoWithTypeThree(ctx context.Context, f
 	return ec.marshalNTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThree(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoWithTypeThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_with_type_three(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8437,20 +8437,20 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoWithTypeThree(_ context.
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_TypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_TypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_TypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_TypeThree_typeThreeBooleanFiltered(ctx, field)
-			case "typeThreeStringFieldWithNoFilter":
-				return ec.fieldContext_TypeThree_typeThreeStringFieldWithNoFilter(ctx, field)
-			case "typeThreeNumberFieldWithNoFilter":
-				return ec.fieldContext_TypeThree_typeThreeNumberFieldWithNoFilter(ctx, field)
-			case "typeThreeTimeFieldWithNoFilter":
-				return ec.fieldContext_TypeThree_typeThreeTimeFieldWithNoFilter(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_boolean_field_filtered(ctx, field)
+			case "type_three_string_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_string_field_with_no_filter(ctx, field)
+			case "type_three_number_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_number_field_with_no_filter(ctx, field)
+			case "type_three_time_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_time_field_with_no_filter(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeThree", field.Name)
 		},
@@ -8458,8 +8458,8 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoWithTypeThree(_ context.
 	return fc, nil
 }
 
-func (ec *executionContext) _TypeTwo_typeTwoWithTypeThreeNotMandatory(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+func (ec *executionContext) _TypeTwo_type_two_with_type_three_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeTwo_type_two_with_type_three_not_mandatory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -8506,7 +8506,7 @@ func (ec *executionContext) _TypeTwo_typeTwoWithTypeThreeNotMandatory(ctx contex
 	return ec.marshalOTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThree(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TypeTwo_typeTwoWithTypeThreeNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TypeTwo_type_two_with_type_three_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "TypeTwo",
 		Field:      field,
@@ -8514,20 +8514,20 @@ func (ec *executionContext) fieldContext_TypeTwo_typeTwoWithTypeThreeNotMandator
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "typeThreeStringFieldFiltered":
-				return ec.fieldContext_TypeThree_typeThreeStringFieldFiltered(ctx, field)
-			case "typeThreeNumberFieldFiltered":
-				return ec.fieldContext_TypeThree_typeThreeNumberFieldFiltered(ctx, field)
-			case "typeThreeTimeFieldFiltered":
-				return ec.fieldContext_TypeThree_typeThreeTimeFieldFiltered(ctx, field)
-			case "typeThreeBooleanFiltered":
-				return ec.fieldContext_TypeThree_typeThreeBooleanFiltered(ctx, field)
-			case "typeThreeStringFieldWithNoFilter":
-				return ec.fieldContext_TypeThree_typeThreeStringFieldWithNoFilter(ctx, field)
-			case "typeThreeNumberFieldWithNoFilter":
-				return ec.fieldContext_TypeThree_typeThreeNumberFieldWithNoFilter(ctx, field)
-			case "typeThreeTimeFieldWithNoFilter":
-				return ec.fieldContext_TypeThree_typeThreeTimeFieldWithNoFilter(ctx, field)
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_boolean_field_filtered(ctx, field)
+			case "type_three_string_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_string_field_with_no_filter(ctx, field)
+			case "type_three_number_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_number_field_with_no_filter(ctx, field)
+			case "type_three_time_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_time_field_with_no_filter(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeThree", field.Name)
 		},
@@ -10327,29 +10327,29 @@ func (ec *executionContext) _ExternalType(ctx context.Context, sel ast.Selection
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("ExternalType")
-		case "numberOne":
-			out.Values[i] = ec._ExternalType_numberOne(ctx, field, obj)
+		case "number_one":
+			out.Values[i] = ec._ExternalType_number_one(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "numberTwo":
-			out.Values[i] = ec._ExternalType_numberTwo(ctx, field, obj)
+		case "number_two":
+			out.Values[i] = ec._ExternalType_number_two(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "numberThree":
-			out.Values[i] = ec._ExternalType_numberThree(ctx, field, obj)
+		case "number_three":
+			out.Values[i] = ec._ExternalType_number_three(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "numberFour":
-			out.Values[i] = ec._ExternalType_numberFour(ctx, field, obj)
-		case "numberFive":
-			out.Values[i] = ec._ExternalType_numberFive(ctx, field, obj)
-		case "numberList":
-			out.Values[i] = ec._ExternalType_numberList(ctx, field, obj)
-		case "typeOne":
-			out.Values[i] = ec._ExternalType_typeOne(ctx, field, obj)
+		case "number_four":
+			out.Values[i] = ec._ExternalType_number_four(ctx, field, obj)
+		case "number_five":
+			out.Values[i] = ec._ExternalType_number_five(ctx, field, obj)
+		case "number_list":
+			out.Values[i] = ec._ExternalType_number_list(ctx, field, obj)
+		case "type_one":
+			out.Values[i] = ec._ExternalType_type_one(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10428,20 +10428,20 @@ func (ec *executionContext) _FilterExternalType(ctx context.Context, sel ast.Sel
 			out.Values[i] = ec._FilterExternalType__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._FilterExternalType__not(ctx, field, obj)
-		case "numberOne":
-			out.Values[i] = ec._FilterExternalType_numberOne(ctx, field, obj)
-		case "numberTwo":
-			out.Values[i] = ec._FilterExternalType_numberTwo(ctx, field, obj)
-		case "numberThree":
-			out.Values[i] = ec._FilterExternalType_numberThree(ctx, field, obj)
-		case "numberFour":
-			out.Values[i] = ec._FilterExternalType_numberFour(ctx, field, obj)
-		case "numberFive":
-			out.Values[i] = ec._FilterExternalType_numberFive(ctx, field, obj)
-		case "numberList":
-			out.Values[i] = ec._FilterExternalType_numberList(ctx, field, obj)
-		case "typeOne":
-			out.Values[i] = ec._FilterExternalType_typeOne(ctx, field, obj)
+		case "number_one":
+			out.Values[i] = ec._FilterExternalType_number_one(ctx, field, obj)
+		case "number_two":
+			out.Values[i] = ec._FilterExternalType_number_two(ctx, field, obj)
+		case "number_three":
+			out.Values[i] = ec._FilterExternalType_number_three(ctx, field, obj)
+		case "number_four":
+			out.Values[i] = ec._FilterExternalType_number_four(ctx, field, obj)
+		case "number_five":
+			out.Values[i] = ec._FilterExternalType_number_five(ctx, field, obj)
+		case "number_list":
+			out.Values[i] = ec._FilterExternalType_number_list(ctx, field, obj)
+		case "type_one":
+			out.Values[i] = ec._FilterExternalType_type_one(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10614,24 +10614,24 @@ func (ec *executionContext) _FilterTypeOne(ctx context.Context, sel ast.Selectio
 			out.Values[i] = ec._FilterTypeOne__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._FilterTypeOne__not(ctx, field, obj)
-		case "typeOneStringFieldFiltered":
-			out.Values[i] = ec._FilterTypeOne_typeOneStringFieldFiltered(ctx, field, obj)
-		case "typeOneStringFieldFilteredNotMandatory":
-			out.Values[i] = ec._FilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneNumberFieldFiltered":
-			out.Values[i] = ec._FilterTypeOne_typeOneNumberFieldFiltered(ctx, field, obj)
-		case "typeOneNumberFieldFilteredNotMandatory":
-			out.Values[i] = ec._FilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneTimeFieldFiltered":
-			out.Values[i] = ec._FilterTypeOne_typeOneTimeFieldFiltered(ctx, field, obj)
-		case "typeOneTimeFieldFilteredNotMandatory":
-			out.Values[i] = ec._FilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneBooleanFiltered":
-			out.Values[i] = ec._FilterTypeOne_typeOneBooleanFiltered(ctx, field, obj)
-		case "typeOneBooleanFilteredNotMandatory":
-			out.Values[i] = ec._FilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field, obj)
-		case "typeOneSliceWithTypeTwos":
-			out.Values[i] = ec._FilterTypeOne_typeOneSliceWithTypeTwos(ctx, field, obj)
+		case "type_one_string_field_filtered":
+			out.Values[i] = ec._FilterTypeOne_type_one_string_field_filtered(ctx, field, obj)
+		case "type_one_string_field_filtered_not_mandatory":
+			out.Values[i] = ec._FilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_number_field_filtered":
+			out.Values[i] = ec._FilterTypeOne_type_one_number_field_filtered(ctx, field, obj)
+		case "type_one_number_field_filtered_not_mandatory":
+			out.Values[i] = ec._FilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_time_field_filtered":
+			out.Values[i] = ec._FilterTypeOne_type_one_time_field_filtered(ctx, field, obj)
+		case "type_one_time_field_filtered_not_mandatory":
+			out.Values[i] = ec._FilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_boolean_field_filtered":
+			out.Values[i] = ec._FilterTypeOne_type_one_boolean_field_filtered(ctx, field, obj)
+		case "type_one_boolean_field_filtered_not_mandatory":
+			out.Values[i] = ec._FilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_slice_with_type_twos":
+			out.Values[i] = ec._FilterTypeOne_type_one_slice_with_type_twos(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10672,14 +10672,14 @@ func (ec *executionContext) _FilterTypeThree(ctx context.Context, sel ast.Select
 			out.Values[i] = ec._FilterTypeThree__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._FilterTypeThree__not(ctx, field, obj)
-		case "typeThreeStringFieldFiltered":
-			out.Values[i] = ec._FilterTypeThree_typeThreeStringFieldFiltered(ctx, field, obj)
-		case "typeThreeNumberFieldFiltered":
-			out.Values[i] = ec._FilterTypeThree_typeThreeNumberFieldFiltered(ctx, field, obj)
-		case "typeThreeTimeFieldFiltered":
-			out.Values[i] = ec._FilterTypeThree_typeThreeTimeFieldFiltered(ctx, field, obj)
-		case "typeThreeBooleanFiltered":
-			out.Values[i] = ec._FilterTypeThree_typeThreeBooleanFiltered(ctx, field, obj)
+		case "type_three_string_field_filtered":
+			out.Values[i] = ec._FilterTypeThree_type_three_string_field_filtered(ctx, field, obj)
+		case "type_three_number_field_filtered":
+			out.Values[i] = ec._FilterTypeThree_type_three_number_field_filtered(ctx, field, obj)
+		case "type_three_time_field_filtered":
+			out.Values[i] = ec._FilterTypeThree_type_three_time_field_filtered(ctx, field, obj)
+		case "type_three_boolean_field_filtered":
+			out.Values[i] = ec._FilterTypeThree_type_three_boolean_field_filtered(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10720,20 +10720,20 @@ func (ec *executionContext) _FilterTypeTwo(ctx context.Context, sel ast.Selectio
 			out.Values[i] = ec._FilterTypeTwo__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._FilterTypeTwo__not(ctx, field, obj)
-		case "typeTwoStringFieldFiltered":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoStringFieldFiltered(ctx, field, obj)
-		case "typeTwoNumberFieldFiltered":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field, obj)
-		case "typeTwoTimeFieldFiltered":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field, obj)
-		case "typeTwoBooleanFiltered":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoBooleanFiltered(ctx, field, obj)
-		case "typeTwoSliceWithTypeTwos":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field, obj)
-		case "typeTwoWithTypeThree":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoWithTypeThree(ctx, field, obj)
-		case "typeTwoWithTypeThreeNotMandatory":
-			out.Values[i] = ec._FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field, obj)
+		case "type_two_string_field_filtered":
+			out.Values[i] = ec._FilterTypeTwo_type_two_string_field_filtered(ctx, field, obj)
+		case "type_two_number_field_filtered":
+			out.Values[i] = ec._FilterTypeTwo_type_two_number_field_filtered(ctx, field, obj)
+		case "type_two_time_field_filtered":
+			out.Values[i] = ec._FilterTypeTwo_type_two_time_field_filtered(ctx, field, obj)
+		case "type_two_boolean_field_filtered":
+			out.Values[i] = ec._FilterTypeTwo_type_two_boolean_field_filtered(ctx, field, obj)
+		case "type_two_slice_with_type_twos":
+			out.Values[i] = ec._FilterTypeTwo_type_two_slice_with_type_twos(ctx, field, obj)
+		case "type_two_with_type_three":
+			out.Values[i] = ec._FilterTypeTwo_type_two_with_type_three(ctx, field, obj)
+		case "type_two_with_type_three_not_mandatory":
+			out.Values[i] = ec._FilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10774,24 +10774,24 @@ func (ec *executionContext) _NestedFilterTypeOne(ctx context.Context, sel ast.Se
 			out.Values[i] = ec._NestedFilterTypeOne__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._NestedFilterTypeOne__not(ctx, field, obj)
-		case "typeOneStringFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field, obj)
-		case "typeOneStringFieldFilteredNotMandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneNumberFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field, obj)
-		case "typeOneNumberFieldFilteredNotMandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneTimeFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field, obj)
-		case "typeOneTimeFieldFilteredNotMandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneBooleanFiltered":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field, obj)
-		case "typeOneBooleanFilteredNotMandatory":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field, obj)
-		case "typeOneSliceWithTypeTwos":
-			out.Values[i] = ec._NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field, obj)
+		case "type_one_string_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_string_field_filtered(ctx, field, obj)
+		case "type_one_string_field_filtered_not_mandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_string_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_number_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_number_field_filtered(ctx, field, obj)
+		case "type_one_number_field_filtered_not_mandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_number_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_time_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_time_field_filtered(ctx, field, obj)
+		case "type_one_time_field_filtered_not_mandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_time_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_boolean_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_boolean_field_filtered(ctx, field, obj)
+		case "type_one_boolean_field_filtered_not_mandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_slice_with_type_twos":
+			out.Values[i] = ec._NestedFilterTypeOne_type_one_slice_with_type_twos(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10832,14 +10832,14 @@ func (ec *executionContext) _NestedFilterTypeThree(ctx context.Context, sel ast.
 			out.Values[i] = ec._NestedFilterTypeThree__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._NestedFilterTypeThree__not(ctx, field, obj)
-		case "typeThreeStringFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeThree_typeThreeStringFieldFiltered(ctx, field, obj)
-		case "typeThreeNumberFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeThree_typeThreeNumberFieldFiltered(ctx, field, obj)
-		case "typeThreeTimeFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeThree_typeThreeTimeFieldFiltered(ctx, field, obj)
-		case "typeThreeBooleanFiltered":
-			out.Values[i] = ec._NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field, obj)
+		case "type_three_string_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeThree_type_three_string_field_filtered(ctx, field, obj)
+		case "type_three_number_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeThree_type_three_number_field_filtered(ctx, field, obj)
+		case "type_three_time_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeThree_type_three_time_field_filtered(ctx, field, obj)
+		case "type_three_boolean_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeThree_type_three_boolean_field_filtered(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10880,20 +10880,20 @@ func (ec *executionContext) _NestedFilterTypeTwo(ctx context.Context, sel ast.Se
 			out.Values[i] = ec._NestedFilterTypeTwo__or(ctx, field, obj)
 		case "_not":
 			out.Values[i] = ec._NestedFilterTypeTwo__not(ctx, field, obj)
-		case "typeTwoStringFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field, obj)
-		case "typeTwoNumberFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field, obj)
-		case "typeTwoTimeFieldFiltered":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field, obj)
-		case "typeTwoBooleanFiltered":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field, obj)
-		case "typeTwoSliceWithTypeTwos":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field, obj)
-		case "typeTwoWithTypeThree":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field, obj)
-		case "typeTwoWithTypeThreeNotMandatory":
-			out.Values[i] = ec._NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field, obj)
+		case "type_two_string_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_string_field_filtered(ctx, field, obj)
+		case "type_two_number_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_number_field_filtered(ctx, field, obj)
+		case "type_two_time_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_time_field_filtered(ctx, field, obj)
+		case "type_two_boolean_field_filtered":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_boolean_field_filtered(ctx, field, obj)
+		case "type_two_slice_with_type_twos":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_slice_with_type_twos(ctx, field, obj)
+		case "type_two_with_type_three":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_with_type_three(ctx, field, obj)
+		case "type_two_with_type_three_not_mandatory":
+			out.Values[i] = ec._NestedFilterTypeTwo_type_two_with_type_three_not_mandatory(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10978,51 +10978,51 @@ func (ec *executionContext) _TypeOne(ctx context.Context, sel ast.SelectionSet, 
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("TypeOne")
-		case "typeOneStringFieldFiltered":
-			out.Values[i] = ec._TypeOne_typeOneStringFieldFiltered(ctx, field, obj)
+		case "type_one_string_field_filtered":
+			out.Values[i] = ec._TypeOne_type_one_string_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneStringFieldFilteredNotMandatory":
-			out.Values[i] = ec._TypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneNumberFieldFiltered":
-			out.Values[i] = ec._TypeOne_typeOneNumberFieldFiltered(ctx, field, obj)
+		case "type_one_string_field_filtered_not_mandatory":
+			out.Values[i] = ec._TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_number_field_filtered":
+			out.Values[i] = ec._TypeOne_type_one_number_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneNumberFieldFilteredNotMandatory":
-			out.Values[i] = ec._TypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneTimeFieldFiltered":
-			out.Values[i] = ec._TypeOne_typeOneTimeFieldFiltered(ctx, field, obj)
+		case "type_one_number_field_filtered_not_mandatory":
+			out.Values[i] = ec._TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_time_field_filtered":
+			out.Values[i] = ec._TypeOne_type_one_time_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneTimeFieldFilteredNotMandatory":
-			out.Values[i] = ec._TypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field, obj)
-		case "typeOneBooleanFiltered":
-			out.Values[i] = ec._TypeOne_typeOneBooleanFiltered(ctx, field, obj)
+		case "type_one_time_field_filtered_not_mandatory":
+			out.Values[i] = ec._TypeOne_type_one_time_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_boolean_field_filtered":
+			out.Values[i] = ec._TypeOne_type_one_boolean_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneBooleanFilteredNotMandatory":
-			out.Values[i] = ec._TypeOne_typeOneBooleanFilteredNotMandatory(ctx, field, obj)
-		case "typeOneStringFieldWithNoFilter":
-			out.Values[i] = ec._TypeOne_typeOneStringFieldWithNoFilter(ctx, field, obj)
+		case "type_one_boolean_field_filtered_not_mandatory":
+			out.Values[i] = ec._TypeOne_type_one_boolean_field_filtered_not_mandatory(ctx, field, obj)
+		case "type_one_string_field_with_no_filter":
+			out.Values[i] = ec._TypeOne_type_one_string_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneNumberFieldWithNoFilter":
-			out.Values[i] = ec._TypeOne_typeOneNumberFieldWithNoFilter(ctx, field, obj)
+		case "type_one_number_field_with_no_filter":
+			out.Values[i] = ec._TypeOne_type_one_number_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneTimeFieldWithNoFilter":
-			out.Values[i] = ec._TypeOne_typeOneTimeFieldWithNoFilter(ctx, field, obj)
+		case "type_one_time_field_with_no_filter":
+			out.Values[i] = ec._TypeOne_type_one_time_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeOneSliceWithTypeTwos":
-			out.Values[i] = ec._TypeOne_typeOneSliceWithTypeTwos(ctx, field, obj)
+		case "type_one_slice_with_type_twos":
+			out.Values[i] = ec._TypeOne_type_one_slice_with_type_twos(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -11060,38 +11060,38 @@ func (ec *executionContext) _TypeThree(ctx context.Context, sel ast.SelectionSet
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("TypeThree")
-		case "typeThreeStringFieldFiltered":
-			out.Values[i] = ec._TypeThree_typeThreeStringFieldFiltered(ctx, field, obj)
+		case "type_three_string_field_filtered":
+			out.Values[i] = ec._TypeThree_type_three_string_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeThreeNumberFieldFiltered":
-			out.Values[i] = ec._TypeThree_typeThreeNumberFieldFiltered(ctx, field, obj)
+		case "type_three_number_field_filtered":
+			out.Values[i] = ec._TypeThree_type_three_number_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeThreeTimeFieldFiltered":
-			out.Values[i] = ec._TypeThree_typeThreeTimeFieldFiltered(ctx, field, obj)
+		case "type_three_time_field_filtered":
+			out.Values[i] = ec._TypeThree_type_three_time_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeThreeBooleanFiltered":
-			out.Values[i] = ec._TypeThree_typeThreeBooleanFiltered(ctx, field, obj)
+		case "type_three_boolean_field_filtered":
+			out.Values[i] = ec._TypeThree_type_three_boolean_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeThreeStringFieldWithNoFilter":
-			out.Values[i] = ec._TypeThree_typeThreeStringFieldWithNoFilter(ctx, field, obj)
+		case "type_three_string_field_with_no_filter":
+			out.Values[i] = ec._TypeThree_type_three_string_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeThreeNumberFieldWithNoFilter":
-			out.Values[i] = ec._TypeThree_typeThreeNumberFieldWithNoFilter(ctx, field, obj)
+		case "type_three_number_field_with_no_filter":
+			out.Values[i] = ec._TypeThree_type_three_number_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeThreeTimeFieldWithNoFilter":
-			out.Values[i] = ec._TypeThree_typeThreeTimeFieldWithNoFilter(ctx, field, obj)
+		case "type_three_time_field_with_no_filter":
+			out.Values[i] = ec._TypeThree_type_three_time_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
@@ -11129,53 +11129,53 @@ func (ec *executionContext) _TypeTwo(ctx context.Context, sel ast.SelectionSet, 
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("TypeTwo")
-		case "typeTwoStringFieldFiltered":
-			out.Values[i] = ec._TypeTwo_typeTwoStringFieldFiltered(ctx, field, obj)
+		case "type_two_string_field_filtered":
+			out.Values[i] = ec._TypeTwo_type_two_string_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoNumberFieldFiltered":
-			out.Values[i] = ec._TypeTwo_typeTwoNumberFieldFiltered(ctx, field, obj)
+		case "type_two_number_field_filtered":
+			out.Values[i] = ec._TypeTwo_type_two_number_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoTimeFieldFiltered":
-			out.Values[i] = ec._TypeTwo_typeTwoTimeFieldFiltered(ctx, field, obj)
+		case "type_two_time_field_filtered":
+			out.Values[i] = ec._TypeTwo_type_two_time_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoBooleanFiltered":
-			out.Values[i] = ec._TypeTwo_typeTwoBooleanFiltered(ctx, field, obj)
+		case "type_two_boolean_field_filtered":
+			out.Values[i] = ec._TypeTwo_type_two_boolean_field_filtered(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoStringFieldWithNoFilter":
-			out.Values[i] = ec._TypeTwo_typeTwoStringFieldWithNoFilter(ctx, field, obj)
+		case "type_twoString_field_with_no_filter":
+			out.Values[i] = ec._TypeTwo_type_twoString_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoNumberFieldWithNoFilter":
-			out.Values[i] = ec._TypeTwo_typeTwoNumberFieldWithNoFilter(ctx, field, obj)
+		case "type_twoNumber_field_with_no_filter":
+			out.Values[i] = ec._TypeTwo_type_twoNumber_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoTimeFieldWithNoFilter":
-			out.Values[i] = ec._TypeTwo_typeTwoTimeFieldWithNoFilter(ctx, field, obj)
+		case "type_twoTime_field_with_no_filter":
+			out.Values[i] = ec._TypeTwo_type_twoTime_field_with_no_filter(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoSliceWithTypeTwos":
-			out.Values[i] = ec._TypeTwo_typeTwoSliceWithTypeTwos(ctx, field, obj)
+		case "type_two_slice_with_type_twos":
+			out.Values[i] = ec._TypeTwo_type_two_slice_with_type_twos(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoWithTypeThree":
-			out.Values[i] = ec._TypeTwo_typeTwoWithTypeThree(ctx, field, obj)
+		case "type_two_with_type_three":
+			out.Values[i] = ec._TypeTwo_type_two_with_type_three(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "typeTwoWithTypeThreeNotMandatory":
-			out.Values[i] = ec._TypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field, obj)
+		case "type_two_with_type_three_not_mandatory":
+			out.Values[i] = ec._TypeTwo_type_two_with_type_three_not_mandatory(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

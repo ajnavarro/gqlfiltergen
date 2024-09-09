@@ -40,7 +40,7 @@ func (t *ExternalType) TypeOne() *TypeOne {
 		TypeOneNumberFieldFiltered:             42,
 		TypeOneNumberFieldFilteredNotMandatory: &nmrNotMandatory,
 		TypeOneTimeFieldFiltered:               time.Now(),
-		TypeOneBooleanFiltered:                 true,
+		TypeOneBooleanFieldFiltered:            true,
 		TypeOneStringFieldWithNoFilter:         "no filter",
 		TypeOneSliceWithTypeTwos:               nil,
 	}
