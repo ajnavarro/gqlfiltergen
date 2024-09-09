@@ -118,6 +118,7 @@ func (f *Plugin) GenerateCode(data *codegen.Data) error {
 			for _, of := range dataObj.Fields {
 				if strings.ToLower(f.FilterField) == strings.ToLower(of.GoFieldName) {
 					f.FilterField = of.GoFieldName
+					f.IsMethod = of.IsMethod()
 				}
 			}
 		}

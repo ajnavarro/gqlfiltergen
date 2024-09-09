@@ -7,6 +7,9 @@ model:
   filename: testdata/out/generated.go
 
 models:
+  ExternalType:
+    model:
+      - github.com/ajnavarro/gqlfiltergen/testdata/out.ExternalType
   ExtraFieldsTest:
     extraFields:
       FieldInternalType:
@@ -19,3 +22,8 @@ models:
         overrideTags: 'json:"field_int_tag"'
       FieldIntSlice:
         type: "[]int64"
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32

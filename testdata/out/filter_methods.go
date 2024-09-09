@@ -9,60 +9,6 @@ import (
 
 ///////////////////////////////// CUSTOM  TYPES /////////////////////////////////
 
-func (f *FilterTypeThree) Eval(obj *TypeThree) bool {
-	// Evaluate logical operators first
-	if len(f.And) > 0 {
-		for _, subFilter := range f.And {
-			if !subFilter.Eval(obj) {
-				return false
-			}
-		}
-	}
-
-	if len(f.Or) > 0 {
-		orResult := false
-		for _, subFilter := range f.Or {
-			if subFilter.Eval(obj) {
-				orResult = true
-				break
-			}
-		}
-		if !orResult {
-			return false
-		}
-	}
-
-	if f.Not != nil {
-		if f.Not.Eval(obj) {
-			return false
-		}
-	}
-
-	// Evaluate individual field filters
-
-	// Handle TypeThreeStringFieldFiltered field
-	if f.TypeThreeStringFieldFiltered != nil && !f.TypeThreeStringFieldFiltered.Eval(&obj.TypeThreeStringFieldFiltered) {
-		return false
-	}
-
-	// Handle TypeThreeNumberFieldFiltered field
-	if f.TypeThreeNumberFieldFiltered != nil && !f.TypeThreeNumberFieldFiltered.Eval(&obj.TypeThreeNumberFieldFiltered) {
-		return false
-	}
-
-	// Handle TypeThreeTimeFieldFiltered field
-	if f.TypeThreeTimeFieldFiltered != nil && !f.TypeThreeTimeFieldFiltered.Eval(&obj.TypeThreeTimeFieldFiltered) {
-		return false
-	}
-
-	// Handle TypeThreeBooleanFiltered field
-	if f.TypeThreeBooleanFiltered != nil && !f.TypeThreeBooleanFiltered.Eval(&obj.TypeThreeBooleanFiltered) {
-		return false
-	}
-
-	return true
-}
-
 func (f *NestedFilterTypeThree) Eval(obj *TypeThree) bool {
 	// Evaluate logical operators first
 	if len(f.And) > 0 {
@@ -95,22 +41,26 @@ func (f *NestedFilterTypeThree) Eval(obj *TypeThree) bool {
 	// Evaluate individual field filters
 
 	// Handle TypeThreeStringFieldFiltered field
-	if f.TypeThreeStringFieldFiltered != nil && !f.TypeThreeStringFieldFiltered.Eval(&obj.TypeThreeStringFieldFiltered) {
+	toEvalTypeThreeStringFieldFiltered := obj.TypeThreeStringFieldFiltered
+	if f.TypeThreeStringFieldFiltered != nil && !f.TypeThreeStringFieldFiltered.Eval(&toEvalTypeThreeStringFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeThreeNumberFieldFiltered field
-	if f.TypeThreeNumberFieldFiltered != nil && !f.TypeThreeNumberFieldFiltered.Eval(&obj.TypeThreeNumberFieldFiltered) {
+	toEvalTypeThreeNumberFieldFiltered := toIntPtr(obj.TypeThreeNumberFieldFiltered)
+	if f.TypeThreeNumberFieldFiltered != nil && !f.TypeThreeNumberFieldFiltered.Eval(toEvalTypeThreeNumberFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeThreeTimeFieldFiltered field
-	if f.TypeThreeTimeFieldFiltered != nil && !f.TypeThreeTimeFieldFiltered.Eval(&obj.TypeThreeTimeFieldFiltered) {
+	toEvalTypeThreeTimeFieldFiltered := obj.TypeThreeTimeFieldFiltered
+	if f.TypeThreeTimeFieldFiltered != nil && !f.TypeThreeTimeFieldFiltered.Eval(&toEvalTypeThreeTimeFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeThreeBooleanFiltered field
-	if f.TypeThreeBooleanFiltered != nil && !f.TypeThreeBooleanFiltered.Eval(&obj.TypeThreeBooleanFiltered) {
+	toEvalTypeThreeBooleanFiltered := obj.TypeThreeBooleanFiltered
+	if f.TypeThreeBooleanFiltered != nil && !f.TypeThreeBooleanFiltered.Eval(&toEvalTypeThreeBooleanFiltered) {
 		return false
 	}
 
@@ -149,22 +99,26 @@ func (f *NestedFilterTypeTwo) Eval(obj *TypeTwo) bool {
 	// Evaluate individual field filters
 
 	// Handle TypeTwoStringFieldFiltered field
-	if f.TypeTwoStringFieldFiltered != nil && !f.TypeTwoStringFieldFiltered.Eval(&obj.TypeTwoStringFieldFiltered) {
+	toEvalTypeTwoStringFieldFiltered := obj.TypeTwoStringFieldFiltered
+	if f.TypeTwoStringFieldFiltered != nil && !f.TypeTwoStringFieldFiltered.Eval(&toEvalTypeTwoStringFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeTwoNumberFieldFiltered field
-	if f.TypeTwoNumberFieldFiltered != nil && !f.TypeTwoNumberFieldFiltered.Eval(&obj.TypeTwoNumberFieldFiltered) {
+	toEvalTypeTwoNumberFieldFiltered := toIntPtr(obj.TypeTwoNumberFieldFiltered)
+	if f.TypeTwoNumberFieldFiltered != nil && !f.TypeTwoNumberFieldFiltered.Eval(toEvalTypeTwoNumberFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeTwoTimeFieldFiltered field
-	if f.TypeTwoTimeFieldFiltered != nil && !f.TypeTwoTimeFieldFiltered.Eval(&obj.TypeTwoTimeFieldFiltered) {
+	toEvalTypeTwoTimeFieldFiltered := obj.TypeTwoTimeFieldFiltered
+	if f.TypeTwoTimeFieldFiltered != nil && !f.TypeTwoTimeFieldFiltered.Eval(&toEvalTypeTwoTimeFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeTwoBooleanFiltered field
-	if f.TypeTwoBooleanFiltered != nil && !f.TypeTwoBooleanFiltered.Eval(&obj.TypeTwoBooleanFiltered) {
+	toEvalTypeTwoBooleanFiltered := obj.TypeTwoBooleanFiltered
+	if f.TypeTwoBooleanFiltered != nil && !f.TypeTwoBooleanFiltered.Eval(&toEvalTypeTwoBooleanFiltered) {
 		return false
 	}
 
@@ -178,12 +132,184 @@ func (f *NestedFilterTypeTwo) Eval(obj *TypeTwo) bool {
 	}
 
 	// Handle TypeTwoWithTypeThree field
-	if f.TypeTwoWithTypeThree != nil && !f.TypeTwoWithTypeThree.Eval(obj.TypeTwoWithTypeThree) {
+	toEvalTypeTwoWithTypeThree := obj.TypeTwoWithTypeThree
+	if f.TypeTwoWithTypeThree != nil && !f.TypeTwoWithTypeThree.Eval(toEvalTypeTwoWithTypeThree) {
 		return false
 	}
 
 	// Handle TypeTwoWithTypeThreeNotMandatory field
-	if f.TypeTwoWithTypeThreeNotMandatory != nil && !f.TypeTwoWithTypeThreeNotMandatory.Eval(obj.TypeTwoWithTypeThreeNotMandatory) {
+	toEvalTypeTwoWithTypeThreeNotMandatory := obj.TypeTwoWithTypeThreeNotMandatory
+	if f.TypeTwoWithTypeThreeNotMandatory != nil && !f.TypeTwoWithTypeThreeNotMandatory.Eval(toEvalTypeTwoWithTypeThreeNotMandatory) {
+		return false
+	}
+
+	return true
+}
+
+func (f *NestedFilterTypeOne) Eval(obj *TypeOne) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle TypeOneStringFieldFiltered field
+	toEvalTypeOneStringFieldFiltered := obj.TypeOneStringFieldFiltered
+	if f.TypeOneStringFieldFiltered != nil && !f.TypeOneStringFieldFiltered.Eval(&toEvalTypeOneStringFieldFiltered) {
+		return false
+	}
+
+	// Handle TypeOneStringFieldFilteredNotMandatory field
+	toEvalTypeOneStringFieldFilteredNotMandatory := obj.TypeOneStringFieldFilteredNotMandatory
+	if f.TypeOneStringFieldFilteredNotMandatory != nil && !f.TypeOneStringFieldFilteredNotMandatory.Eval(toEvalTypeOneStringFieldFilteredNotMandatory) {
+		return false
+	}
+
+	// Handle TypeOneNumberFieldFiltered field
+	toEvalTypeOneNumberFieldFiltered := toIntPtr(obj.TypeOneNumberFieldFiltered)
+	if f.TypeOneNumberFieldFiltered != nil && !f.TypeOneNumberFieldFiltered.Eval(toEvalTypeOneNumberFieldFiltered) {
+		return false
+	}
+
+	// Handle TypeOneNumberFieldFilteredNotMandatory field
+	toEvalTypeOneNumberFieldFilteredNotMandatory := toIntPtr(obj.TypeOneNumberFieldFilteredNotMandatory)
+	if f.TypeOneNumberFieldFilteredNotMandatory != nil && !f.TypeOneNumberFieldFilteredNotMandatory.Eval(toEvalTypeOneNumberFieldFilteredNotMandatory) {
+		return false
+	}
+
+	// Handle TypeOneTimeFieldFiltered field
+	toEvalTypeOneTimeFieldFiltered := obj.TypeOneTimeFieldFiltered
+	if f.TypeOneTimeFieldFiltered != nil && !f.TypeOneTimeFieldFiltered.Eval(&toEvalTypeOneTimeFieldFiltered) {
+		return false
+	}
+
+	// Handle TypeOneTimeFieldFilteredNotMandatory field
+	toEvalTypeOneTimeFieldFilteredNotMandatory := obj.TypeOneTimeFieldFilteredNotMandatory
+	if f.TypeOneTimeFieldFilteredNotMandatory != nil && !f.TypeOneTimeFieldFilteredNotMandatory.Eval(toEvalTypeOneTimeFieldFilteredNotMandatory) {
+		return false
+	}
+
+	// Handle TypeOneBooleanFiltered field
+	toEvalTypeOneBooleanFiltered := obj.TypeOneBooleanFiltered
+	if f.TypeOneBooleanFiltered != nil && !f.TypeOneBooleanFiltered.Eval(&toEvalTypeOneBooleanFiltered) {
+		return false
+	}
+
+	// Handle TypeOneBooleanFilteredNotMandatory field
+	toEvalTypeOneBooleanFilteredNotMandatory := obj.TypeOneBooleanFilteredNotMandatory
+	if f.TypeOneBooleanFilteredNotMandatory != nil && !f.TypeOneBooleanFilteredNotMandatory.Eval(toEvalTypeOneBooleanFilteredNotMandatory) {
+		return false
+	}
+
+	// Handle TypeOneSliceWithTypeTwos slice
+	if f.TypeOneSliceWithTypeTwos != nil {
+		for _, elem := range obj.TypeOneSliceWithTypeTwos {
+			if !f.TypeOneSliceWithTypeTwos.Eval(elem) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
+func (f *FilterExternalType) Eval(obj *ExternalType) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle NumberOne field
+	toEvalNumberOne := toIntPtr(obj.NumberOne())
+	if f.NumberOne != nil && !f.NumberOne.Eval(toEvalNumberOne) {
+		return false
+	}
+
+	// Handle NumberTwo field
+	toEvalNumberTwo := toIntPtr(obj.NumberTwo())
+	if f.NumberTwo != nil && !f.NumberTwo.Eval(toEvalNumberTwo) {
+		return false
+	}
+
+	// Handle NumberThree field
+	toEvalNumberThree := toIntPtr(obj.NumberThree())
+	if f.NumberThree != nil && !f.NumberThree.Eval(toEvalNumberThree) {
+		return false
+	}
+
+	// Handle NumberFour field
+	toEvalNumberFour := toIntPtr(obj.NumberFour())
+	if f.NumberFour != nil && !f.NumberFour.Eval(toEvalNumberFour) {
+		return false
+	}
+
+	// Handle NumberFive field
+	toEvalNumberFive := toIntPtr(obj.NumberFive())
+	if f.NumberFive != nil && !f.NumberFive.Eval(toEvalNumberFive) {
+		return false
+	}
+
+	// Handle NumberList slice
+	if f.NumberList != nil {
+		for _, elem := range obj.NumberList() {
+			if !f.NumberList.Eval(&elem) {
+				return false
+			}
+		}
+	}
+
+	// Handle TypeOne field
+	toEvalTypeOne := obj.TypeOne()
+	if f.TypeOne != nil && !f.TypeOne.Eval(toEvalTypeOne) {
 		return false
 	}
 
@@ -222,22 +348,26 @@ func (f *FilterTypeTwo) Eval(obj *TypeTwo) bool {
 	// Evaluate individual field filters
 
 	// Handle TypeTwoStringFieldFiltered field
-	if f.TypeTwoStringFieldFiltered != nil && !f.TypeTwoStringFieldFiltered.Eval(&obj.TypeTwoStringFieldFiltered) {
+	toEvalTypeTwoStringFieldFiltered := obj.TypeTwoStringFieldFiltered
+	if f.TypeTwoStringFieldFiltered != nil && !f.TypeTwoStringFieldFiltered.Eval(&toEvalTypeTwoStringFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeTwoNumberFieldFiltered field
-	if f.TypeTwoNumberFieldFiltered != nil && !f.TypeTwoNumberFieldFiltered.Eval(&obj.TypeTwoNumberFieldFiltered) {
+	toEvalTypeTwoNumberFieldFiltered := toIntPtr(obj.TypeTwoNumberFieldFiltered)
+	if f.TypeTwoNumberFieldFiltered != nil && !f.TypeTwoNumberFieldFiltered.Eval(toEvalTypeTwoNumberFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeTwoTimeFieldFiltered field
-	if f.TypeTwoTimeFieldFiltered != nil && !f.TypeTwoTimeFieldFiltered.Eval(&obj.TypeTwoTimeFieldFiltered) {
+	toEvalTypeTwoTimeFieldFiltered := obj.TypeTwoTimeFieldFiltered
+	if f.TypeTwoTimeFieldFiltered != nil && !f.TypeTwoTimeFieldFiltered.Eval(&toEvalTypeTwoTimeFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeTwoBooleanFiltered field
-	if f.TypeTwoBooleanFiltered != nil && !f.TypeTwoBooleanFiltered.Eval(&obj.TypeTwoBooleanFiltered) {
+	toEvalTypeTwoBooleanFiltered := obj.TypeTwoBooleanFiltered
+	if f.TypeTwoBooleanFiltered != nil && !f.TypeTwoBooleanFiltered.Eval(&toEvalTypeTwoBooleanFiltered) {
 		return false
 	}
 
@@ -251,12 +381,72 @@ func (f *FilterTypeTwo) Eval(obj *TypeTwo) bool {
 	}
 
 	// Handle TypeTwoWithTypeThree field
-	if f.TypeTwoWithTypeThree != nil && !f.TypeTwoWithTypeThree.Eval(obj.TypeTwoWithTypeThree) {
+	toEvalTypeTwoWithTypeThree := obj.TypeTwoWithTypeThree
+	if f.TypeTwoWithTypeThree != nil && !f.TypeTwoWithTypeThree.Eval(toEvalTypeTwoWithTypeThree) {
 		return false
 	}
 
 	// Handle TypeTwoWithTypeThreeNotMandatory field
-	if f.TypeTwoWithTypeThreeNotMandatory != nil && !f.TypeTwoWithTypeThreeNotMandatory.Eval(obj.TypeTwoWithTypeThreeNotMandatory) {
+	toEvalTypeTwoWithTypeThreeNotMandatory := obj.TypeTwoWithTypeThreeNotMandatory
+	if f.TypeTwoWithTypeThreeNotMandatory != nil && !f.TypeTwoWithTypeThreeNotMandatory.Eval(toEvalTypeTwoWithTypeThreeNotMandatory) {
+		return false
+	}
+
+	return true
+}
+
+func (f *FilterTypeThree) Eval(obj *TypeThree) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle TypeThreeStringFieldFiltered field
+	toEvalTypeThreeStringFieldFiltered := obj.TypeThreeStringFieldFiltered
+	if f.TypeThreeStringFieldFiltered != nil && !f.TypeThreeStringFieldFiltered.Eval(&toEvalTypeThreeStringFieldFiltered) {
+		return false
+	}
+
+	// Handle TypeThreeNumberFieldFiltered field
+	toEvalTypeThreeNumberFieldFiltered := toIntPtr(obj.TypeThreeNumberFieldFiltered)
+	if f.TypeThreeNumberFieldFiltered != nil && !f.TypeThreeNumberFieldFiltered.Eval(toEvalTypeThreeNumberFieldFiltered) {
+		return false
+	}
+
+	// Handle TypeThreeTimeFieldFiltered field
+	toEvalTypeThreeTimeFieldFiltered := obj.TypeThreeTimeFieldFiltered
+	if f.TypeThreeTimeFieldFiltered != nil && !f.TypeThreeTimeFieldFiltered.Eval(&toEvalTypeThreeTimeFieldFiltered) {
+		return false
+	}
+
+	// Handle TypeThreeBooleanFiltered field
+	toEvalTypeThreeBooleanFiltered := obj.TypeThreeBooleanFiltered
+	if f.TypeThreeBooleanFiltered != nil && !f.TypeThreeBooleanFiltered.Eval(&toEvalTypeThreeBooleanFiltered) {
 		return false
 	}
 
@@ -295,42 +485,50 @@ func (f *FilterTypeOne) Eval(obj *TypeOne) bool {
 	// Evaluate individual field filters
 
 	// Handle TypeOneStringFieldFiltered field
-	if f.TypeOneStringFieldFiltered != nil && !f.TypeOneStringFieldFiltered.Eval(&obj.TypeOneStringFieldFiltered) {
+	toEvalTypeOneStringFieldFiltered := obj.TypeOneStringFieldFiltered
+	if f.TypeOneStringFieldFiltered != nil && !f.TypeOneStringFieldFiltered.Eval(&toEvalTypeOneStringFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeOneStringFieldFilteredNotMandatory field
-	if f.TypeOneStringFieldFilteredNotMandatory != nil && !f.TypeOneStringFieldFilteredNotMandatory.Eval(obj.TypeOneStringFieldFilteredNotMandatory) {
+	toEvalTypeOneStringFieldFilteredNotMandatory := obj.TypeOneStringFieldFilteredNotMandatory
+	if f.TypeOneStringFieldFilteredNotMandatory != nil && !f.TypeOneStringFieldFilteredNotMandatory.Eval(toEvalTypeOneStringFieldFilteredNotMandatory) {
 		return false
 	}
 
 	// Handle TypeOneNumberFieldFiltered field
-	if f.TypeOneNumberFieldFiltered != nil && !f.TypeOneNumberFieldFiltered.Eval(&obj.TypeOneNumberFieldFiltered) {
+	toEvalTypeOneNumberFieldFiltered := toIntPtr(obj.TypeOneNumberFieldFiltered)
+	if f.TypeOneNumberFieldFiltered != nil && !f.TypeOneNumberFieldFiltered.Eval(toEvalTypeOneNumberFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeOneNumberFieldFilteredNotMandatory field
-	if f.TypeOneNumberFieldFilteredNotMandatory != nil && !f.TypeOneNumberFieldFilteredNotMandatory.Eval(obj.TypeOneNumberFieldFilteredNotMandatory) {
+	toEvalTypeOneNumberFieldFilteredNotMandatory := toIntPtr(obj.TypeOneNumberFieldFilteredNotMandatory)
+	if f.TypeOneNumberFieldFilteredNotMandatory != nil && !f.TypeOneNumberFieldFilteredNotMandatory.Eval(toEvalTypeOneNumberFieldFilteredNotMandatory) {
 		return false
 	}
 
 	// Handle TypeOneTimeFieldFiltered field
-	if f.TypeOneTimeFieldFiltered != nil && !f.TypeOneTimeFieldFiltered.Eval(&obj.TypeOneTimeFieldFiltered) {
+	toEvalTypeOneTimeFieldFiltered := obj.TypeOneTimeFieldFiltered
+	if f.TypeOneTimeFieldFiltered != nil && !f.TypeOneTimeFieldFiltered.Eval(&toEvalTypeOneTimeFieldFiltered) {
 		return false
 	}
 
 	// Handle TypeOneTimeFieldFilteredNotMandatory field
-	if f.TypeOneTimeFieldFilteredNotMandatory != nil && !f.TypeOneTimeFieldFilteredNotMandatory.Eval(obj.TypeOneTimeFieldFilteredNotMandatory) {
+	toEvalTypeOneTimeFieldFilteredNotMandatory := obj.TypeOneTimeFieldFilteredNotMandatory
+	if f.TypeOneTimeFieldFilteredNotMandatory != nil && !f.TypeOneTimeFieldFilteredNotMandatory.Eval(toEvalTypeOneTimeFieldFilteredNotMandatory) {
 		return false
 	}
 
 	// Handle TypeOneBooleanFiltered field
-	if f.TypeOneBooleanFiltered != nil && !f.TypeOneBooleanFiltered.Eval(&obj.TypeOneBooleanFiltered) {
+	toEvalTypeOneBooleanFiltered := obj.TypeOneBooleanFiltered
+	if f.TypeOneBooleanFiltered != nil && !f.TypeOneBooleanFiltered.Eval(&toEvalTypeOneBooleanFiltered) {
 		return false
 	}
 
 	// Handle TypeOneBooleanFilteredNotMandatory field
-	if f.TypeOneBooleanFilteredNotMandatory != nil && !f.TypeOneBooleanFilteredNotMandatory.Eval(obj.TypeOneBooleanFilteredNotMandatory) {
+	toEvalTypeOneBooleanFilteredNotMandatory := obj.TypeOneBooleanFilteredNotMandatory
+	if f.TypeOneBooleanFilteredNotMandatory != nil && !f.TypeOneBooleanFilteredNotMandatory.Eval(toEvalTypeOneBooleanFilteredNotMandatory) {
 		return false
 	}
 
@@ -344,6 +542,45 @@ func (f *FilterTypeOne) Eval(obj *TypeOne) bool {
 	}
 
 	return true
+}
+
+func toIntPtr(val interface{}) *int {
+	if val == nil {
+		return nil
+	}
+
+	switch v := val.(type) {
+	case int:
+		return &v
+	case int64:
+		i := int(v)
+		return &i
+	case int32:
+		i := int(v)
+		return &i
+	case int16:
+		i := int(v)
+		return &i
+	case int8:
+		i := int(v)
+		return &i
+	case *int:
+		return v
+	case *int64:
+		i := int(*v)
+		return &i
+	case *int32:
+		i := int(*v)
+		return &i
+	case *int16:
+		i := int(*v)
+		return &i
+	case *int8:
+		i := int(*v)
+		return &i
+	default:
+		return nil
+	}
 }
 
 ///////////////////////////////// GENERIC TYPES /////////////////////////////////

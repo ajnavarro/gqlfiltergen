@@ -14,6 +14,30 @@ type FilterBoolean struct {
 	Eq *bool `json:"eq,omitempty"`
 }
 
+// filter for ExternalType objects
+type FilterExternalType struct {
+	// logical operator for ExternalType that will combine two or more conditions, returning true if all of them are true.
+	And []*FilterExternalType `json:"_and,omitempty"`
+	// logical operator for ExternalType that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*FilterExternalType `json:"_or,omitempty"`
+	// logical operator for ExternalType that will reverse conditions.
+	Not *FilterExternalType `json:"_not,omitempty"`
+	// filter for numberOne field.
+	NumberOne *FilterNumber `json:"numberOne,omitempty"`
+	// filter for numberTwo field.
+	NumberTwo *FilterNumber `json:"numberTwo,omitempty"`
+	// filter for numberThree field.
+	NumberThree *FilterNumber `json:"numberThree,omitempty"`
+	// filter for numberFour field.
+	NumberFour *FilterNumber `json:"numberFour,omitempty"`
+	// filter for numberFive field.
+	NumberFive *FilterNumber `json:"numberFive,omitempty"`
+	// filter for numberList field.
+	NumberList *FilterNumber `json:"numberList,omitempty"`
+	// filter for typeOne field.
+	TypeOne *NestedFilterTypeOne `json:"typeOne,omitempty"`
+}
+
 // Filter type for number fields. All added filters here are processed as AND operators.
 type FilterNumber struct {
 	// Filter a number field checking if it exists or not.
@@ -124,6 +148,34 @@ type FilterTypeTwo struct {
 	TypeTwoWithTypeThree *NestedFilterTypeThree `json:"typeTwoWithTypeThree,omitempty"`
 	// filter for typeTwoWithTypeThreeNotMandatory field.
 	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"typeTwoWithTypeThreeNotMandatory,omitempty"`
+}
+
+// filter for TypeOne objects
+type NestedFilterTypeOne struct {
+	// logical operator for TypeOne that will combine two or more conditions, returning true if all of them are true.
+	And []*NestedFilterTypeOne `json:"_and,omitempty"`
+	// logical operator for TypeOne that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*NestedFilterTypeOne `json:"_or,omitempty"`
+	// logical operator for TypeOne that will reverse conditions.
+	Not *NestedFilterTypeOne `json:"_not,omitempty"`
+	// filter for typeOneStringFieldFiltered field.
+	TypeOneStringFieldFiltered *FilterString `json:"typeOneStringFieldFiltered,omitempty"`
+	// filter for typeOneStringFieldFilteredNotMandatory field.
+	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"typeOneStringFieldFilteredNotMandatory,omitempty"`
+	// filter for typeOneNumberFieldFiltered field.
+	TypeOneNumberFieldFiltered *FilterNumber `json:"typeOneNumberFieldFiltered,omitempty"`
+	// filter for typeOneNumberFieldFilteredNotMandatory field.
+	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"typeOneNumberFieldFilteredNotMandatory,omitempty"`
+	// filter for typeOneTimeFieldFiltered field.
+	TypeOneTimeFieldFiltered *FilterTime `json:"typeOneTimeFieldFiltered,omitempty"`
+	// filter for typeOneTimeFieldFilteredNotMandatory field.
+	TypeOneTimeFieldFilteredNotMandatory *FilterTime `json:"typeOneTimeFieldFilteredNotMandatory,omitempty"`
+	// filter for typeOneBooleanFiltered field.
+	TypeOneBooleanFiltered *FilterBoolean `json:"typeOneBooleanFiltered,omitempty"`
+	// filter for typeOneBooleanFilteredNotMandatory field.
+	TypeOneBooleanFilteredNotMandatory *FilterBoolean `json:"typeOneBooleanFilteredNotMandatory,omitempty"`
+	// filter for typeOneSliceWithTypeTwos field.
+	TypeOneSliceWithTypeTwos *NestedFilterTypeTwo `json:"typeOneSliceWithTypeTwos,omitempty"`
 }
 
 // filter for TypeThree objects

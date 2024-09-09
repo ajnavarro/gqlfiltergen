@@ -40,15 +40,16 @@
 		{{if .IsSlice}}
 		// Handle {{.FilterField}} slice
 		if f.{{.FilterField}} != nil {
-			for _, elem := range obj.{{.FilterField}} {
-				if !f.{{.FilterField}}.Eval(elem) {
+			for _, elem := range obj.{{.CallWrapping .FilterField}} {
+				if !f.{{.FilterField}}.Eval({{.EvalCallWrapping "elem"}}) {
 					return false
 				}
 			}
 		}		
 		{{else}}
 		// Handle {{.FilterField}} field
-		if f.{{.FilterField}} != nil && !f.{{.FilterField}}.Eval({{.NeedMemAddr}}obj.{{.FilterField}}) {
+		toEval{{.FilterField}} := {{.EvalVarWrapping (printf "obj.%s" .FilterField)}}
+		if f.{{.FilterField}} != nil && !f.{{.FilterField}}.Eval({{.EvalCallWrapping (printf "toEval%s" .FilterField)}}) {
 			return false
 		}
 		{{end}}
@@ -57,6 +58,45 @@
 	return true
 }
 {{- end }}
+
+func toIntPtr(val interface{}) *int {
+	if val == nil {
+		return nil
+	}
+
+	switch v := val.(type) {
+	case int:
+		return &v
+	case int64:
+		i := int(v)
+		return &i
+	case int32:
+		i := int(v)
+		return &i
+	case int16:
+		i := int(v)
+		return &i
+	case int8:
+		i := int(v)
+		return &i
+	case *int:
+		return v
+	case *int64:
+		i := int(*v)
+		return &i
+	case *int32:
+		i := int(*v)
+		return &i
+	case *int16:
+		i := int(*v)
+		return &i
+	case *int8:
+		i := int(*v)
+		return &i
+	default:
+		return nil
+	}
+}
 
 ///////////////////////////////// GENERIC TYPES /////////////////////////////////
 

@@ -45,9 +45,32 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	ExternalType struct {
+		NumberFive  func(childComplexity int) int
+		NumberFour  func(childComplexity int) int
+		NumberList  func(childComplexity int) int
+		NumberOne   func(childComplexity int) int
+		NumberThree func(childComplexity int) int
+		NumberTwo   func(childComplexity int) int
+		TypeOne     func(childComplexity int) int
+	}
+
 	FilterBoolean struct {
 		Eq     func(childComplexity int) int
 		Exists func(childComplexity int) int
+	}
+
+	FilterExternalType struct {
+		And         func(childComplexity int) int
+		Not         func(childComplexity int) int
+		NumberFive  func(childComplexity int) int
+		NumberFour  func(childComplexity int) int
+		NumberList  func(childComplexity int) int
+		NumberOne   func(childComplexity int) int
+		NumberThree func(childComplexity int) int
+		NumberTwo   func(childComplexity int) int
+		Or          func(childComplexity int) int
+		TypeOne     func(childComplexity int) int
 	}
 
 	FilterNumber struct {
@@ -110,6 +133,21 @@ type ComplexityRoot struct {
 		TypeTwoTimeFieldFiltered         func(childComplexity int) int
 		TypeTwoWithTypeThree             func(childComplexity int) int
 		TypeTwoWithTypeThreeNotMandatory func(childComplexity int) int
+	}
+
+	NestedFilterTypeOne struct {
+		And                                    func(childComplexity int) int
+		Not                                    func(childComplexity int) int
+		Or                                     func(childComplexity int) int
+		TypeOneBooleanFiltered                 func(childComplexity int) int
+		TypeOneBooleanFilteredNotMandatory     func(childComplexity int) int
+		TypeOneNumberFieldFiltered             func(childComplexity int) int
+		TypeOneNumberFieldFilteredNotMandatory func(childComplexity int) int
+		TypeOneSliceWithTypeTwos               func(childComplexity int) int
+		TypeOneStringFieldFiltered             func(childComplexity int) int
+		TypeOneStringFieldFilteredNotMandatory func(childComplexity int) int
+		TypeOneTimeFieldFiltered               func(childComplexity int) int
+		TypeOneTimeFieldFilteredNotMandatory   func(childComplexity int) int
 	}
 
 	NestedFilterTypeThree struct {
@@ -196,6 +234,55 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
+	case "ExternalType.numberFive":
+		if e.complexity.ExternalType.NumberFive == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.NumberFive(childComplexity), true
+
+	case "ExternalType.numberFour":
+		if e.complexity.ExternalType.NumberFour == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.NumberFour(childComplexity), true
+
+	case "ExternalType.numberList":
+		if e.complexity.ExternalType.NumberList == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.NumberList(childComplexity), true
+
+	case "ExternalType.numberOne":
+		if e.complexity.ExternalType.NumberOne == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.NumberOne(childComplexity), true
+
+	case "ExternalType.numberThree":
+		if e.complexity.ExternalType.NumberThree == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.NumberThree(childComplexity), true
+
+	case "ExternalType.numberTwo":
+		if e.complexity.ExternalType.NumberTwo == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.NumberTwo(childComplexity), true
+
+	case "ExternalType.typeOne":
+		if e.complexity.ExternalType.TypeOne == nil {
+			break
+		}
+
+		return e.complexity.ExternalType.TypeOne(childComplexity), true
+
 	case "FilterBoolean.eq":
 		if e.complexity.FilterBoolean.Eq == nil {
 			break
@@ -209,6 +296,76 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.FilterBoolean.Exists(childComplexity), true
+
+	case "FilterExternalType._and":
+		if e.complexity.FilterExternalType.And == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.And(childComplexity), true
+
+	case "FilterExternalType._not":
+		if e.complexity.FilterExternalType.Not == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.Not(childComplexity), true
+
+	case "FilterExternalType.numberFive":
+		if e.complexity.FilterExternalType.NumberFive == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.NumberFive(childComplexity), true
+
+	case "FilterExternalType.numberFour":
+		if e.complexity.FilterExternalType.NumberFour == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.NumberFour(childComplexity), true
+
+	case "FilterExternalType.numberList":
+		if e.complexity.FilterExternalType.NumberList == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.NumberList(childComplexity), true
+
+	case "FilterExternalType.numberOne":
+		if e.complexity.FilterExternalType.NumberOne == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.NumberOne(childComplexity), true
+
+	case "FilterExternalType.numberThree":
+		if e.complexity.FilterExternalType.NumberThree == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.NumberThree(childComplexity), true
+
+	case "FilterExternalType.numberTwo":
+		if e.complexity.FilterExternalType.NumberTwo == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.NumberTwo(childComplexity), true
+
+	case "FilterExternalType._or":
+		if e.complexity.FilterExternalType.Or == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.Or(childComplexity), true
+
+	case "FilterExternalType.typeOne":
+		if e.complexity.FilterExternalType.TypeOne == nil {
+			break
+		}
+
+		return e.complexity.FilterExternalType.TypeOne(childComplexity), true
 
 	case "FilterNumber.eq":
 		if e.complexity.FilterNumber.Eq == nil {
@@ -517,6 +674,90 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.FilterTypeTwo.TypeTwoWithTypeThreeNotMandatory(childComplexity), true
+
+	case "NestedFilterTypeOne._and":
+		if e.complexity.NestedFilterTypeOne.And == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.And(childComplexity), true
+
+	case "NestedFilterTypeOne._not":
+		if e.complexity.NestedFilterTypeOne.Not == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.Not(childComplexity), true
+
+	case "NestedFilterTypeOne._or":
+		if e.complexity.NestedFilterTypeOne.Or == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.Or(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneBooleanFiltered":
+		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFiltered == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFiltered(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneBooleanFilteredNotMandatory":
+		if e.complexity.NestedFilterTypeOne.TypeOneBooleanFilteredNotMandatory == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneBooleanFilteredNotMandatory(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneNumberFieldFiltered":
+		if e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFiltered == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFiltered(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneNumberFieldFilteredNotMandatory":
+		if e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFilteredNotMandatory == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneNumberFieldFilteredNotMandatory(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneSliceWithTypeTwos":
+		if e.complexity.NestedFilterTypeOne.TypeOneSliceWithTypeTwos == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneSliceWithTypeTwos(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneStringFieldFiltered":
+		if e.complexity.NestedFilterTypeOne.TypeOneStringFieldFiltered == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneStringFieldFiltered(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneStringFieldFilteredNotMandatory":
+		if e.complexity.NestedFilterTypeOne.TypeOneStringFieldFilteredNotMandatory == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneStringFieldFilteredNotMandatory(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneTimeFieldFiltered":
+		if e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFiltered == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFiltered(childComplexity), true
+
+	case "NestedFilterTypeOne.typeOneTimeFieldFilteredNotMandatory":
+		if e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFilteredNotMandatory == nil {
+			break
+		}
+
+		return e.complexity.NestedFilterTypeOne.TypeOneTimeFieldFilteredNotMandatory(childComplexity), true
 
 	case "NestedFilterTypeThree._and":
 		if e.complexity.NestedFilterTypeThree.And == nil {
@@ -976,7 +1217,18 @@ type TypeThree {
   typeThreeNumberFieldWithNoFilter: Int!
   typeThreeTimeFieldWithNoFilter: Time!
 }
-`, BuiltIn: false},
+
+type ExternalType {
+  numberOne: Int! @filterable
+  numberTwo: Int! @filterable
+  numberThree: Int! @filterable
+  numberFour: Int @filterable
+  numberFive: Int @filterable
+  
+  numberList: [Int!] @filterable
+
+  typeOne: TypeOne @filterable
+}`, BuiltIn: false},
 	{Name: "../../filtergen.directives.graphql", Input: `directive @filterable on FIELD_DEFINITION`, BuiltIn: false},
 	{Name: "../../filtergen.graphql", Input: `"""
 Filter type for boolean fields. All added filters here are processed as AND operators.
@@ -990,6 +1242,51 @@ type FilterBoolean {
 	Filter a boolean field checking if it is equals to the specified value.
 	"""
 	eq: Boolean
+}
+"""
+filter for ExternalType objects
+"""
+type FilterExternalType {
+	"""
+	logical operator for ExternalType that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [FilterExternalType]
+	"""
+	logical operator for ExternalType that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [FilterExternalType]
+	"""
+	logical operator for ExternalType that will reverse conditions.
+	"""
+	_not: FilterExternalType
+	"""
+	filter for numberOne field.
+	"""
+	numberOne: FilterNumber
+	"""
+	filter for numberTwo field.
+	"""
+	numberTwo: FilterNumber
+	"""
+	filter for numberThree field.
+	"""
+	numberThree: FilterNumber
+	"""
+	filter for numberFour field.
+	"""
+	numberFour: FilterNumber
+	"""
+	filter for numberFive field.
+	"""
+	numberFive: FilterNumber
+	"""
+	filter for numberList field.
+	"""
+	numberList: FilterNumber
+	"""
+	filter for typeOne field.
+	"""
+	typeOne: NestedFilterTypeOne
 }
 """
 Filter type for number fields. All added filters here are processed as AND operators.
@@ -1198,6 +1495,59 @@ type FilterTypeTwo {
 	typeTwoWithTypeThreeNotMandatory: NestedFilterTypeThree
 }
 """
+filter for TypeOne objects
+"""
+type NestedFilterTypeOne {
+	"""
+	logical operator for TypeOne that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [NestedFilterTypeOne]
+	"""
+	logical operator for TypeOne that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [NestedFilterTypeOne]
+	"""
+	logical operator for TypeOne that will reverse conditions.
+	"""
+	_not: NestedFilterTypeOne
+	"""
+	filter for typeOneStringFieldFiltered field.
+	"""
+	typeOneStringFieldFiltered: FilterString
+	"""
+	filter for typeOneStringFieldFilteredNotMandatory field.
+	"""
+	typeOneStringFieldFilteredNotMandatory: FilterString
+	"""
+	filter for typeOneNumberFieldFiltered field.
+	"""
+	typeOneNumberFieldFiltered: FilterNumber
+	"""
+	filter for typeOneNumberFieldFilteredNotMandatory field.
+	"""
+	typeOneNumberFieldFilteredNotMandatory: FilterNumber
+	"""
+	filter for typeOneTimeFieldFiltered field.
+	"""
+	typeOneTimeFieldFiltered: FilterTime
+	"""
+	filter for typeOneTimeFieldFilteredNotMandatory field.
+	"""
+	typeOneTimeFieldFilteredNotMandatory: FilterTime
+	"""
+	filter for typeOneBooleanFiltered field.
+	"""
+	typeOneBooleanFiltered: FilterBoolean
+	"""
+	filter for typeOneBooleanFilteredNotMandatory field.
+	"""
+	typeOneBooleanFilteredNotMandatory: FilterBoolean
+	"""
+	filter for typeOneSliceWithTypeTwos field.
+	"""
+	typeOneSliceWithTypeTwos: NestedFilterTypeTwo
+}
+"""
 filter for TypeThree objects
 """
 type NestedFilterTypeThree {
@@ -1336,6 +1686,468 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
+func (ec *executionContext) _ExternalType_numberOne(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_numberOne(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NumberOne(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(int); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be int`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_numberOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ExternalType_numberTwo(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_numberTwo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NumberTwo(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(int64); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be int64`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int64)
+	fc.Result = res
+	return ec.marshalNInt2int64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_numberTwo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ExternalType_numberThree(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_numberThree(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NumberThree(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(int32); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be int32`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int32)
+	fc.Result = res
+	return ec.marshalNInt2int32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_numberThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ExternalType_numberFour(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_numberFour(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NumberFour(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*int); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *int`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_numberFour(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ExternalType_numberFive(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_numberFive(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NumberFive(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*int32); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *int32`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int32)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_numberFive(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ExternalType_numberList(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_numberList(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NumberList(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]int); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []int`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int)
+	fc.Result = res
+	return ec.marshalOInt2ᚕintᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_numberList(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _ExternalType_typeOne(ctx context.Context, field graphql.CollectedField, obj *ExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_ExternalType_typeOne(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeOne(), nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*TypeOne); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/ajnavarro/gqlfiltergen/testdata/out.TypeOne`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*TypeOne)
+	fc.Result = res
+	return ec.marshalOTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_ExternalType_typeOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "ExternalType",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "typeOneStringFieldFiltered":
+				return ec.fieldContext_TypeOne_typeOneStringFieldFiltered(ctx, field)
+			case "typeOneStringFieldFilteredNotMandatory":
+				return ec.fieldContext_TypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+			case "typeOneNumberFieldFiltered":
+				return ec.fieldContext_TypeOne_typeOneNumberFieldFiltered(ctx, field)
+			case "typeOneNumberFieldFilteredNotMandatory":
+				return ec.fieldContext_TypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+			case "typeOneTimeFieldFiltered":
+				return ec.fieldContext_TypeOne_typeOneTimeFieldFiltered(ctx, field)
+			case "typeOneTimeFieldFilteredNotMandatory":
+				return ec.fieldContext_TypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+			case "typeOneBooleanFiltered":
+				return ec.fieldContext_TypeOne_typeOneBooleanFiltered(ctx, field)
+			case "typeOneBooleanFilteredNotMandatory":
+				return ec.fieldContext_TypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+			case "typeOneStringFieldWithNoFilter":
+				return ec.fieldContext_TypeOne_typeOneStringFieldWithNoFilter(ctx, field)
+			case "typeOneNumberFieldWithNoFilter":
+				return ec.fieldContext_TypeOne_typeOneNumberFieldWithNoFilter(ctx, field)
+			case "typeOneTimeFieldWithNoFilter":
+				return ec.fieldContext_TypeOne_typeOneTimeFieldWithNoFilter(ctx, field)
+			case "typeOneSliceWithTypeTwos":
+				return ec.fieldContext_TypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TypeOne", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _FilterBoolean_exists(ctx context.Context, field graphql.CollectedField, obj *FilterBoolean) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_FilterBoolean_exists(ctx, field)
 	if err != nil {
@@ -1413,6 +2225,580 @@ func (ec *executionContext) fieldContext_FilterBoolean_eq(_ context.Context, fie
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType__and(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType__and(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.And, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*FilterExternalType)
+	fc.Result = res
+	return ec.marshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_FilterExternalType__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_FilterExternalType__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_FilterExternalType__not(ctx, field)
+			case "numberOne":
+				return ec.fieldContext_FilterExternalType_numberOne(ctx, field)
+			case "numberTwo":
+				return ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
+			case "numberThree":
+				return ec.fieldContext_FilterExternalType_numberThree(ctx, field)
+			case "numberFour":
+				return ec.fieldContext_FilterExternalType_numberFour(ctx, field)
+			case "numberFive":
+				return ec.fieldContext_FilterExternalType_numberFive(ctx, field)
+			case "numberList":
+				return ec.fieldContext_FilterExternalType_numberList(ctx, field)
+			case "typeOne":
+				return ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType__or(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType__or(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Or, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*FilterExternalType)
+	fc.Result = res
+	return ec.marshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_FilterExternalType__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_FilterExternalType__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_FilterExternalType__not(ctx, field)
+			case "numberOne":
+				return ec.fieldContext_FilterExternalType_numberOne(ctx, field)
+			case "numberTwo":
+				return ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
+			case "numberThree":
+				return ec.fieldContext_FilterExternalType_numberThree(ctx, field)
+			case "numberFour":
+				return ec.fieldContext_FilterExternalType_numberFour(ctx, field)
+			case "numberFive":
+				return ec.fieldContext_FilterExternalType_numberFive(ctx, field)
+			case "numberList":
+				return ec.fieldContext_FilterExternalType_numberList(ctx, field)
+			case "typeOne":
+				return ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType__not(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType__not(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Not, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterExternalType)
+	fc.Result = res
+	return ec.marshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_FilterExternalType__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_FilterExternalType__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_FilterExternalType__not(ctx, field)
+			case "numberOne":
+				return ec.fieldContext_FilterExternalType_numberOne(ctx, field)
+			case "numberTwo":
+				return ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
+			case "numberThree":
+				return ec.fieldContext_FilterExternalType_numberThree(ctx, field)
+			case "numberFour":
+				return ec.fieldContext_FilterExternalType_numberFour(ctx, field)
+			case "numberFive":
+				return ec.fieldContext_FilterExternalType_numberFive(ctx, field)
+			case "numberList":
+				return ec.fieldContext_FilterExternalType_numberList(ctx, field)
+			case "typeOne":
+				return ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterExternalType", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_numberOne(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_numberOne(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberOne, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_numberOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_numberTwo(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_numberTwo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberTwo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_numberTwo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_numberThree(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_numberThree(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberThree, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_numberThree(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_numberFour(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_numberFour(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberFour, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_numberFour(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_numberFive(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_numberFive(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberFive, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_numberFive(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_numberList(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_numberList(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.NumberList, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_numberList(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FilterExternalType_typeOne(ctx context.Context, field graphql.CollectedField, obj *FilterExternalType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FilterExternalType_typeOne(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOne, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*NestedFilterTypeOne)
+	fc.Result = res
+	return ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FilterExternalType_typeOne(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FilterExternalType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
+			case "typeOneStringFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+			case "typeOneStringFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+			case "typeOneNumberFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+			case "typeOneNumberFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+			case "typeOneTimeFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+			case "typeOneTimeFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+			case "typeOneBooleanFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
+			case "typeOneBooleanFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+			case "typeOneSliceWithTypeTwos":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
 		},
 	}
 	return fc, nil
@@ -3653,6 +5039,682 @@ func (ec *executionContext) fieldContext_FilterTypeTwo_typeTwoWithTypeThreeNotMa
 				return ec.fieldContext_NestedFilterTypeThree_typeThreeBooleanFiltered(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeThree", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne__and(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.And, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*NestedFilterTypeOne)
+	fc.Result = res
+	return ec.marshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne__and(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
+			case "typeOneStringFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+			case "typeOneStringFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+			case "typeOneNumberFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+			case "typeOneNumberFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+			case "typeOneTimeFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+			case "typeOneTimeFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+			case "typeOneBooleanFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
+			case "typeOneBooleanFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+			case "typeOneSliceWithTypeTwos":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne__or(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Or, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*NestedFilterTypeOne)
+	fc.Result = res
+	return ec.marshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne__or(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
+			case "typeOneStringFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+			case "typeOneStringFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+			case "typeOneNumberFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+			case "typeOneNumberFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+			case "typeOneTimeFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+			case "typeOneTimeFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+			case "typeOneBooleanFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
+			case "typeOneBooleanFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+			case "typeOneSliceWithTypeTwos":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne__not(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Not, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*NestedFilterTypeOne)
+	fc.Result = res
+	return ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne__not(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_NestedFilterTypeOne__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_NestedFilterTypeOne__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_NestedFilterTypeOne__not(ctx, field)
+			case "typeOneStringFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+			case "typeOneStringFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+			case "typeOneNumberFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+			case "typeOneNumberFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+			case "typeOneTimeFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+			case "typeOneTimeFieldFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+			case "typeOneBooleanFiltered":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
+			case "typeOneBooleanFilteredNotMandatory":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+			case "typeOneSliceWithTypeTwos":
+				return ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeOne", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneStringFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneStringFieldFiltered, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterString)
+	fc.Result = res
+	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneStringFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterString_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterString_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterString_neq(ctx, field)
+			case "like":
+				return ec.fieldContext_FilterString_like(ctx, field)
+			case "nlike":
+				return ec.fieldContext_FilterString_nlike(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneStringFieldFilteredNotMandatory, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterString)
+	fc.Result = res
+	return ec.marshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterString_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterString_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterString_neq(ctx, field)
+			case "like":
+				return ec.fieldContext_FilterString_like(ctx, field)
+			case "nlike":
+				return ec.fieldContext_FilterString_nlike(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterString", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneNumberFieldFiltered, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneNumberFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneNumberFieldFilteredNotMandatory, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterNumber)
+	fc.Result = res
+	return ec.marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterNumber_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterNumber_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterNumber_neq(ctx, field)
+			case "gt":
+				return ec.fieldContext_FilterNumber_gt(ctx, field)
+			case "lt":
+				return ec.fieldContext_FilterNumber_lt(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterNumber", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneTimeFieldFiltered, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterTime)
+	fc.Result = res
+	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneTimeFieldFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterTime_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterTime_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterTime_neq(ctx, field)
+			case "before":
+				return ec.fieldContext_FilterTime_before(ctx, field)
+			case "after":
+				return ec.fieldContext_FilterTime_after(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneTimeFieldFilteredNotMandatory, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterTime)
+	fc.Result = res
+	return ec.marshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterTime_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterTime_eq(ctx, field)
+			case "neq":
+				return ec.fieldContext_FilterTime_neq(ctx, field)
+			case "before":
+				return ec.fieldContext_FilterTime_before(ctx, field)
+			case "after":
+				return ec.fieldContext_FilterTime_after(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterTime", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFiltered(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneBooleanFiltered, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterBoolean)
+	fc.Result = res
+	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneBooleanFiltered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterBoolean_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterBoolean_eq(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneBooleanFilteredNotMandatory, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*FilterBoolean)
+	fc.Result = res
+	return ec.marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterBoolean(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "exists":
+				return ec.fieldContext_FilterBoolean_exists(ctx, field)
+			case "eq":
+				return ec.fieldContext_FilterBoolean_eq(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FilterBoolean", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx context.Context, field graphql.CollectedField, obj *NestedFilterTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeOneSliceWithTypeTwos, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*NestedFilterTypeTwo)
+	fc.Result = res
+	return ec.marshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeTwo(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedFilterTypeOne_typeOneSliceWithTypeTwos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedFilterTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "_and":
+				return ec.fieldContext_NestedFilterTypeTwo__and(ctx, field)
+			case "_or":
+				return ec.fieldContext_NestedFilterTypeTwo__or(ctx, field)
+			case "_not":
+				return ec.fieldContext_NestedFilterTypeTwo__not(ctx, field)
+			case "typeTwoStringFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoStringFieldFiltered(ctx, field)
+			case "typeTwoNumberFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoNumberFieldFiltered(ctx, field)
+			case "typeTwoTimeFieldFiltered":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoTimeFieldFiltered(ctx, field)
+			case "typeTwoBooleanFiltered":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoBooleanFiltered(ctx, field)
+			case "typeTwoSliceWithTypeTwos":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoSliceWithTypeTwos(ctx, field)
+			case "typeTwoWithTypeThree":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThree(ctx, field)
+			case "typeTwoWithTypeThreeNotMandatory":
+				return ec.fieldContext_NestedFilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedFilterTypeTwo", field.Name)
 		},
 	}
 	return fc, nil
@@ -8254,6 +10316,63 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** object.gotpl ****************************
 
+var externalTypeImplementors = []string{"ExternalType"}
+
+func (ec *executionContext) _ExternalType(ctx context.Context, sel ast.SelectionSet, obj *ExternalType) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, externalTypeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("ExternalType")
+		case "numberOne":
+			out.Values[i] = ec._ExternalType_numberOne(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "numberTwo":
+			out.Values[i] = ec._ExternalType_numberTwo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "numberThree":
+			out.Values[i] = ec._ExternalType_numberThree(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "numberFour":
+			out.Values[i] = ec._ExternalType_numberFour(ctx, field, obj)
+		case "numberFive":
+			out.Values[i] = ec._ExternalType_numberFive(ctx, field, obj)
+		case "numberList":
+			out.Values[i] = ec._ExternalType_numberList(ctx, field, obj)
+		case "typeOne":
+			out.Values[i] = ec._ExternalType_typeOne(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
 var filterBooleanImplementors = []string{"FilterBoolean"}
 
 func (ec *executionContext) _FilterBoolean(ctx context.Context, sel ast.SelectionSet, obj *FilterBoolean) graphql.Marshaler {
@@ -8269,6 +10388,60 @@ func (ec *executionContext) _FilterBoolean(ctx context.Context, sel ast.Selectio
 			out.Values[i] = ec._FilterBoolean_exists(ctx, field, obj)
 		case "eq":
 			out.Values[i] = ec._FilterBoolean_eq(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var filterExternalTypeImplementors = []string{"FilterExternalType"}
+
+func (ec *executionContext) _FilterExternalType(ctx context.Context, sel ast.SelectionSet, obj *FilterExternalType) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, filterExternalTypeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FilterExternalType")
+		case "_and":
+			out.Values[i] = ec._FilterExternalType__and(ctx, field, obj)
+		case "_or":
+			out.Values[i] = ec._FilterExternalType__or(ctx, field, obj)
+		case "_not":
+			out.Values[i] = ec._FilterExternalType__not(ctx, field, obj)
+		case "numberOne":
+			out.Values[i] = ec._FilterExternalType_numberOne(ctx, field, obj)
+		case "numberTwo":
+			out.Values[i] = ec._FilterExternalType_numberTwo(ctx, field, obj)
+		case "numberThree":
+			out.Values[i] = ec._FilterExternalType_numberThree(ctx, field, obj)
+		case "numberFour":
+			out.Values[i] = ec._FilterExternalType_numberFour(ctx, field, obj)
+		case "numberFive":
+			out.Values[i] = ec._FilterExternalType_numberFive(ctx, field, obj)
+		case "numberList":
+			out.Values[i] = ec._FilterExternalType_numberList(ctx, field, obj)
+		case "typeOne":
+			out.Values[i] = ec._FilterExternalType_typeOne(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -8561,6 +10734,64 @@ func (ec *executionContext) _FilterTypeTwo(ctx context.Context, sel ast.Selectio
 			out.Values[i] = ec._FilterTypeTwo_typeTwoWithTypeThree(ctx, field, obj)
 		case "typeTwoWithTypeThreeNotMandatory":
 			out.Values[i] = ec._FilterTypeTwo_typeTwoWithTypeThreeNotMandatory(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var nestedFilterTypeOneImplementors = []string{"NestedFilterTypeOne"}
+
+func (ec *executionContext) _NestedFilterTypeOne(ctx context.Context, sel ast.SelectionSet, obj *NestedFilterTypeOne) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, nestedFilterTypeOneImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("NestedFilterTypeOne")
+		case "_and":
+			out.Values[i] = ec._NestedFilterTypeOne__and(ctx, field, obj)
+		case "_or":
+			out.Values[i] = ec._NestedFilterTypeOne__or(ctx, field, obj)
+		case "_not":
+			out.Values[i] = ec._NestedFilterTypeOne__not(ctx, field, obj)
+		case "typeOneStringFieldFiltered":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneStringFieldFiltered(ctx, field, obj)
+		case "typeOneStringFieldFilteredNotMandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneStringFieldFilteredNotMandatory(ctx, field, obj)
+		case "typeOneNumberFieldFiltered":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneNumberFieldFiltered(ctx, field, obj)
+		case "typeOneNumberFieldFilteredNotMandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneNumberFieldFilteredNotMandatory(ctx, field, obj)
+		case "typeOneTimeFieldFiltered":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneTimeFieldFiltered(ctx, field, obj)
+		case "typeOneTimeFieldFilteredNotMandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneTimeFieldFilteredNotMandatory(ctx, field, obj)
+		case "typeOneBooleanFiltered":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneBooleanFiltered(ctx, field, obj)
+		case "typeOneBooleanFilteredNotMandatory":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneBooleanFilteredNotMandatory(ctx, field, obj)
+		case "typeOneSliceWithTypeTwos":
+			out.Values[i] = ec._NestedFilterTypeOne_typeOneSliceWithTypeTwos(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -9324,6 +11555,36 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 	return res
 }
 
+func (ec *executionContext) unmarshalNInt2int32(ctx context.Context, v interface{}) (int32, error) {
+	res, err := graphql.UnmarshalInt32(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int32(ctx context.Context, sel ast.SelectionSet, v int32) graphql.Marshaler {
+	res := graphql.MarshalInt32(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNInt2int64(ctx context.Context, v interface{}) (int64, error) {
+	res, err := graphql.UnmarshalInt64(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int64(ctx context.Context, sel ast.SelectionSet, v int64) graphql.Marshaler {
+	res := graphql.MarshalInt64(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -9688,6 +11949,54 @@ func (ec *executionContext) marshalOFilterBoolean2ᚖgithubᚗcomᚋajnavarroᚋ
 	return ec._FilterBoolean(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalOFilterExternalType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx context.Context, sel ast.SelectionSet, v []*FilterExternalType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOFilterExternalType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterExternalType(ctx context.Context, sel ast.SelectionSet, v *FilterExternalType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._FilterExternalType(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx context.Context, sel ast.SelectionSet, v *FilterNumber) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -9853,6 +12162,44 @@ func (ec *executionContext) marshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋ
 	return ec._FilterTypeTwo(ctx, sel, v)
 }
 
+func (ec *executionContext) unmarshalOInt2ᚕintᚄ(ctx context.Context, v interface{}) ([]int, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]int, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNInt2int(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOInt2ᚕintᚄ(ctx context.Context, sel ast.SelectionSet, v []int) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNInt2int(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalOInt2ᚖint(ctx context.Context, v interface{}) (*int, error) {
 	if v == nil {
 		return nil, nil
@@ -9867,6 +12214,70 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 	}
 	res := graphql.MarshalInt(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOInt2ᚖint32(ctx context.Context, v interface{}) (*int32, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalInt32(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.SelectionSet, v *int32) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	res := graphql.MarshalInt32(*v)
+	return res
+}
+
+func (ec *executionContext) marshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, sel ast.SelectionSet, v []*NestedFilterTypeOne) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalONestedFilterTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, sel ast.SelectionSet, v *NestedFilterTypeOne) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._NestedFilterTypeOne(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalONestedFilterTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeThree(ctx context.Context, sel ast.SelectionSet, v []*NestedFilterTypeThree) graphql.Marshaler {
@@ -9995,6 +12406,13 @@ func (ec *executionContext) marshalOTime2ᚖtimeᚐTime(ctx context.Context, sel
 	}
 	res := graphql.MarshalTime(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeOne(ctx context.Context, sel ast.SelectionSet, v *TypeOne) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TypeOne(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThree(ctx context.Context, sel ast.SelectionSet, v *TypeThree) graphql.Marshaler {

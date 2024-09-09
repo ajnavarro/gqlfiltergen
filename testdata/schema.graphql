@@ -45,3 +45,15 @@ type TypeThree {
   typeThreeNumberFieldWithNoFilter: Int!
   typeThreeTimeFieldWithNoFilter: Time!
 }
+
+type ExternalType {
+  numberOne: Int! @filterable
+  numberTwo: Int! @filterable
+  numberThree: Int! @filterable
+  numberFour: Int @filterable
+  numberFive: Int @filterable
+  
+  numberList: [Int!] @filterable
+
+  typeOne: TypeOne @filterable
+}

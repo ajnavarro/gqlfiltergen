@@ -43,7 +43,8 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 
 	fields, ok := ot[objectName]
 	if !ok {
-		panic(fmt.Sprintf("trying to process an object with no fields: %q", objectName))
+		field := processField(objectName, objectName)
+		return field.Type.NamedType
 	}
 
 	for _, f := range fields {
@@ -51,20 +52,19 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 			Description: fmt.Sprintf("filter for %s field.", f.Name),
 			Name:        f.Name,
 		}
+
 		var isSlice bool
+		var isSliceElemPointer bool
 		var isNested bool
-		switch f.Type.NamedType {
-		case "": // it is a list of something
+
+		field := processField(f.Name, f.Type.NamedType)
+		switch {
+		case field != nil:
+			fd = field
+		case f.Type.NamedType == "": // it is a list
 			fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.Elem.NamedType), nil)
+			isSliceElemPointer = !f.Type.Elem.NonNull
 			isSlice = true
-		case "String":
-			fd.Type = ast.NamedType(filterStringName, nil)
-		case "Int":
-			fd.Type = ast.NamedType(filterNumberName, nil)
-		case "Time":
-			fd.Type = ast.NamedType(filterTimeName, nil)
-		case "Boolean":
-			fd.Type = ast.NamedType(filterBooleanName, nil)
 		default: // It is a named custom named type
 			isNested = true
 			fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.NamedType), nil)
@@ -73,10 +73,12 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 		objDef.Fields = append(objDef.Fields, fd)
 
 		tf := &FieldMapping{
-			FilterField: f.Name,
-			IsSlice:     isSlice,
-			IsNested:    isNested,
-			Pointer:     !f.Type.NonNull,
+			FilterField:        f.Name,
+			TypeName:           fd.Type.Name(),
+			IsSlice:            isSlice,
+			IsNested:           isNested,
+			IsPointer:          !f.Type.NonNull,
+			IsSliceElemPointer: isSliceElemPointer,
 		}
 
 		typeData.Fields = append(typeData.Fields, tf)
@@ -88,6 +90,27 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 	}
 
 	return filterName
+}
+
+func processField(name, typeName string) *ast.FieldDefinition {
+	fd := &ast.FieldDefinition{
+		Description: fmt.Sprintf("filter for %s field.", name),
+		Name:        name,
+	}
+	switch typeName {
+	case "String":
+		fd.Type = ast.NamedType(filterStringName, nil)
+	case "Int":
+		fd.Type = ast.NamedType(filterNumberName, nil)
+	case "Time":
+		fd.Type = ast.NamedType(filterTimeName, nil)
+	case "Boolean":
+		fd.Type = ast.NamedType(filterBooleanName, nil)
+	default:
+		return nil
+	}
+
+	return fd
 }
 
 func filterDefinition(filterName, objectName string) *ast.Definition {
