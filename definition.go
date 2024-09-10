@@ -11,7 +11,7 @@ type AstAndTemplateData struct {
 	TypeData *TypeData
 }
 
-func generateMainFilterDefinition(ot map[string]ast.FieldList) map[string]*AstAndTemplateData {
+func generateMainFilterDefinition(ot map[string][]*processingField) map[string]*AstAndTemplateData {
 	out := make(map[string]*AstAndTemplateData)
 	seen := make(map[string]bool)
 	for objectName := range ot {
@@ -21,7 +21,7 @@ func generateMainFilterDefinition(ot map[string]ast.FieldList) map[string]*AstAn
 	return out
 }
 
-func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map[string]*AstAndTemplateData, seen map[string]bool, nested bool, objectName string) string {
+func generateMainFilterDefinitionLoop(ot map[string][]*processingField, processed map[string]*AstAndTemplateData, seen map[string]bool, nested bool, objectName string) string {
 	filterName := fmt.Sprintf("Filter%s", objectName)
 	if nested {
 		filterName = fmt.Sprintf("NestedFilter%s", objectName)
@@ -41,13 +41,19 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 		FilterName: filterName,
 	}
 
-	fields, ok := ot[objectName]
+	pfs, ok := ot[objectName]
 	if !ok {
 		field := processField(objectName, objectName)
 		return field.Type.NamedType
 	}
 
-	for _, f := range fields {
+	for _, pf := range pfs {
+		f := pf.Field
+
+		if f.Type.Name() != "Int" && pf.IsMinmaxeable {
+			panic(fmt.Errorf("only Int types can be minmaxeables. Field: %s Type: %s", f.Name, f.Type.Name()))
+		}
+
 		fd := &ast.FieldDefinition{
 			Description: fmt.Sprintf("filter for %s field.", f.Name),
 			Name:        f.Name,
@@ -79,6 +85,8 @@ func generateMainFilterDefinitionLoop(ot map[string]ast.FieldList, processed map
 			IsNested:           isNested,
 			IsPointer:          !f.Type.NonNull,
 			IsSliceElemPointer: isSliceElemPointer,
+
+			IsMinmaxeable: pf.IsMinmaxeable,
 		}
 
 		typeData.Fields = append(typeData.Fields, tf)

@@ -34,6 +34,7 @@ func TestFiltersGeneration(t *testing.T) {
 	eqlValue := "eqValue"
 	likeValue := "^t.*$"
 	eqlValueInt := 42
+	minmax1 := 2222
 
 	f1 := &out.FilterTypeOne{
 		TypeOneStringFieldFiltered: &out.FilterString{
@@ -50,6 +51,11 @@ func TestFiltersGeneration(t *testing.T) {
 					{
 						TypeOneNumberFieldFiltered: &out.FilterNumber{
 							Exists: &nexists,
+						},
+					},
+					{
+						TypeOneNumberFieldFiltered: &out.FilterNumber{
+							Eq: &minmax1,
 						},
 					},
 				},
@@ -97,6 +103,11 @@ func TestFiltersGeneration(t *testing.T) {
 	for i, typ := range ts {
 		require.Equal(t, results[i], f1.Eval(typ), "position %d", i)
 	}
+
+	min, max := f1.MinMaxTypeOneNumberFieldFiltered()
+
+	require.Equal(t, &eqlValueInt, min)
+	require.Equal(t, &minmax1, max)
 }
 
 func goBuild(t *testing.T, path string) error {

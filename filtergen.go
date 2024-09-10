@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"fmt"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/99designs/gqlgen/codegen"
@@ -16,7 +17,11 @@ import (
 	"github.com/vektah/gqlparser/v2/parser"
 )
 
-const filterableDirectiveName = "filterable"
+const (
+	filterableDirectiveName = "filterable"
+	extrasArgumentName      = "extras"
+	extraMinmaxName         = "MINMAX"
+)
 
 //go:embed filter.functions.go.tpl
 var functionsTpl string
@@ -48,28 +53,51 @@ func (f *Plugin) Name() string {
 
 func (f *Plugin) InjectSourceEarly() *ast.Source {
 	return &ast.Source{
-		Name:  "filtergen.directives.graphql",
-		Input: "directive @filterable on FIELD_DEFINITION",
+		Name: "filtergen.directives.graphql",
+		Input: `
+enum FilterableAddons {
+  """
+  Get minimum and maximum value used on all the filters for this field.
+  Useful when you need to do a range query for performance reasons.
+  """
+  MINMAX
+}
+
+directive @filterable(
+  """
+  Add extra functionality to this field apart from the filtering capabilities.
+  """
+  extras: [FilterableAddons!]
+) on FIELD_DEFINITION
+`,
 	}
 }
 
+type processingField struct {
+	Field         *ast.FieldDefinition
+	IsMinmaxeable bool
+}
+
 func (f *Plugin) InjectSourceLate(schema *ast.Schema) *ast.Source {
-	processingTypes := make(map[string]ast.FieldList)
+	processingTypes := make(map[string][]*processingField)
 	for n, t := range schema.Types {
 		if _, ok := processingTypes[n]; ok {
 			continue
 		}
 		for _, f := range t.Fields {
-			if !sholudProcess(f.Directives) {
+			filterable, minmaxeable := getDirectives(f.Directives)
+			if !filterable && !minmaxeable {
 				continue
 			}
 			fl := processingTypes[n]
-
 			if fl == nil {
-				fl = ast.FieldList{}
+				fl = []*processingField{}
 			}
 
-			fl = append(fl, f)
+			fl = append(fl, &processingField{
+				Field:         f,
+				IsMinmaxeable: minmaxeable,
+			})
 
 			processingTypes[n] = fl
 		}
@@ -109,17 +137,31 @@ func (f *Plugin) InjectSourceLate(schema *ast.Schema) *ast.Source {
 	}
 }
 
-func sholudProcess(cd ast.DirectiveList) bool {
+func getDirectives(cd ast.DirectiveList) (filterable bool, minmaxeable bool) {
 	if cd == nil {
-		return false
+		return
 	}
+
 	for _, d := range cd {
 		if d.Name == filterableDirectiveName {
-			return true
+			filterable = true
+		}
+
+		if a := d.Arguments.ForName(extrasArgumentName); a != nil {
+			if a.Value.Kind != ast.ListValue {
+				continue
+			}
+			if ch := a.Value.Children; len(ch) != 0 {
+				if vals := ch.ForName(""); vals != nil {
+					if strings.Contains(vals.Raw, extraMinmaxName) {
+						minmaxeable = true
+					}
+				}
+			}
 		}
 	}
 
-	return false
+	return
 }
 
 func (f *Plugin) MutateConfig(cfg *config.Config) error {
@@ -146,7 +188,15 @@ func (f *Plugin) GenerateCode(data *codegen.Data) error {
 				}
 			}
 		}
+
+		sort.Slice(t.Fields, func(i, j int) bool {
+			return t.Fields[i].FilterField > t.Fields[j].FilterField
+		})
 	}
+
+	sort.Slice(f.templateData.TypeDatas, func(i, j int) bool {
+		return f.templateData.TypeDatas[i].FilterName > f.templateData.TypeDatas[j].FilterName
+	})
 
 	filename := path.Join(path.Dir(data.Config.Model.Filename), "filter_methods.go")
 

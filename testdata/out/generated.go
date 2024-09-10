@@ -3,6 +3,9 @@
 package out
 
 import (
+	"fmt"
+	"io"
+	"strconv"
 	"time"
 )
 
@@ -269,4 +272,45 @@ type TypeTwo struct {
 	TypeTwoSliceWithTypeTwos         []*TypeTwo `json:"type_two_slice_with_type_twos"`
 	TypeTwoWithTypeThree             *TypeThree `json:"type_two_with_type_three"`
 	TypeTwoWithTypeThreeNotMandatory *TypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
+}
+
+type FilterableAddons string
+
+const (
+	// Get minimum and maximum value used on all the filters for this field.
+	// Useful when you need to do a range query for performance reasons.
+	FilterableAddonsMinmax FilterableAddons = "MINMAX"
+)
+
+var AllFilterableAddons = []FilterableAddons{
+	FilterableAddonsMinmax,
+}
+
+func (e FilterableAddons) IsValid() bool {
+	switch e {
+	case FilterableAddonsMinmax:
+		return true
+	}
+	return false
+}
+
+func (e FilterableAddons) String() string {
+	return string(e)
+}
+
+func (e *FilterableAddons) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = FilterableAddons(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid FilterableAddons", str)
+	}
+	return nil
+}
+
+func (e FilterableAddons) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
 }

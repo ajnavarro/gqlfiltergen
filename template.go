@@ -16,6 +16,8 @@ type FieldMapping struct {
 	IsSliceElemPointer bool   // Whether the slice elements are pointers or not
 	IsNested           bool   // Whether the field is a nested struct or not
 	IsMethod           bool   // Check if we need to call a method instead of a var
+
+	IsMinmaxeable bool
 }
 
 func (fm *FieldMapping) EvalVarWrapping(code string) string {

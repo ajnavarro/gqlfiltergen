@@ -1,12 +1,13 @@
 
 {{ reserveImport "regexp" }}
 {{ reserveImport "time" }}
+{{ reserveImport "math" }}
 
 ///////////////////////////////// CUSTOM  TYPES /////////////////////////////////
 
-{{- range .TypeDatas }}
+{{range $td := .TypeDatas }}
 
-	func (f *{{.FilterName}}) Eval(obj *{{.TypeName}}) bool {
+	func (f *{{$td.FilterName}}) Eval(obj *{{$td.TypeName}}) bool {
 	// Evaluate logical operators first
 	if len(f.And) > 0 {
 		for _, subFilter := range f.And {
@@ -36,7 +37,7 @@
 	}
 
 	// Evaluate individual field filters
-	{{- range .Fields }}
+	{{- range $td.Fields }}
 		{{if .IsSlice}}
 		// Handle {{.FilterField}} slice
 		if f.{{.FilterField}} != nil {
@@ -57,6 +58,71 @@
 
 	return true
 }
+
+{{- range $td.Fields }}
+	{{if .IsMinmaxeable}}
+		// MinMax function for {{.FilterField}}
+		func (f *{{$td.FilterName}}) MinMax{{.FilterField}}() (min *int, max *int) {
+			// Recursively handle And conditions
+			if len(f.And) > 0 {
+				for _, subFilter := range f.And {
+					subMin, subMax := subFilter.MinMax{{.FilterField}}()
+					if subMin != nil && (min == nil || *subMin < *min) {
+						min = subMin
+					}
+					if subMax != nil && (max == nil || *subMax > *max) {
+						max = subMax
+					}
+				}
+			}
+
+			// Recursively handle Or conditions
+			if len(f.Or) > 0 {
+				for _, subFilter := range f.Or {
+					subMin, subMax := subFilter.MinMax{{.FilterField}}()
+					if subMin != nil && (min == nil || *subMin < *min) {
+						min = subMin
+					}
+					if subMax != nil && (max == nil || *subMax > *max) {
+						max = subMax
+					}
+				}
+			}
+
+			if f.{{.FilterField}} != nil {
+				if f.{{.FilterField}}.Gt != nil {
+					if min == nil || *f.{{.FilterField}}.Gt < *min {
+						min = f.{{.FilterField}}.Gt
+					}
+					if max == nil || *f.{{.FilterField}}.Gt > *max {
+						max = f.{{.FilterField}}.Gt
+					}
+				}
+
+				if f.{{.FilterField}}.Lt != nil {
+					if min == nil || *f.{{.FilterField}}.Lt < *min {
+						min = f.{{.FilterField}}.Lt
+					}
+					if max == nil || *f.{{.FilterField}}.Lt > *max {
+						max = f.{{.FilterField}}.Lt
+					}
+				}
+
+				if f.{{.FilterField}}.Eq != nil {
+					if min == nil || *f.{{.FilterField}}.Eq < *min {
+						min = f.{{.FilterField}}.Eq
+					}
+					if max == nil || *f.{{.FilterField}}.Eq > *max {
+						max = f.{{.FilterField}}.Eq
+					}
+				}
+			}
+
+			return min, max
+		}
+	{{end}}
+{{- end}}
+
 {{- end }}
 
 func toIntPtr(val interface{}) *int {

@@ -42,7 +42,7 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
-	Filterable func(ctx context.Context, obj interface{}, next graphql.Resolver) (res interface{}, err error)
+	Filterable func(ctx context.Context, obj interface{}, next graphql.Resolver, extras []FilterableAddons) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -516,7 +516,12 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../../all", Input: `directive @filterable on FIELD_DEFINITION
+	{Name: "../../all", Input: `directive @filterable(
+	"""
+	Add extra functionality to this field apart from the filtering capabilities.
+	"""
+	extras: [FilterableAddons!]
+) on FIELD_DEFINITION
 type ExternalType {
 	number_one: Int! @filterable
 	number_two: Int! @filterable
@@ -790,6 +795,13 @@ input FilterTypeTwo {
 	"""
 	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
 }
+enum FilterableAddons {
+	"""
+	Get minimum and maximum value used on all the filters for this field.
+	Useful when you need to do a range query for performance reasons.
+	"""
+	MINMAX
+}
 input InputOne {
 	type_two_string_field_filtered: String!
 	type_two_number_field_filtered: Int!
@@ -939,7 +951,7 @@ scalar Time
 type TypeOne {
 	type_one_string_field_filtered: String! @filterable
 	type_one_string_field_filtered_not_mandatory: String @filterable
-	type_one_number_field_filtered: Int! @filterable
+	type_one_number_field_filtered: Int! @filterable(extras: [MINMAX])
 	type_one_number_field_filtered_not_mandatory: Int @filterable
 	type_one_time_field_filtered: Time! @filterable
 	type_one_time_field_filtered_not_mandatory: Time @filterable
@@ -978,6 +990,21 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) dir_filterable_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 []FilterableAddons
+	if tmp, ok := rawArgs["extras"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("extras"))
+		arg0, err = ec.unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["extras"] = arg0
+	return args, nil
+}
 
 func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -1098,7 +1125,7 @@ func (ec *executionContext) _ExternalType_number_one(ctx context.Context, field 
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1162,7 +1189,7 @@ func (ec *executionContext) _ExternalType_number_two(ctx context.Context, field 
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1226,7 +1253,7 @@ func (ec *executionContext) _ExternalType_number_three(ctx context.Context, fiel
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1290,7 +1317,7 @@ func (ec *executionContext) _ExternalType_number_four(ctx context.Context, field
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1351,7 +1378,7 @@ func (ec *executionContext) _ExternalType_number_five(ctx context.Context, field
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1412,7 +1439,7 @@ func (ec *executionContext) _ExternalType_number_list(ctx context.Context, field
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1473,7 +1500,7 @@ func (ec *executionContext) _ExternalType_type_one(ctx context.Context, field gr
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1893,7 +1920,7 @@ func (ec *executionContext) _TypeOne_type_one_string_field_filtered(ctx context.
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -1957,7 +1984,7 @@ func (ec *executionContext) _TypeOne_type_one_string_field_filtered_not_mandator
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2015,10 +2042,14 @@ func (ec *executionContext) _TypeOne_type_one_number_field_filtered(ctx context.
 			return obj.TypeOneNumberFieldFiltered, nil
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
+			extras, err := ec.unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx, []interface{}{"MINMAX"})
+			if err != nil {
+				return nil, err
+			}
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, extras)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2082,7 +2113,7 @@ func (ec *executionContext) _TypeOne_type_one_number_field_filtered_not_mandator
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2143,7 +2174,7 @@ func (ec *executionContext) _TypeOne_type_one_time_field_filtered(ctx context.Co
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2207,7 +2238,7 @@ func (ec *executionContext) _TypeOne_type_one_time_field_filtered_not_mandatory(
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2268,7 +2299,7 @@ func (ec *executionContext) _TypeOne_type_one_boolean_field_filtered(ctx context
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2332,7 +2363,7 @@ func (ec *executionContext) _TypeOne_type_one_boolean_field_filtered_not_mandato
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2525,7 +2556,7 @@ func (ec *executionContext) _TypeOne_type_one_slice_with_type_twos(ctx context.C
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2611,7 +2642,7 @@ func (ec *executionContext) _TypeThree_type_three_string_field_filtered(ctx cont
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2675,7 +2706,7 @@ func (ec *executionContext) _TypeThree_type_three_number_field_filtered(ctx cont
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2739,7 +2770,7 @@ func (ec *executionContext) _TypeThree_type_three_time_field_filtered(ctx contex
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2803,7 +2834,7 @@ func (ec *executionContext) _TypeThree_type_three_boolean_field_filtered(ctx con
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -2999,7 +3030,7 @@ func (ec *executionContext) _TypeTwo_type_two_string_field_filtered(ctx context.
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -3063,7 +3094,7 @@ func (ec *executionContext) _TypeTwo_type_two_number_field_filtered(ctx context.
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -3127,7 +3158,7 @@ func (ec *executionContext) _TypeTwo_type_two_time_field_filtered(ctx context.Co
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -3191,7 +3222,7 @@ func (ec *executionContext) _TypeTwo_type_two_boolean_field_filtered(ctx context
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -3387,7 +3418,7 @@ func (ec *executionContext) _TypeTwo_type_two_slice_with_type_twos(ctx context.C
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -3473,7 +3504,7 @@ func (ec *executionContext) _TypeTwo_type_two_with_type_three(ctx context.Contex
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -3553,7 +3584,7 @@ func (ec *executionContext) _TypeTwo_type_two_with_type_three_not_mandatory(ctx 
 			if ec.directives.Filterable == nil {
 				return nil, errors.New("directive filterable is not implemented")
 			}
-			return ec.directives.Filterable(ctx, obj, directive0)
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
 		}
 
 		tmp, err := directive1(rctx)
@@ -7016,6 +7047,16 @@ func (ec *executionContext) unmarshalNFilterTypeOne2githubᚗcomᚋajnavarroᚋg
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx context.Context, v interface{}) (FilterableAddons, error) {
+	var res FilterableAddons
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx context.Context, sel ast.SelectionSet, v FilterableAddons) graphql.Marshaler {
+	return v
+}
+
 func (ec *executionContext) unmarshalNInputOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐInputOne(ctx context.Context, v interface{}) (InputOne, error) {
 	res, err := ec.unmarshalInputInputOne(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -7585,6 +7626,73 @@ func (ec *executionContext) unmarshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarro�
 	}
 	res, err := ec.unmarshalInputFilterTypeTwo(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx context.Context, v interface{}) ([]FilterableAddons, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]FilterableAddons, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx context.Context, sel ast.SelectionSet, v []FilterableAddons) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOInt2ᚕintᚄ(ctx context.Context, v interface{}) ([]int, error) {
