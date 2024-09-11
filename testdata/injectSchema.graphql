@@ -1,0 +1,9 @@
+# schema used by the plugin to inject these elements into already existing query methods
+
+type Query {
+    testFilter(filter: FilterTypeOne!): [TypeOne!]
+}
+
+type Subscription {
+    testSubFilter(filter: FilterTypeOne!): TypeOne!
+}

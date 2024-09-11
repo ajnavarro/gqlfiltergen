@@ -37,8 +37,7 @@ type Plugin struct {
 }
 
 type Options struct {
-	Queries       []string
-	Subscriptions []string
+	InjectCodeAfter string
 }
 
 func NewPlugin(opts *Options) *Plugin {
@@ -215,25 +214,11 @@ const (
 	subscriptionName = "Subscription"
 )
 
-func preprocessRequestType(typ string, qs []string) string {
-	if len(qs) == 0 {
-		return ""
-	}
-	return fmt.Sprintf(`
-        type %s {
-            %s
-        }
-    `, typ, strings.Join(qs, "\n"))
-}
-
 func (f *Plugin) injectUserQueries(cfg *config.Config) error {
 	orig := cfg.Schema
 
-	qs := preprocessRequestType(queryName, f.opts.Queries)
-	ss := preprocessRequestType(subscriptionName, f.opts.Subscriptions)
-
 	source := &ast.Source{
-		Input: qs + "\n" + ss,
+		Input: f.opts.InjectCodeAfter,
 	}
 
 	schema, err := parser.ParseSchema(source)
@@ -246,6 +231,8 @@ func (f *Plugin) injectUserQueries(cfg *config.Config) error {
 			for _, f := range qt.Fields {
 				oqt.Fields = append(oqt.Fields, f)
 			}
+		} else {
+			orig.Types[queryName] = qt
 		}
 	}
 
@@ -254,6 +241,8 @@ func (f *Plugin) injectUserQueries(cfg *config.Config) error {
 			for _, f := range st.Fields {
 				ost.Fields = append(ost.Fields, f)
 			}
+		} else {
+			orig.Types[subscriptionName] = st
 		}
 	}
 

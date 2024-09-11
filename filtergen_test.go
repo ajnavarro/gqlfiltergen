@@ -1,6 +1,7 @@
 package gqlfiltergen
 
 import (
+	_ "embed"
 	"errors"
 	"os/exec"
 	"testing"
@@ -12,14 +13,15 @@ import (
 	"github.com/ajnavarro/gqlfiltergen/testdata/out"
 )
 
+//go:embed testdata/injectSchema.graphql
+var injectedSchema string
+
 func TestFiltersGeneration(t *testing.T) {
 	cfg, err := config.LoadConfig("testdata/gqlgen.yml")
 	require.NoError(t, err)
 
 	p := NewPlugin(&Options{
-		Queries: []string{
-			"testFilter(filter: FilterTypeOne!): [TypeOne!]",
-		},
+		InjectCodeAfter: injectedSchema,
 	})
 
 	err = api.Generate(cfg,
