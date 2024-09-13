@@ -45,6 +45,44 @@ type TypeThree {
   type_three_string_field_with_no_filter: String!
   type_three_number_field_with_no_filter: Int!
   type_three_time_field_with_no_filter: Time!
+
+  type_union: UnionOne! @filterable
+  type_union_slice: [UnionOne!] @filterable
+  type_union_not_mandatory: UnionOne @filterable
+}
+
+union UnionOne = UnionTypeOne | UnionTypeTwo | UnionTypeTwoPrime
+
+type UnionTypeOne {
+  type_int_union_one: Int @filterable
+  type_string_union_one: String @filterable
+  type_time_union_one: Time @filterable
+}
+
+type UnionTypeTwo {
+  type_int_union_two: Int @filterable
+  type_string_union_two: String @filterable
+  type_time_union_two: Time @filterable
+}
+
+type UnionTypeTwoPrime {
+  type_int_union_two_prime: Int
+  type_string_union_two_prime: String 
+  type_time_union_two_prime: Time 
+}
+
+union UnionTwo = UnionTypeThree | UnionTypeFour
+
+type UnionTypeThree {
+  type_int_union_one: Int 
+  type_string_union_one: String 
+  type_time_union_one: Time 
+}
+
+type UnionTypeFour {
+  type_int_union_two: Int 
+  type_string_union_two: String 
+  type_time_union_two: Time 
 }
 
 type ExternalType {

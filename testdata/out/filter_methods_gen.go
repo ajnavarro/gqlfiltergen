@@ -9,6 +9,163 @@ import (
 
 ///////////////////////////////// CUSTOM  TYPES /////////////////////////////////
 
+func (f *NestedFilterUnionTypeTwo) Eval(obj *UnionTypeTwo) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle TypeTimeUnionTwo field
+	toEvalTypeTimeUnionTwo := obj.TypeTimeUnionTwo
+	if f.TypeTimeUnionTwo != nil && !f.TypeTimeUnionTwo.Eval(toEvalTypeTimeUnionTwo) {
+		return false
+	}
+
+	// Handle TypeStringUnionTwo field
+	toEvalTypeStringUnionTwo := obj.TypeStringUnionTwo
+	if f.TypeStringUnionTwo != nil && !f.TypeStringUnionTwo.Eval(toEvalTypeStringUnionTwo) {
+		return false
+	}
+
+	// Handle TypeIntUnionTwo field
+	toEvalTypeIntUnionTwo := toIntPtr(obj.TypeIntUnionTwo)
+	if f.TypeIntUnionTwo != nil && !f.TypeIntUnionTwo.Eval(toEvalTypeIntUnionTwo) {
+		return false
+	}
+
+	return true
+}
+
+func (f *NestedFilterUnionTypeOne) Eval(obj *UnionTypeOne) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle TypeTimeUnionOne field
+	toEvalTypeTimeUnionOne := obj.TypeTimeUnionOne
+	if f.TypeTimeUnionOne != nil && !f.TypeTimeUnionOne.Eval(toEvalTypeTimeUnionOne) {
+		return false
+	}
+
+	// Handle TypeStringUnionOne field
+	toEvalTypeStringUnionOne := obj.TypeStringUnionOne
+	if f.TypeStringUnionOne != nil && !f.TypeStringUnionOne.Eval(toEvalTypeStringUnionOne) {
+		return false
+	}
+
+	// Handle TypeIntUnionOne field
+	toEvalTypeIntUnionOne := toIntPtr(obj.TypeIntUnionOne)
+	if f.TypeIntUnionOne != nil && !f.TypeIntUnionOne.Eval(toEvalTypeIntUnionOne) {
+		return false
+	}
+
+	return true
+}
+
+func (f *NestedFilterUnionOne) Eval(obj *UnionOne) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Handle union objects depending of the type
+	tobj := *obj
+	switch objv := tobj.(type) {
+	case UnionTypeOne:
+
+		// Handle UnionTypeOne field
+		toEvalUnionTypeOne := objv
+		if f.UnionTypeOne != nil && !f.UnionTypeOne.Eval(&toEvalUnionTypeOne) {
+			return false
+		}
+
+	case UnionTypeTwo:
+
+		// Handle UnionTypeTwo field
+		toEvalUnionTypeTwo := objv
+		if f.UnionTypeTwo != nil && !f.UnionTypeTwo.Eval(&toEvalUnionTypeTwo) {
+			return false
+		}
+
+	}
+
+	return true
+}
+
 func (f *NestedFilterTypeTwo) Eval(obj *TypeTwo) bool {
 	// Evaluate logical operators first
 	if len(f.And) > 0 {
@@ -118,6 +275,27 @@ func (f *NestedFilterTypeThree) Eval(obj *TypeThree) bool {
 	}
 
 	// Evaluate individual field filters
+
+	// Handle TypeUnionSlice slice
+	if f.TypeUnionSlice != nil {
+		for _, elem := range obj.TypeUnionSlice {
+			if !f.TypeUnionSlice.Eval(&elem) {
+				return false
+			}
+		}
+	}
+
+	// Handle TypeUnionNotMandatory field
+	toEvalTypeUnionNotMandatory := obj.TypeUnionNotMandatory
+	if f.TypeUnionNotMandatory != nil && !f.TypeUnionNotMandatory.Eval(&toEvalTypeUnionNotMandatory) {
+		return false
+	}
+
+	// Handle TypeUnion field
+	toEvalTypeUnion := obj.TypeUnion
+	if f.TypeUnion != nil && !f.TypeUnion.Eval(&toEvalTypeUnion) {
+		return false
+	}
 
 	// Handle TypeThreeTimeFieldFiltered field
 	toEvalTypeThreeTimeFieldFiltered := obj.TypeThreeTimeFieldFiltered
@@ -297,6 +475,163 @@ func (f *NestedFilterTypeOne) MinMaxTypeOneNumberFieldFiltered() (min *int, max 
 	return min, max
 }
 
+func (f *FilterUnionTypeTwo) Eval(obj *UnionTypeTwo) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle TypeTimeUnionTwo field
+	toEvalTypeTimeUnionTwo := obj.TypeTimeUnionTwo
+	if f.TypeTimeUnionTwo != nil && !f.TypeTimeUnionTwo.Eval(toEvalTypeTimeUnionTwo) {
+		return false
+	}
+
+	// Handle TypeStringUnionTwo field
+	toEvalTypeStringUnionTwo := obj.TypeStringUnionTwo
+	if f.TypeStringUnionTwo != nil && !f.TypeStringUnionTwo.Eval(toEvalTypeStringUnionTwo) {
+		return false
+	}
+
+	// Handle TypeIntUnionTwo field
+	toEvalTypeIntUnionTwo := toIntPtr(obj.TypeIntUnionTwo)
+	if f.TypeIntUnionTwo != nil && !f.TypeIntUnionTwo.Eval(toEvalTypeIntUnionTwo) {
+		return false
+	}
+
+	return true
+}
+
+func (f *FilterUnionTypeOne) Eval(obj *UnionTypeOne) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle TypeTimeUnionOne field
+	toEvalTypeTimeUnionOne := obj.TypeTimeUnionOne
+	if f.TypeTimeUnionOne != nil && !f.TypeTimeUnionOne.Eval(toEvalTypeTimeUnionOne) {
+		return false
+	}
+
+	// Handle TypeStringUnionOne field
+	toEvalTypeStringUnionOne := obj.TypeStringUnionOne
+	if f.TypeStringUnionOne != nil && !f.TypeStringUnionOne.Eval(toEvalTypeStringUnionOne) {
+		return false
+	}
+
+	// Handle TypeIntUnionOne field
+	toEvalTypeIntUnionOne := toIntPtr(obj.TypeIntUnionOne)
+	if f.TypeIntUnionOne != nil && !f.TypeIntUnionOne.Eval(toEvalTypeIntUnionOne) {
+		return false
+	}
+
+	return true
+}
+
+func (f *FilterUnionOne) Eval(obj *UnionOne) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Handle union objects depending of the type
+	tobj := *obj
+	switch objv := tobj.(type) {
+	case UnionTypeOne:
+
+		// Handle UnionTypeOne field
+		toEvalUnionTypeOne := objv
+		if f.UnionTypeOne != nil && !f.UnionTypeOne.Eval(&toEvalUnionTypeOne) {
+			return false
+		}
+
+	case UnionTypeTwo:
+
+		// Handle UnionTypeTwo field
+		toEvalUnionTypeTwo := objv
+		if f.UnionTypeTwo != nil && !f.UnionTypeTwo.Eval(&toEvalUnionTypeTwo) {
+			return false
+		}
+
+	}
+
+	return true
+}
+
 func (f *FilterTypeTwo) Eval(obj *TypeTwo) bool {
 	// Evaluate logical operators first
 	if len(f.And) > 0 {
@@ -406,6 +741,27 @@ func (f *FilterTypeThree) Eval(obj *TypeThree) bool {
 	}
 
 	// Evaluate individual field filters
+
+	// Handle TypeUnionSlice slice
+	if f.TypeUnionSlice != nil {
+		for _, elem := range obj.TypeUnionSlice {
+			if !f.TypeUnionSlice.Eval(&elem) {
+				return false
+			}
+		}
+	}
+
+	// Handle TypeUnionNotMandatory field
+	toEvalTypeUnionNotMandatory := obj.TypeUnionNotMandatory
+	if f.TypeUnionNotMandatory != nil && !f.TypeUnionNotMandatory.Eval(&toEvalTypeUnionNotMandatory) {
+		return false
+	}
+
+	// Handle TypeUnion field
+	toEvalTypeUnion := obj.TypeUnion
+	if f.TypeUnion != nil && !f.TypeUnion.Eval(&toEvalTypeUnion) {
+		return false
+	}
 
 	// Handle TypeThreeTimeFieldFiltered field
 	toEvalTypeThreeTimeFieldFiltered := obj.TypeThreeTimeFieldFiltered

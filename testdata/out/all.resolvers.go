@@ -24,6 +24,11 @@ func (r *queryResolver) TestFilter(ctx context.Context, filter FilterTypeOne) ([
 	panic(fmt.Errorf("not implemented: TestFilter - testFilter"))
 }
 
+// TestFilterThree is the resolver for the testFilterThree field.
+func (r *queryResolver) TestFilterThree(ctx context.Context, filter FilterTypeThree) ([]*TypeThree, error) {
+	panic(fmt.Errorf("not implemented: TestFilterThree - testFilterThree"))
+}
+
 // TestSubFilter is the resolver for the testSubFilter field.
 func (r *subscriptionResolver) TestSubFilter(ctx context.Context, filter FilterTypeOne) (<-chan *TypeOne, error) {
 	panic(fmt.Errorf("not implemented: TestSubFilter - testSubFilter"))

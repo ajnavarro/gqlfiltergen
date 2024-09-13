@@ -9,6 +9,14 @@ import (
 	"time"
 )
 
+type UnionOne interface {
+	IsUnionOne()
+}
+
+type UnionTwo interface {
+	IsUnionTwo()
+}
+
 // Filter type for boolean fields. All added filters here are processed as AND operators.
 type FilterBoolean struct {
 	// Filter a boolean field checking if it exists or not.
@@ -127,6 +135,12 @@ type FilterTypeThree struct {
 	TypeThreeTimeFieldFiltered *FilterTime `json:"type_three_time_field_filtered,omitempty"`
 	// filter for type_three_boolean_field_filtered field.
 	TypeThreeBooleanFieldFiltered *FilterBoolean `json:"type_three_boolean_field_filtered,omitempty"`
+	// filter for type_union field.
+	TypeUnion *NestedFilterUnionOne `json:"type_union,omitempty"`
+	// filter for type_union_slice field.
+	TypeUnionSlice *NestedFilterUnionOne `json:"type_union_slice,omitempty"`
+	// filter for type_union_not_mandatory field.
+	TypeUnionNotMandatory *NestedFilterUnionOne `json:"type_union_not_mandatory,omitempty"`
 }
 
 // filter for TypeTwo objects
@@ -151,6 +165,52 @@ type FilterTypeTwo struct {
 	TypeTwoWithTypeThree *NestedFilterTypeThree `json:"type_two_with_type_three,omitempty"`
 	// filter for type_two_with_type_three_not_mandatory field.
 	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
+}
+
+// filter for UnionOne objects
+type FilterUnionOne struct {
+	// logical operator for UnionOne that will combine two or more conditions, returning true if all of them are true.
+	And []*FilterUnionOne `json:"_and,omitempty"`
+	// logical operator for UnionOne that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*FilterUnionOne `json:"_or,omitempty"`
+	// logical operator for UnionOne that will reverse conditions.
+	Not *FilterUnionOne `json:"_not,omitempty"`
+	// filter for UnionTypeOne union type.
+	UnionTypeOne *NestedFilterUnionTypeOne `json:"UnionTypeOne,omitempty"`
+	// filter for UnionTypeTwo union type.
+	UnionTypeTwo *NestedFilterUnionTypeTwo `json:"UnionTypeTwo,omitempty"`
+}
+
+// filter for UnionTypeOne objects
+type FilterUnionTypeOne struct {
+	// logical operator for UnionTypeOne that will combine two or more conditions, returning true if all of them are true.
+	And []*FilterUnionTypeOne `json:"_and,omitempty"`
+	// logical operator for UnionTypeOne that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*FilterUnionTypeOne `json:"_or,omitempty"`
+	// logical operator for UnionTypeOne that will reverse conditions.
+	Not *FilterUnionTypeOne `json:"_not,omitempty"`
+	// filter for type_int_union_one field.
+	TypeIntUnionOne *FilterNumber `json:"type_int_union_one,omitempty"`
+	// filter for type_string_union_one field.
+	TypeStringUnionOne *FilterString `json:"type_string_union_one,omitempty"`
+	// filter for type_time_union_one field.
+	TypeTimeUnionOne *FilterTime `json:"type_time_union_one,omitempty"`
+}
+
+// filter for UnionTypeTwo objects
+type FilterUnionTypeTwo struct {
+	// logical operator for UnionTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	And []*FilterUnionTypeTwo `json:"_and,omitempty"`
+	// logical operator for UnionTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*FilterUnionTypeTwo `json:"_or,omitempty"`
+	// logical operator for UnionTypeTwo that will reverse conditions.
+	Not *FilterUnionTypeTwo `json:"_not,omitempty"`
+	// filter for type_int_union_two field.
+	TypeIntUnionTwo *FilterNumber `json:"type_int_union_two,omitempty"`
+	// filter for type_string_union_two field.
+	TypeStringUnionTwo *FilterString `json:"type_string_union_two,omitempty"`
+	// filter for type_time_union_two field.
+	TypeTimeUnionTwo *FilterTime `json:"type_time_union_two,omitempty"`
 }
 
 type InputOne struct {
@@ -207,6 +267,12 @@ type NestedFilterTypeThree struct {
 	TypeThreeTimeFieldFiltered *FilterTime `json:"type_three_time_field_filtered,omitempty"`
 	// filter for type_three_boolean_field_filtered field.
 	TypeThreeBooleanFieldFiltered *FilterBoolean `json:"type_three_boolean_field_filtered,omitempty"`
+	// filter for type_union field.
+	TypeUnion *NestedFilterUnionOne `json:"type_union,omitempty"`
+	// filter for type_union_slice field.
+	TypeUnionSlice *NestedFilterUnionOne `json:"type_union_slice,omitempty"`
+	// filter for type_union_not_mandatory field.
+	TypeUnionNotMandatory *NestedFilterUnionOne `json:"type_union_not_mandatory,omitempty"`
 }
 
 // filter for TypeTwo objects
@@ -233,6 +299,52 @@ type NestedFilterTypeTwo struct {
 	TypeTwoWithTypeThreeNotMandatory *NestedFilterTypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }
 
+// filter for UnionOne objects
+type NestedFilterUnionOne struct {
+	// logical operator for UnionOne that will combine two or more conditions, returning true if all of them are true.
+	And []*NestedFilterUnionOne `json:"_and,omitempty"`
+	// logical operator for UnionOne that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*NestedFilterUnionOne `json:"_or,omitempty"`
+	// logical operator for UnionOne that will reverse conditions.
+	Not *NestedFilterUnionOne `json:"_not,omitempty"`
+	// filter for UnionTypeOne union type.
+	UnionTypeOne *NestedFilterUnionTypeOne `json:"UnionTypeOne,omitempty"`
+	// filter for UnionTypeTwo union type.
+	UnionTypeTwo *NestedFilterUnionTypeTwo `json:"UnionTypeTwo,omitempty"`
+}
+
+// filter for UnionTypeOne objects
+type NestedFilterUnionTypeOne struct {
+	// logical operator for UnionTypeOne that will combine two or more conditions, returning true if all of them are true.
+	And []*NestedFilterUnionTypeOne `json:"_and,omitempty"`
+	// logical operator for UnionTypeOne that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*NestedFilterUnionTypeOne `json:"_or,omitempty"`
+	// logical operator for UnionTypeOne that will reverse conditions.
+	Not *NestedFilterUnionTypeOne `json:"_not,omitempty"`
+	// filter for type_int_union_one field.
+	TypeIntUnionOne *FilterNumber `json:"type_int_union_one,omitempty"`
+	// filter for type_string_union_one field.
+	TypeStringUnionOne *FilterString `json:"type_string_union_one,omitempty"`
+	// filter for type_time_union_one field.
+	TypeTimeUnionOne *FilterTime `json:"type_time_union_one,omitempty"`
+}
+
+// filter for UnionTypeTwo objects
+type NestedFilterUnionTypeTwo struct {
+	// logical operator for UnionTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	And []*NestedFilterUnionTypeTwo `json:"_and,omitempty"`
+	// logical operator for UnionTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*NestedFilterUnionTypeTwo `json:"_or,omitempty"`
+	// logical operator for UnionTypeTwo that will reverse conditions.
+	Not *NestedFilterUnionTypeTwo `json:"_not,omitempty"`
+	// filter for type_int_union_two field.
+	TypeIntUnionTwo *FilterNumber `json:"type_int_union_two,omitempty"`
+	// filter for type_string_union_two field.
+	TypeStringUnionTwo *FilterString `json:"type_string_union_two,omitempty"`
+	// filter for type_time_union_two field.
+	TypeTimeUnionTwo *FilterTime `json:"type_time_union_two,omitempty"`
+}
+
 type Query struct {
 }
 
@@ -252,13 +364,16 @@ type TypeOne struct {
 }
 
 type TypeThree struct {
-	TypeThreeStringFieldFiltered     string    `json:"type_three_string_field_filtered"`
-	TypeThreeNumberFieldFiltered     int       `json:"type_three_number_field_filtered"`
-	TypeThreeTimeFieldFiltered       time.Time `json:"type_three_time_field_filtered"`
-	TypeThreeBooleanFieldFiltered    bool      `json:"type_three_boolean_field_filtered"`
-	TypeThreeStringFieldWithNoFilter string    `json:"type_three_string_field_with_no_filter"`
-	TypeThreeNumberFieldWithNoFilter int       `json:"type_three_number_field_with_no_filter"`
-	TypeThreeTimeFieldWithNoFilter   time.Time `json:"type_three_time_field_with_no_filter"`
+	TypeThreeStringFieldFiltered     string     `json:"type_three_string_field_filtered"`
+	TypeThreeNumberFieldFiltered     int        `json:"type_three_number_field_filtered"`
+	TypeThreeTimeFieldFiltered       time.Time  `json:"type_three_time_field_filtered"`
+	TypeThreeBooleanFieldFiltered    bool       `json:"type_three_boolean_field_filtered"`
+	TypeThreeStringFieldWithNoFilter string     `json:"type_three_string_field_with_no_filter"`
+	TypeThreeNumberFieldWithNoFilter int        `json:"type_three_number_field_with_no_filter"`
+	TypeThreeTimeFieldWithNoFilter   time.Time  `json:"type_three_time_field_with_no_filter"`
+	TypeUnion                        UnionOne   `json:"type_union"`
+	TypeUnionSlice                   []UnionOne `json:"type_union_slice,omitempty"`
+	TypeUnionNotMandatory            UnionOne   `json:"type_union_not_mandatory,omitempty"`
 }
 
 type TypeTwo struct {
@@ -274,43 +389,83 @@ type TypeTwo struct {
 	TypeTwoWithTypeThreeNotMandatory *TypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }
 
-type FilterableAddons string
+type UnionTypeFour struct {
+	TypeIntUnionTwo    *int       `json:"type_int_union_two,omitempty"`
+	TypeStringUnionTwo *string    `json:"type_string_union_two,omitempty"`
+	TypeTimeUnionTwo   *time.Time `json:"type_time_union_two,omitempty"`
+}
+
+func (UnionTypeFour) IsUnionTwo() {}
+
+type UnionTypeOne struct {
+	TypeIntUnionOne    *int       `json:"type_int_union_one,omitempty"`
+	TypeStringUnionOne *string    `json:"type_string_union_one,omitempty"`
+	TypeTimeUnionOne   *time.Time `json:"type_time_union_one,omitempty"`
+}
+
+func (UnionTypeOne) IsUnionOne() {}
+
+type UnionTypeThree struct {
+	TypeIntUnionOne    *int       `json:"type_int_union_one,omitempty"`
+	TypeStringUnionOne *string    `json:"type_string_union_one,omitempty"`
+	TypeTimeUnionOne   *time.Time `json:"type_time_union_one,omitempty"`
+}
+
+func (UnionTypeThree) IsUnionTwo() {}
+
+type UnionTypeTwo struct {
+	TypeIntUnionTwo    *int       `json:"type_int_union_two,omitempty"`
+	TypeStringUnionTwo *string    `json:"type_string_union_two,omitempty"`
+	TypeTimeUnionTwo   *time.Time `json:"type_time_union_two,omitempty"`
+}
+
+func (UnionTypeTwo) IsUnionOne() {}
+
+type UnionTypeTwoPrime struct {
+	TypeIntUnionTwoPrime    *int       `json:"type_int_union_two_prime,omitempty"`
+	TypeStringUnionTwoPrime *string    `json:"type_string_union_two_prime,omitempty"`
+	TypeTimeUnionTwoPrime   *time.Time `json:"type_time_union_two_prime,omitempty"`
+}
+
+func (UnionTypeTwoPrime) IsUnionOne() {}
+
+type FilterableExtra string
 
 const (
 	// Get minimum and maximum value used on all the filters for this field.
 	// Useful when you need to do a range query for performance reasons.
-	FilterableAddonsMinmax FilterableAddons = "MINMAX"
+	FilterableExtraMinmax FilterableExtra = "MINMAX"
 )
 
-var AllFilterableAddons = []FilterableAddons{
-	FilterableAddonsMinmax,
+var AllFilterableExtra = []FilterableExtra{
+	FilterableExtraMinmax,
 }
 
-func (e FilterableAddons) IsValid() bool {
+func (e FilterableExtra) IsValid() bool {
 	switch e {
-	case FilterableAddonsMinmax:
+	case FilterableExtraMinmax:
 		return true
 	}
 	return false
 }
 
-func (e FilterableAddons) String() string {
+func (e FilterableExtra) String() string {
 	return string(e)
 }
 
-func (e *FilterableAddons) UnmarshalGQL(v interface{}) error {
+func (e *FilterableExtra) UnmarshalGQL(v interface{}) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
 	}
 
-	*e = FilterableAddons(str)
+	*e = FilterableExtra(str)
 	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid FilterableAddons", str)
+		return fmt.Errorf("%s is not a valid FilterableExtra", str)
 	}
 	return nil
 }
 
-func (e FilterableAddons) MarshalGQL(w io.Writer) {
+func (e FilterableExtra) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

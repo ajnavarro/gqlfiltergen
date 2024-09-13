@@ -110,6 +110,44 @@ func TestFiltersGeneration(t *testing.T) {
 
 	require.Equal(t, &eqlValueInt, min)
 	require.Equal(t, &minmax1, max)
+
+	// test union
+
+	valOne := "valOne"
+	valTwo := "valTwo"
+
+	f2 := &out.FilterTypeThree{
+		TypeUnionSlice: &out.NestedFilterUnionOne{
+			UnionTypeOne: &out.NestedFilterUnionTypeOne{
+				TypeStringUnionOne: &out.FilterString{
+					Eq: &valOne,
+				},
+			},
+			UnionTypeTwo: &out.NestedFilterUnionTypeTwo{
+				TypeStringUnionTwo: &out.FilterString{
+					Eq: &valTwo,
+				},
+			},
+		},
+	}
+
+	ignored := "val MUST BE IGNORED"
+
+	tus := &out.TypeThree{
+		TypeUnionSlice: []out.UnionOne{
+			out.UnionTypeTwo{
+				TypeStringUnionTwo: &valTwo,
+			},
+			out.UnionTypeOne{
+				TypeStringUnionOne: &valOne,
+			},
+			out.UnionTypeTwoPrime{
+				TypeStringUnionTwoPrime: &ignored,
+			},
+		},
+	}
+
+	require.Equal(t, true, f2.Eval(tus))
 }
 
 func goBuild(t *testing.T, path string) error {

@@ -2,6 +2,7 @@
 
 type Query {
     testFilter(filter: FilterTypeOne!): [TypeOne!]
+    testFilterThree(filter: FilterTypeThree!): [TypeThree!]
 }
 
 type Subscription {

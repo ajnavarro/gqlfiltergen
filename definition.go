@@ -6,12 +6,22 @@ import (
 	"github.com/vektah/gqlparser/v2/ast"
 )
 
+type ProcessingField struct {
+	Field         *ast.FieldDefinition
+	IsMinmaxeable bool
+}
+
+type ProcessingObject struct {
+	Fields     []*ProcessingField
+	Definition *ast.Definition
+}
+
 type AstAndTemplateData struct {
 	Ast      *ast.Definition
 	TypeData *TypeData
 }
 
-func generateMainFilterDefinition(ot map[string][]*processingField) map[string]*AstAndTemplateData {
+func generateMainFilterDefinition(ot map[string]*ProcessingObject) map[string]*AstAndTemplateData {
 	out := make(map[string]*AstAndTemplateData)
 	seen := make(map[string]bool)
 	for objectName := range ot {
@@ -21,7 +31,7 @@ func generateMainFilterDefinition(ot map[string][]*processingField) map[string]*
 	return out
 }
 
-func generateMainFilterDefinitionLoop(ot map[string][]*processingField, processed map[string]*AstAndTemplateData, seen map[string]bool, nested bool, objectName string) string {
+func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed map[string]*AstAndTemplateData, seen map[string]bool, nested bool, objectName string) string {
 	filterName := fmt.Sprintf("Filter%s", objectName)
 	if nested {
 		filterName = fmt.Sprintf("NestedFilter%s", objectName)
@@ -42,59 +52,111 @@ func generateMainFilterDefinitionLoop(ot map[string][]*processingField, processe
 	}
 
 	pfs, ok := ot[objectName]
-	if !ok {
+
+	switch {
+
+	case !ok: // it might be a field
 		field := processField(objectName, objectName)
+		if field == nil {
+			panic(fmt.Errorf("error creating field for type %q. Check that you added some fields as @filterable", objectName))
+		}
 		return field.Type.NamedType
-	}
+	case pfs.Definition.Kind == ast.Union:
+		isFiltered := false
+		for _, t := range pfs.Definition.Types {
+			if _, ok := ot[t]; !ok {
+				fmt.Println("type in an union with no filters:", t)
+				continue
+			}
 
-	for _, pf := range pfs {
-		f := pf.Field
+			isFiltered = true
 
-		if f.Type.Name() != "Int" && pf.IsMinmaxeable {
-			panic(fmt.Errorf("only Int types can be minmaxeables. Field: %s Type: %s", f.Name, f.Type.Name()))
+			fd := &ast.FieldDefinition{
+				Description: fmt.Sprintf("filter for %s union type.", t),
+				Name:        t,
+				Type:        ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, t), nil),
+			}
+
+			objDef.Fields = append(objDef.Fields, fd)
+
+			tf := &FieldMapping{
+				Field:       t,
+				FilterField: t,
+				TypeName:    fd.Type.Name(),
+			}
+
+			typeData.Fields = append(typeData.Fields, tf)
 		}
 
-		fd := &ast.FieldDefinition{
-			Description: fmt.Sprintf("filter for %s field.", f.Name),
-			Name:        f.Name,
+		typeData.IsUnion = true
+
+		if isFiltered {
+			processed[filterName] = &AstAndTemplateData{
+				Ast:      objDef,
+				TypeData: typeData,
+			}
 		}
 
-		var isSlice bool
-		var isSliceElemPointer bool
-		var isNested bool
+		return filterName
+	case pfs.Definition.Kind == ast.Object:
+		for _, pf := range pfs.Fields {
+			f := pf.Field
 
-		field := processField(f.Name, f.Type.NamedType)
-		switch {
-		case field != nil:
-			fd = field
-		case f.Type.NamedType == "": // it is a list
-			fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.Elem.NamedType), nil)
-			isSliceElemPointer = !f.Type.Elem.NonNull
-			isSlice = true
-		default: // It is a named custom named type
-			isNested = true
-			fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.NamedType), nil)
+			if f.Type.Name() != "Int" && pf.IsMinmaxeable {
+				panic(fmt.Errorf("only Int types can be minmaxeables. Field: %s Type: %s", f.Name, f.Type.Name()))
+			}
+
+			fd := &ast.FieldDefinition{
+				Description: fmt.Sprintf("filter for %s field.", f.Name),
+				Name:        f.Name,
+			}
+
+			var isSlice bool
+			var isSliceElemPointer bool
+			var isNested bool
+			var isUnion bool
+
+			if possibleUnion, ok := ot[f.Type.NamedType]; ok {
+				isUnion = possibleUnion.Definition.Kind == ast.Union
+			}
+
+			field := processField(f.Name, f.Type.NamedType)
+			switch {
+			case field != nil:
+				fd = field
+			case f.Type.NamedType == "": // it is a list
+				fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.Elem.NamedType), nil)
+				isSliceElemPointer = !f.Type.Elem.NonNull
+				isSlice = true
+			case isUnion:
+				fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.NamedType), nil)
+			default: // It is a named custom named type
+				isNested = true
+				fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.NamedType), nil)
+			}
+
+			objDef.Fields = append(objDef.Fields, fd)
+
+			tf := &FieldMapping{
+				Field:              f.Name,
+				TypeName:           fd.Type.Name(),
+				IsSlice:            isSlice,
+				IsNested:           isNested,
+				IsPointer:          !f.Type.NonNull && !isUnion,
+				IsSliceElemPointer: isSliceElemPointer,
+
+				IsMinmaxeable: pf.IsMinmaxeable,
+			}
+
+			typeData.Fields = append(typeData.Fields, tf)
 		}
 
-		objDef.Fields = append(objDef.Fields, fd)
-
-		tf := &FieldMapping{
-			Field:              f.Name,
-			TypeName:           fd.Type.Name(),
-			IsSlice:            isSlice,
-			IsNested:           isNested,
-			IsPointer:          !f.Type.NonNull,
-			IsSliceElemPointer: isSliceElemPointer,
-
-			IsMinmaxeable: pf.IsMinmaxeable,
+		processed[filterName] = &AstAndTemplateData{
+			Ast:      objDef,
+			TypeData: typeData,
 		}
-
-		typeData.Fields = append(typeData.Fields, tf)
-	}
-
-	processed[filterName] = &AstAndTemplateData{
-		Ast:      objDef,
-		TypeData: typeData,
+	default:
+		panic(fmt.Errorf("unsupported type: %q", pfs.Definition.Kind))
 	}
 
 	return filterName

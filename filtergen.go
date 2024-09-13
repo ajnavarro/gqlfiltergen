@@ -54,7 +54,7 @@ func (f *Plugin) InjectSourceEarly() *ast.Source {
 	return &ast.Source{
 		Name: "filtergen.directives.graphql",
 		Input: `
-enum FilterableAddons {
+enum FilterableExtra {
   """
   Get minimum and maximum value used on all the filters for this field.
   Useful when you need to do a range query for performance reasons.
@@ -66,37 +66,43 @@ directive @filterable(
   """
   Add extra functionality to this field apart from the filtering capabilities.
   """
-  extras: [FilterableAddons!]
+  extras: [FilterableExtra!]
 ) on FIELD_DEFINITION
 `,
 	}
 }
 
-type processingField struct {
-	Field         *ast.FieldDefinition
-	IsMinmaxeable bool
-}
-
 func (f *Plugin) InjectSourceLate(schema *ast.Schema) *ast.Source {
-	processingTypes := make(map[string][]*processingField)
+	processingTypes := make(map[string]*ProcessingObject)
 	for n, t := range schema.Types {
 		if _, ok := processingTypes[n]; ok {
 			continue
 		}
+		if t.Kind == ast.Union {
+			// add unions just in case they have types with filters
+			processingTypes[n] = &ProcessingObject{
+				Definition: t,
+			}
+
+			continue
+		}
+
 		for _, f := range t.Fields {
 			filterable, minmaxeable := getDirectives(f.Directives)
-			if !filterable && !minmaxeable {
+			if !filterable {
 				continue
 			}
 			fl := processingTypes[n]
 			if fl == nil {
-				fl = []*processingField{}
+				fl = &ProcessingObject{}
 			}
 
-			fl = append(fl, &processingField{
+			fl.Fields = append(fl.Fields, &ProcessingField{
 				Field:         f,
 				IsMinmaxeable: minmaxeable,
 			})
+
+			fl.Definition = t
 
 			processingTypes[n] = fl
 		}
@@ -197,7 +203,7 @@ func (f *Plugin) GenerateCode(data *codegen.Data) error {
 		return f.templateData.TypeDatas[i].FilterName > f.templateData.TypeDatas[j].FilterName
 	})
 
-	filename := path.Join(path.Dir(data.Config.Model.Filename), "filter_methods.go")
+	filename := path.Join(path.Dir(data.Config.Model.Filename), "filter_methods_gen.go")
 
 	return templates.Render(templates.Options{
 		PackageName:     data.Config.Model.Package,

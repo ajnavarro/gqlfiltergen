@@ -44,7 +44,7 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
-	Filterable func(ctx context.Context, obj interface{}, next graphql.Resolver, extras []FilterableAddons) (res interface{}, err error)
+	Filterable func(ctx context.Context, obj interface{}, next graphql.Resolver, extras []FilterableExtra) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -60,6 +60,7 @@ type ComplexityRoot struct {
 
 	Query struct {
 		TestFilter      func(childComplexity int, filter FilterTypeOne) int
+		TestFilterThree func(childComplexity int, filter FilterTypeThree) int
 		TestQuery       func(childComplexity int, filter string) int
 		TestQueryObject func(childComplexity int, filter InputOne) int
 	}
@@ -91,6 +92,9 @@ type ComplexityRoot struct {
 		TypeThreeStringFieldWithNoFilter func(childComplexity int) int
 		TypeThreeTimeFieldFiltered       func(childComplexity int) int
 		TypeThreeTimeFieldWithNoFilter   func(childComplexity int) int
+		TypeUnion                        func(childComplexity int) int
+		TypeUnionNotMandatory            func(childComplexity int) int
+		TypeUnionSlice                   func(childComplexity int) int
 	}
 
 	TypeTwo struct {
@@ -105,12 +109,43 @@ type ComplexityRoot struct {
 		TypeTwoWithTypeThree             func(childComplexity int) int
 		TypeTwoWithTypeThreeNotMandatory func(childComplexity int) int
 	}
+
+	UnionTypeFour struct {
+		TypeIntUnionTwo    func(childComplexity int) int
+		TypeStringUnionTwo func(childComplexity int) int
+		TypeTimeUnionTwo   func(childComplexity int) int
+	}
+
+	UnionTypeOne struct {
+		TypeIntUnionOne    func(childComplexity int) int
+		TypeStringUnionOne func(childComplexity int) int
+		TypeTimeUnionOne   func(childComplexity int) int
+	}
+
+	UnionTypeThree struct {
+		TypeIntUnionOne    func(childComplexity int) int
+		TypeStringUnionOne func(childComplexity int) int
+		TypeTimeUnionOne   func(childComplexity int) int
+	}
+
+	UnionTypeTwo struct {
+		TypeIntUnionTwo    func(childComplexity int) int
+		TypeStringUnionTwo func(childComplexity int) int
+		TypeTimeUnionTwo   func(childComplexity int) int
+	}
+
+	UnionTypeTwoPrime struct {
+		TypeIntUnionTwoPrime    func(childComplexity int) int
+		TypeStringUnionTwoPrime func(childComplexity int) int
+		TypeTimeUnionTwoPrime   func(childComplexity int) int
+	}
 }
 
 type QueryResolver interface {
 	TestQuery(ctx context.Context, filter string) ([]int, error)
 	TestQueryObject(ctx context.Context, filter InputOne) ([]*TypeTwo, error)
 	TestFilter(ctx context.Context, filter FilterTypeOne) ([]*TypeOne, error)
+	TestFilterThree(ctx context.Context, filter FilterTypeThree) ([]*TypeThree, error)
 }
 type SubscriptionResolver interface {
 	TestSubFilter(ctx context.Context, filter FilterTypeOne) (<-chan *TypeOne, error)
@@ -195,6 +230,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.TestFilter(childComplexity, args["filter"].(FilterTypeOne)), true
+
+	case "Query.testFilterThree":
+		if e.complexity.Query.TestFilterThree == nil {
+			break
+		}
+
+		args, err := ec.field_Query_testFilterThree_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.TestFilterThree(childComplexity, args["filter"].(FilterTypeThree)), true
 
 	case "Query.testQuery":
 		if e.complexity.Query.TestQuery == nil {
@@ -365,6 +412,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TypeThree.TypeThreeTimeFieldWithNoFilter(childComplexity), true
 
+	case "TypeThree.type_union":
+		if e.complexity.TypeThree.TypeUnion == nil {
+			break
+		}
+
+		return e.complexity.TypeThree.TypeUnion(childComplexity), true
+
+	case "TypeThree.type_union_not_mandatory":
+		if e.complexity.TypeThree.TypeUnionNotMandatory == nil {
+			break
+		}
+
+		return e.complexity.TypeThree.TypeUnionNotMandatory(childComplexity), true
+
+	case "TypeThree.type_union_slice":
+		if e.complexity.TypeThree.TypeUnionSlice == nil {
+			break
+		}
+
+		return e.complexity.TypeThree.TypeUnionSlice(childComplexity), true
+
 	case "TypeTwo.type_two_boolean_field_filtered":
 		if e.complexity.TypeTwo.TypeTwoBooleanFieldFiltered == nil {
 			break
@@ -435,6 +503,111 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TypeTwo.TypeTwoWithTypeThreeNotMandatory(childComplexity), true
 
+	case "UnionTypeFour.type_int_union_two":
+		if e.complexity.UnionTypeFour.TypeIntUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeFour.TypeIntUnionTwo(childComplexity), true
+
+	case "UnionTypeFour.type_string_union_two":
+		if e.complexity.UnionTypeFour.TypeStringUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeFour.TypeStringUnionTwo(childComplexity), true
+
+	case "UnionTypeFour.type_time_union_two":
+		if e.complexity.UnionTypeFour.TypeTimeUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeFour.TypeTimeUnionTwo(childComplexity), true
+
+	case "UnionTypeOne.type_int_union_one":
+		if e.complexity.UnionTypeOne.TypeIntUnionOne == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeOne.TypeIntUnionOne(childComplexity), true
+
+	case "UnionTypeOne.type_string_union_one":
+		if e.complexity.UnionTypeOne.TypeStringUnionOne == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeOne.TypeStringUnionOne(childComplexity), true
+
+	case "UnionTypeOne.type_time_union_one":
+		if e.complexity.UnionTypeOne.TypeTimeUnionOne == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeOne.TypeTimeUnionOne(childComplexity), true
+
+	case "UnionTypeThree.type_int_union_one":
+		if e.complexity.UnionTypeThree.TypeIntUnionOne == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeThree.TypeIntUnionOne(childComplexity), true
+
+	case "UnionTypeThree.type_string_union_one":
+		if e.complexity.UnionTypeThree.TypeStringUnionOne == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeThree.TypeStringUnionOne(childComplexity), true
+
+	case "UnionTypeThree.type_time_union_one":
+		if e.complexity.UnionTypeThree.TypeTimeUnionOne == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeThree.TypeTimeUnionOne(childComplexity), true
+
+	case "UnionTypeTwo.type_int_union_two":
+		if e.complexity.UnionTypeTwo.TypeIntUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwo.TypeIntUnionTwo(childComplexity), true
+
+	case "UnionTypeTwo.type_string_union_two":
+		if e.complexity.UnionTypeTwo.TypeStringUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwo.TypeStringUnionTwo(childComplexity), true
+
+	case "UnionTypeTwo.type_time_union_two":
+		if e.complexity.UnionTypeTwo.TypeTimeUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwo.TypeTimeUnionTwo(childComplexity), true
+
+	case "UnionTypeTwoPrime.type_int_union_two_prime":
+		if e.complexity.UnionTypeTwoPrime.TypeIntUnionTwoPrime == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwoPrime.TypeIntUnionTwoPrime(childComplexity), true
+
+	case "UnionTypeTwoPrime.type_string_union_two_prime":
+		if e.complexity.UnionTypeTwoPrime.TypeStringUnionTwoPrime == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwoPrime.TypeStringUnionTwoPrime(childComplexity), true
+
+	case "UnionTypeTwoPrime.type_time_union_two_prime":
+		if e.complexity.UnionTypeTwoPrime.TypeTimeUnionTwoPrime == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwoPrime.TypeTimeUnionTwoPrime(childComplexity), true
+
 	}
 	return 0, false
 }
@@ -451,10 +624,16 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputFilterTypeOne,
 		ec.unmarshalInputFilterTypeThree,
 		ec.unmarshalInputFilterTypeTwo,
+		ec.unmarshalInputFilterUnionOne,
+		ec.unmarshalInputFilterUnionTypeOne,
+		ec.unmarshalInputFilterUnionTypeTwo,
 		ec.unmarshalInputInputOne,
 		ec.unmarshalInputNestedFilterTypeOne,
 		ec.unmarshalInputNestedFilterTypeThree,
 		ec.unmarshalInputNestedFilterTypeTwo,
+		ec.unmarshalInputNestedFilterUnionOne,
+		ec.unmarshalInputNestedFilterUnionTypeOne,
+		ec.unmarshalInputNestedFilterUnionTypeTwo,
 	)
 	first := true
 
@@ -558,7 +737,7 @@ var sources = []*ast.Source{
 	"""
 	Add extra functionality to this field apart from the filtering capabilities.
 	"""
-	extras: [FilterableAddons!]
+	extras: [FilterableExtra!]
 ) on FIELD_DEFINITION
 type ExternalType {
 	number_one: Int! @filterable
@@ -787,6 +966,18 @@ input FilterTypeThree {
 	filter for type_three_boolean_field_filtered field.
 	"""
 	type_three_boolean_field_filtered: FilterBoolean
+	"""
+	filter for type_union field.
+	"""
+	type_union: NestedFilterUnionOne
+	"""
+	filter for type_union_slice field.
+	"""
+	type_union_slice: NestedFilterUnionOne
+	"""
+	filter for type_union_not_mandatory field.
+	"""
+	type_union_not_mandatory: NestedFilterUnionOne
 }
 """
 filter for TypeTwo objects
@@ -833,7 +1024,90 @@ input FilterTypeTwo {
 	"""
 	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
 }
-enum FilterableAddons {
+"""
+filter for UnionOne objects
+"""
+input FilterUnionOne {
+	"""
+	logical operator for UnionOne that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [FilterUnionOne]
+	"""
+	logical operator for UnionOne that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [FilterUnionOne]
+	"""
+	logical operator for UnionOne that will reverse conditions.
+	"""
+	_not: FilterUnionOne
+	"""
+	filter for UnionTypeOne union type.
+	"""
+	UnionTypeOne: NestedFilterUnionTypeOne
+	"""
+	filter for UnionTypeTwo union type.
+	"""
+	UnionTypeTwo: NestedFilterUnionTypeTwo
+}
+"""
+filter for UnionTypeOne objects
+"""
+input FilterUnionTypeOne {
+	"""
+	logical operator for UnionTypeOne that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [FilterUnionTypeOne]
+	"""
+	logical operator for UnionTypeOne that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [FilterUnionTypeOne]
+	"""
+	logical operator for UnionTypeOne that will reverse conditions.
+	"""
+	_not: FilterUnionTypeOne
+	"""
+	filter for type_int_union_one field.
+	"""
+	type_int_union_one: FilterNumber
+	"""
+	filter for type_string_union_one field.
+	"""
+	type_string_union_one: FilterString
+	"""
+	filter for type_time_union_one field.
+	"""
+	type_time_union_one: FilterTime
+}
+"""
+filter for UnionTypeTwo objects
+"""
+input FilterUnionTypeTwo {
+	"""
+	logical operator for UnionTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [FilterUnionTypeTwo]
+	"""
+	logical operator for UnionTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [FilterUnionTypeTwo]
+	"""
+	logical operator for UnionTypeTwo that will reverse conditions.
+	"""
+	_not: FilterUnionTypeTwo
+	"""
+	filter for type_int_union_two field.
+	"""
+	type_int_union_two: FilterNumber
+	"""
+	filter for type_string_union_two field.
+	"""
+	type_string_union_two: FilterString
+	"""
+	filter for type_time_union_two field.
+	"""
+	type_time_union_two: FilterTime
+}
+enum FilterableExtra {
 	"""
 	Get minimum and maximum value used on all the filters for this field.
 	Useful when you need to do a range query for performance reasons.
@@ -934,6 +1208,18 @@ input NestedFilterTypeThree {
 	filter for type_three_boolean_field_filtered field.
 	"""
 	type_three_boolean_field_filtered: FilterBoolean
+	"""
+	filter for type_union field.
+	"""
+	type_union: NestedFilterUnionOne
+	"""
+	filter for type_union_slice field.
+	"""
+	type_union_slice: NestedFilterUnionOne
+	"""
+	filter for type_union_not_mandatory field.
+	"""
+	type_union_not_mandatory: NestedFilterUnionOne
 }
 """
 filter for TypeTwo objects
@@ -980,10 +1266,94 @@ input NestedFilterTypeTwo {
 	"""
 	type_two_with_type_three_not_mandatory: NestedFilterTypeThree
 }
+"""
+filter for UnionOne objects
+"""
+input NestedFilterUnionOne {
+	"""
+	logical operator for UnionOne that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [NestedFilterUnionOne]
+	"""
+	logical operator for UnionOne that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [NestedFilterUnionOne]
+	"""
+	logical operator for UnionOne that will reverse conditions.
+	"""
+	_not: NestedFilterUnionOne
+	"""
+	filter for UnionTypeOne union type.
+	"""
+	UnionTypeOne: NestedFilterUnionTypeOne
+	"""
+	filter for UnionTypeTwo union type.
+	"""
+	UnionTypeTwo: NestedFilterUnionTypeTwo
+}
+"""
+filter for UnionTypeOne objects
+"""
+input NestedFilterUnionTypeOne {
+	"""
+	logical operator for UnionTypeOne that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [NestedFilterUnionTypeOne]
+	"""
+	logical operator for UnionTypeOne that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [NestedFilterUnionTypeOne]
+	"""
+	logical operator for UnionTypeOne that will reverse conditions.
+	"""
+	_not: NestedFilterUnionTypeOne
+	"""
+	filter for type_int_union_one field.
+	"""
+	type_int_union_one: FilterNumber
+	"""
+	filter for type_string_union_one field.
+	"""
+	type_string_union_one: FilterString
+	"""
+	filter for type_time_union_one field.
+	"""
+	type_time_union_one: FilterTime
+}
+"""
+filter for UnionTypeTwo objects
+"""
+input NestedFilterUnionTypeTwo {
+	"""
+	logical operator for UnionTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [NestedFilterUnionTypeTwo]
+	"""
+	logical operator for UnionTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [NestedFilterUnionTypeTwo]
+	"""
+	logical operator for UnionTypeTwo that will reverse conditions.
+	"""
+	_not: NestedFilterUnionTypeTwo
+	"""
+	filter for type_int_union_two field.
+	"""
+	type_int_union_two: FilterNumber
+	"""
+	filter for type_string_union_two field.
+	"""
+	type_string_union_two: FilterString
+	"""
+	filter for type_time_union_two field.
+	"""
+	type_time_union_two: FilterTime
+}
 type Query {
 	testQuery(filter: String!): [Int!]
 	testQueryObject(filter: InputOne!): [TypeTwo!]
 	testFilter(filter: FilterTypeOne!): [TypeOne!]
+	testFilterThree(filter: FilterTypeThree!): [TypeThree!]
 }
 type Subscription {
 	testSubFilter(filter: FilterTypeOne!): TypeOne!
@@ -1011,6 +1381,9 @@ type TypeThree {
 	type_three_string_field_with_no_filter: String!
 	type_three_number_field_with_no_filter: Int!
 	type_three_time_field_with_no_filter: Time!
+	type_union: UnionOne! @filterable
+	type_union_slice: [UnionOne!] @filterable
+	type_union_not_mandatory: UnionOne @filterable
 }
 type TypeTwo {
 	type_two_string_field_filtered: String! @filterable
@@ -1024,6 +1397,33 @@ type TypeTwo {
 	type_two_with_type_three: TypeThree! @filterable
 	type_two_with_type_three_not_mandatory: TypeThree @filterable
 }
+union UnionOne = UnionTypeOne | UnionTypeTwo | UnionTypeTwoPrime
+union UnionTwo = UnionTypeThree | UnionTypeFour
+type UnionTypeFour {
+	type_int_union_two: Int
+	type_string_union_two: String
+	type_time_union_two: Time
+}
+type UnionTypeOne {
+	type_int_union_one: Int @filterable
+	type_string_union_one: String @filterable
+	type_time_union_one: Time @filterable
+}
+type UnionTypeThree {
+	type_int_union_one: Int
+	type_string_union_one: String
+	type_time_union_one: Time
+}
+type UnionTypeTwo {
+	type_int_union_two: Int @filterable
+	type_string_union_two: String @filterable
+	type_time_union_two: Time @filterable
+}
+type UnionTypeTwoPrime {
+	type_int_union_two_prime: Int
+	type_string_union_two_prime: String
+	type_time_union_two_prime: Time
+}
 `, BuiltIn: false},
 }
 var parsedSchema = gqlparser.MustLoadSchema(sources...)
@@ -1035,10 +1435,10 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 func (ec *executionContext) dir_filterable_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 []FilterableAddons
+	var arg0 []FilterableExtra
 	if tmp, ok := rawArgs["extras"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("extras"))
-		arg0, err = ec.unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx, tmp)
+		arg0, err = ec.unmarshalOFilterableExtra2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtraᚄ(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1059,6 +1459,21 @@ func (ec *executionContext) field_Query___type_args(ctx context.Context, rawArgs
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_testFilterThree_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 FilterTypeThree
+	if tmp, ok := rawArgs["filter"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("filter"))
+		arg0, err = ec.unmarshalNFilterTypeThree2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["filter"] = arg0
 	return args, nil
 }
 
@@ -1826,6 +2241,80 @@ func (ec *executionContext) fieldContext_Query_testFilter(ctx context.Context, f
 	return fc, nil
 }
 
+func (ec *executionContext) _Query_testFilterThree(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_testFilterThree(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().TestFilterThree(rctx, fc.Args["filter"].(FilterTypeThree))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*TypeThree)
+	fc.Result = res
+	return ec.marshalOTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThreeᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_testFilterThree(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "type_three_string_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_string_field_filtered(ctx, field)
+			case "type_three_number_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_number_field_filtered(ctx, field)
+			case "type_three_time_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_time_field_filtered(ctx, field)
+			case "type_three_boolean_field_filtered":
+				return ec.fieldContext_TypeThree_type_three_boolean_field_filtered(ctx, field)
+			case "type_three_string_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_string_field_with_no_filter(ctx, field)
+			case "type_three_number_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_number_field_with_no_filter(ctx, field)
+			case "type_three_time_field_with_no_filter":
+				return ec.fieldContext_TypeThree_type_three_time_field_with_no_filter(ctx, field)
+			case "type_union":
+				return ec.fieldContext_TypeThree_type_union(ctx, field)
+			case "type_union_slice":
+				return ec.fieldContext_TypeThree_type_union_slice(ctx, field)
+			case "type_union_not_mandatory":
+				return ec.fieldContext_TypeThree_type_union_not_mandatory(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TypeThree", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Query_testFilterThree_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Query___type(ctx, field)
 	if err != nil {
@@ -2193,7 +2682,7 @@ func (ec *executionContext) _TypeOne_type_one_number_field_filtered(ctx context.
 			return obj.TypeOneNumberFieldFiltered, nil
 		}
 		directive1 := func(ctx context.Context) (interface{}, error) {
-			extras, err := ec.unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx, []interface{}{"MINMAX"})
+			extras, err := ec.unmarshalOFilterableExtra2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtraᚄ(ctx, []interface{}{"MINMAX"})
 			if err != nil {
 				return nil, err
 			}
@@ -3160,6 +3649,192 @@ func (ec *executionContext) fieldContext_TypeThree_type_three_time_field_with_no
 	return fc, nil
 }
 
+func (ec *executionContext) _TypeThree_type_union(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_union(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeUnion, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(UnionOne); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be github.com/ajnavarro/gqlfiltergen/testdata/out.UnionOne`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(UnionOne)
+	fc.Result = res
+	return ec.marshalNUnionOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TypeThree_type_union(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TypeThree",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type UnionOne does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TypeThree_type_union_slice(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_union_slice(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeUnionSlice, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]UnionOne); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []github.com/ajnavarro/gqlfiltergen/testdata/out.UnionOne`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]UnionOne)
+	fc.Result = res
+	return ec.marshalOUnionOne2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOneᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TypeThree_type_union_slice(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TypeThree",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type UnionOne does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TypeThree_type_union_not_mandatory(ctx context.Context, field graphql.CollectedField, obj *TypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeThree_type_union_not_mandatory(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeUnionNotMandatory, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(UnionOne); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be github.com/ajnavarro/gqlfiltergen/testdata/out.UnionOne`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(UnionOne)
+	fc.Result = res
+	return ec.marshalOUnionOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOne(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TypeThree_type_union_not_mandatory(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TypeThree",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type UnionOne does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _TypeTwo_type_two_string_field_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeTwo) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_TypeTwo_type_two_string_field_filtered(ctx, field)
 	if err != nil {
@@ -3707,6 +4382,12 @@ func (ec *executionContext) fieldContext_TypeTwo_type_two_with_type_three(_ cont
 				return ec.fieldContext_TypeThree_type_three_number_field_with_no_filter(ctx, field)
 			case "type_three_time_field_with_no_filter":
 				return ec.fieldContext_TypeThree_type_three_time_field_with_no_filter(ctx, field)
+			case "type_union":
+				return ec.fieldContext_TypeThree_type_union(ctx, field)
+			case "type_union_slice":
+				return ec.fieldContext_TypeThree_type_union_slice(ctx, field)
+			case "type_union_not_mandatory":
+				return ec.fieldContext_TypeThree_type_union_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeThree", field.Name)
 		},
@@ -3784,8 +4465,749 @@ func (ec *executionContext) fieldContext_TypeTwo_type_two_with_type_three_not_ma
 				return ec.fieldContext_TypeThree_type_three_number_field_with_no_filter(ctx, field)
 			case "type_three_time_field_with_no_filter":
 				return ec.fieldContext_TypeThree_type_three_time_field_with_no_filter(ctx, field)
+			case "type_union":
+				return ec.fieldContext_TypeThree_type_union(ctx, field)
+			case "type_union_slice":
+				return ec.fieldContext_TypeThree_type_union_slice(ctx, field)
+			case "type_union_not_mandatory":
+				return ec.fieldContext_TypeThree_type_union_not_mandatory(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeThree", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeFour_type_int_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeFour) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeFour_type_int_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeIntUnionTwo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeFour_type_int_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeFour",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeFour_type_string_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeFour) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeFour_type_string_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeStringUnionTwo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeFour_type_string_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeFour",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeFour_type_time_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeFour) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeFour_type_time_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeTimeUnionTwo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeFour_type_time_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeFour",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeOne_type_int_union_one(ctx context.Context, field graphql.CollectedField, obj *UnionTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeOne_type_int_union_one(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeIntUnionOne, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*int); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *int`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeOne_type_int_union_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeOne_type_string_union_one(ctx context.Context, field graphql.CollectedField, obj *UnionTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeOne_type_string_union_one(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeStringUnionOne, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*string); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeOne_type_string_union_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeOne_type_time_union_one(ctx context.Context, field graphql.CollectedField, obj *UnionTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeOne_type_time_union_one(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeTimeUnionOne, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*time.Time); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *time.Time`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeOne_type_time_union_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeThree_type_int_union_one(ctx context.Context, field graphql.CollectedField, obj *UnionTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeThree_type_int_union_one(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeIntUnionOne, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeThree_type_int_union_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeThree",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeThree_type_string_union_one(ctx context.Context, field graphql.CollectedField, obj *UnionTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeThree_type_string_union_one(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeStringUnionOne, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeThree_type_string_union_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeThree",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeThree_type_time_union_one(ctx context.Context, field graphql.CollectedField, obj *UnionTypeThree) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeThree_type_time_union_one(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeTimeUnionOne, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeThree_type_time_union_one(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeThree",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeTwo_type_int_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwo_type_int_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeIntUnionTwo, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*int); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *int`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwo_type_int_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeTwo_type_string_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwo_type_string_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeStringUnionTwo, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*string); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *string`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwo_type_string_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeTwo_type_time_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwo_type_time_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeTimeUnionTwo, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*time.Time); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *time.Time`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwo_type_time_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeTwoPrime_type_int_union_two_prime(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwoPrime) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwoPrime_type_int_union_two_prime(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeIntUnionTwoPrime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwoPrime_type_int_union_two_prime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwoPrime",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeTwoPrime_type_string_union_two_prime(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwoPrime) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwoPrime_type_string_union_two_prime(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeStringUnionTwoPrime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwoPrime_type_string_union_two_prime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwoPrime",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeTwoPrime_type_time_union_two_prime(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwoPrime) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwoPrime_type_time_union_two_prime(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.TypeTimeUnionTwoPrime, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*time.Time)
+	fc.Result = res
+	return ec.marshalOTime2ᚖtimeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwoPrime_type_time_union_two_prime(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwoPrime",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Time does not have child fields")
 		},
 	}
 	return fc, nil
@@ -5964,7 +7386,7 @@ func (ec *executionContext) unmarshalInputFilterTypeThree(ctx context.Context, o
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_three_string_field_filtered", "type_three_number_field_filtered", "type_three_time_field_filtered", "type_three_boolean_field_filtered"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_three_string_field_filtered", "type_three_number_field_filtered", "type_three_time_field_filtered", "type_three_boolean_field_filtered", "type_union", "type_union_slice", "type_union_not_mandatory"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -6020,6 +7442,27 @@ func (ec *executionContext) unmarshalInputFilterTypeThree(ctx context.Context, o
 				return it, err
 			}
 			it.TypeThreeBooleanFieldFiltered = data
+		case "type_union":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_union"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeUnion = data
+		case "type_union_slice":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_union_slice"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeUnionSlice = data
+		case "type_union_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_union_not_mandatory"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeUnionNotMandatory = data
 		}
 	}
 
@@ -6110,6 +7553,185 @@ func (ec *executionContext) unmarshalInputFilterTypeTwo(ctx context.Context, obj
 				return it, err
 			}
 			it.TypeTwoWithTypeThreeNotMandatory = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterUnionOne(ctx context.Context, obj interface{}) (FilterUnionOne, error) {
+	var it FilterUnionOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "UnionTypeOne", "UnionTypeTwo"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterUnionOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterUnionOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "UnionTypeOne":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("UnionTypeOne"))
+			data, err := ec.unmarshalONestedFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnionTypeOne = data
+		case "UnionTypeTwo":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("UnionTypeTwo"))
+			data, err := ec.unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnionTypeTwo = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterUnionTypeOne(ctx context.Context, obj interface{}) (FilterUnionTypeOne, error) {
+	var it FilterUnionTypeOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_one", "type_string_union_one", "type_time_union_one"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterUnionTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterUnionTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_int_union_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_int_union_one"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeIntUnionOne = data
+		case "type_string_union_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_string_union_one"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeStringUnionOne = data
+		case "type_time_union_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_time_union_one"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTimeUnionOne = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterUnionTypeTwo(ctx context.Context, obj interface{}) (FilterUnionTypeTwo, error) {
+	var it FilterUnionTypeTwo
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_two", "type_string_union_two", "type_time_union_two"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterUnionTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterUnionTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_int_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_int_union_two"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeIntUnionTwo = data
+		case "type_string_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_string_union_two"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeStringUnionTwo = data
+		case "type_time_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_time_union_two"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTimeUnionTwo = data
 		}
 	}
 
@@ -6296,7 +7918,7 @@ func (ec *executionContext) unmarshalInputNestedFilterTypeThree(ctx context.Cont
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_three_string_field_filtered", "type_three_number_field_filtered", "type_three_time_field_filtered", "type_three_boolean_field_filtered"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_three_string_field_filtered", "type_three_number_field_filtered", "type_three_time_field_filtered", "type_three_boolean_field_filtered", "type_union", "type_union_slice", "type_union_not_mandatory"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -6352,6 +7974,27 @@ func (ec *executionContext) unmarshalInputNestedFilterTypeThree(ctx context.Cont
 				return it, err
 			}
 			it.TypeThreeBooleanFieldFiltered = data
+		case "type_union":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_union"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeUnion = data
+		case "type_union_slice":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_union_slice"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeUnionSlice = data
+		case "type_union_not_mandatory":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_union_not_mandatory"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeUnionNotMandatory = data
 		}
 	}
 
@@ -6448,9 +8091,241 @@ func (ec *executionContext) unmarshalInputNestedFilterTypeTwo(ctx context.Contex
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputNestedFilterUnionOne(ctx context.Context, obj interface{}) (NestedFilterUnionOne, error) {
+	var it NestedFilterUnionOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "UnionTypeOne", "UnionTypeTwo"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "UnionTypeOne":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("UnionTypeOne"))
+			data, err := ec.unmarshalONestedFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnionTypeOne = data
+		case "UnionTypeTwo":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("UnionTypeTwo"))
+			data, err := ec.unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.UnionTypeTwo = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterUnionTypeOne(ctx context.Context, obj interface{}) (NestedFilterUnionTypeOne, error) {
+	var it NestedFilterUnionTypeOne
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_one", "type_string_union_one", "type_time_union_one"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterUnionTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterUnionTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_int_union_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_int_union_one"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeIntUnionOne = data
+		case "type_string_union_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_string_union_one"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeStringUnionOne = data
+		case "type_time_union_one":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_time_union_one"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTimeUnionOne = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterUnionTypeTwo(ctx context.Context, obj interface{}) (NestedFilterUnionTypeTwo, error) {
+	var it NestedFilterUnionTypeTwo
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_two", "type_string_union_two", "type_time_union_two"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterUnionTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterUnionTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "type_int_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_int_union_two"))
+			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeIntUnionTwo = data
+		case "type_string_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_string_union_two"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeStringUnionTwo = data
+		case "type_time_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_time_union_two"))
+			data, err := ec.unmarshalOFilterTime2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeTimeUnionTwo = data
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
+
+func (ec *executionContext) _UnionOne(ctx context.Context, sel ast.SelectionSet, obj UnionOne) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case UnionTypeOne:
+		return ec._UnionTypeOne(ctx, sel, &obj)
+	case *UnionTypeOne:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnionTypeOne(ctx, sel, obj)
+	case UnionTypeTwo:
+		return ec._UnionTypeTwo(ctx, sel, &obj)
+	case *UnionTypeTwo:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnionTypeTwo(ctx, sel, obj)
+	case UnionTypeTwoPrime:
+		return ec._UnionTypeTwoPrime(ctx, sel, &obj)
+	case *UnionTypeTwoPrime:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnionTypeTwoPrime(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
+
+func (ec *executionContext) _UnionTwo(ctx context.Context, sel ast.SelectionSet, obj UnionTwo) graphql.Marshaler {
+	switch obj := (obj).(type) {
+	case nil:
+		return graphql.Null
+	case UnionTypeThree:
+		return ec._UnionTypeThree(ctx, sel, &obj)
+	case *UnionTypeThree:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnionTypeThree(ctx, sel, obj)
+	case UnionTypeFour:
+		return ec._UnionTypeFour(ctx, sel, &obj)
+	case *UnionTypeFour:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._UnionTypeFour(ctx, sel, obj)
+	default:
+		panic(fmt.Errorf("unexpected type %T", obj))
+	}
+}
 
 // endregion ************************** interface.gotpl ***************************
 
@@ -6580,6 +8455,25 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_testFilter(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "testFilterThree":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_testFilterThree(ctx, field)
 				return res
 			}
 
@@ -6768,6 +8662,15 @@ func (ec *executionContext) _TypeThree(ctx context.Context, sel ast.SelectionSet
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "type_union":
+			out.Values[i] = ec._TypeThree_type_union(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "type_union_slice":
+			out.Values[i] = ec._TypeThree_type_union_slice(ctx, field, obj)
+		case "type_union_not_mandatory":
+			out.Values[i] = ec._TypeThree_type_union_not_mandatory(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -6849,6 +8752,206 @@ func (ec *executionContext) _TypeTwo(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "type_two_with_type_three_not_mandatory":
 			out.Values[i] = ec._TypeTwo_type_two_with_type_three_not_mandatory(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var unionTypeFourImplementors = []string{"UnionTypeFour", "UnionTwo"}
+
+func (ec *executionContext) _UnionTypeFour(ctx context.Context, sel ast.SelectionSet, obj *UnionTypeFour) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unionTypeFourImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnionTypeFour")
+		case "type_int_union_two":
+			out.Values[i] = ec._UnionTypeFour_type_int_union_two(ctx, field, obj)
+		case "type_string_union_two":
+			out.Values[i] = ec._UnionTypeFour_type_string_union_two(ctx, field, obj)
+		case "type_time_union_two":
+			out.Values[i] = ec._UnionTypeFour_type_time_union_two(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var unionTypeOneImplementors = []string{"UnionTypeOne", "UnionOne"}
+
+func (ec *executionContext) _UnionTypeOne(ctx context.Context, sel ast.SelectionSet, obj *UnionTypeOne) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unionTypeOneImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnionTypeOne")
+		case "type_int_union_one":
+			out.Values[i] = ec._UnionTypeOne_type_int_union_one(ctx, field, obj)
+		case "type_string_union_one":
+			out.Values[i] = ec._UnionTypeOne_type_string_union_one(ctx, field, obj)
+		case "type_time_union_one":
+			out.Values[i] = ec._UnionTypeOne_type_time_union_one(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var unionTypeThreeImplementors = []string{"UnionTypeThree", "UnionTwo"}
+
+func (ec *executionContext) _UnionTypeThree(ctx context.Context, sel ast.SelectionSet, obj *UnionTypeThree) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unionTypeThreeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnionTypeThree")
+		case "type_int_union_one":
+			out.Values[i] = ec._UnionTypeThree_type_int_union_one(ctx, field, obj)
+		case "type_string_union_one":
+			out.Values[i] = ec._UnionTypeThree_type_string_union_one(ctx, field, obj)
+		case "type_time_union_one":
+			out.Values[i] = ec._UnionTypeThree_type_time_union_one(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var unionTypeTwoImplementors = []string{"UnionTypeTwo", "UnionOne"}
+
+func (ec *executionContext) _UnionTypeTwo(ctx context.Context, sel ast.SelectionSet, obj *UnionTypeTwo) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unionTypeTwoImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnionTypeTwo")
+		case "type_int_union_two":
+			out.Values[i] = ec._UnionTypeTwo_type_int_union_two(ctx, field, obj)
+		case "type_string_union_two":
+			out.Values[i] = ec._UnionTypeTwo_type_string_union_two(ctx, field, obj)
+		case "type_time_union_two":
+			out.Values[i] = ec._UnionTypeTwo_type_time_union_two(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var unionTypeTwoPrimeImplementors = []string{"UnionTypeTwoPrime", "UnionOne"}
+
+func (ec *executionContext) _UnionTypeTwoPrime(ctx context.Context, sel ast.SelectionSet, obj *UnionTypeTwoPrime) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, unionTypeTwoPrimeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("UnionTypeTwoPrime")
+		case "type_int_union_two_prime":
+			out.Values[i] = ec._UnionTypeTwoPrime_type_int_union_two_prime(ctx, field, obj)
+		case "type_string_union_two_prime":
+			out.Values[i] = ec._UnionTypeTwoPrime_type_string_union_two_prime(ctx, field, obj)
+		case "type_time_union_two_prime":
+			out.Values[i] = ec._UnionTypeTwoPrime_type_time_union_two_prime(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -7218,13 +9321,18 @@ func (ec *executionContext) unmarshalNFilterTypeOne2githubᚗcomᚋajnavarroᚋg
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx context.Context, v interface{}) (FilterableAddons, error) {
-	var res FilterableAddons
+func (ec *executionContext) unmarshalNFilterTypeThree2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterTypeThree(ctx context.Context, v interface{}) (FilterTypeThree, error) {
+	res, err := ec.unmarshalInputFilterTypeThree(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNFilterableExtra2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtra(ctx context.Context, v interface{}) (FilterableExtra, error) {
+	var res FilterableExtra
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx context.Context, sel ast.SelectionSet, v FilterableAddons) graphql.Marshaler {
+func (ec *executionContext) marshalNFilterableExtra2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtra(ctx context.Context, sel ast.SelectionSet, v FilterableExtra) graphql.Marshaler {
 	return v
 }
 
@@ -7378,6 +9486,16 @@ func (ec *executionContext) marshalNTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfil
 		return graphql.Null
 	}
 	return ec._TypeTwo(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNUnionOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOne(ctx context.Context, sel ast.SelectionSet, v UnionOne) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._UnionOne(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -7803,7 +9921,7 @@ func (ec *executionContext) unmarshalOFilterTypeTwo2ᚖgithubᚗcomᚋajnavarro�
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx context.Context, v interface{}) ([]FilterableAddons, error) {
+func (ec *executionContext) unmarshalOFilterUnionOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionOne(ctx context.Context, v interface{}) ([]*FilterUnionOne, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -7812,10 +9930,10 @@ func (ec *executionContext) unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavar
 		vSlice = graphql.CoerceList(v)
 	}
 	var err error
-	res := make([]FilterableAddons, len(vSlice))
+	res := make([]*FilterUnionOne, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx, vSlice[i])
+		res[i], err = ec.unmarshalOFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionOne(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -7823,7 +9941,91 @@ func (ec *executionContext) unmarshalOFilterableAddons2ᚕgithubᚗcomᚋajnavar
 	return res, nil
 }
 
-func (ec *executionContext) marshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddonsᚄ(ctx context.Context, sel ast.SelectionSet, v []FilterableAddons) graphql.Marshaler {
+func (ec *executionContext) unmarshalOFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionOne(ctx context.Context, v interface{}) (*FilterUnionOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputFilterUnionOne(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOFilterUnionTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeOne(ctx context.Context, v interface{}) ([]*FilterUnionTypeOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*FilterUnionTypeOne, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeOne(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalOFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeOne(ctx context.Context, v interface{}) (*FilterUnionTypeOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputFilterUnionTypeOne(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOFilterUnionTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeTwo(ctx context.Context, v interface{}) ([]*FilterUnionTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*FilterUnionTypeTwo, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeTwo(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalOFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterUnionTypeTwo(ctx context.Context, v interface{}) (*FilterUnionTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputFilterUnionTypeTwo(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOFilterableExtra2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtraᚄ(ctx context.Context, v interface{}) ([]FilterableExtra, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]FilterableExtra, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNFilterableExtra2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtra(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOFilterableExtra2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtraᚄ(ctx context.Context, sel ast.SelectionSet, v []FilterableExtra) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -7850,7 +10052,7 @@ func (ec *executionContext) marshalOFilterableAddons2ᚕgithubᚗcomᚋajnavarro
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNFilterableAddons2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableAddons(ctx, sel, v[i])
+			ret[i] = ec.marshalNFilterableExtra2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterableExtra(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -8024,6 +10226,90 @@ func (ec *executionContext) unmarshalONestedFilterTypeTwo2ᚖgithubᚗcomᚋajna
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalONestedFilterUnionOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx context.Context, v interface{}) ([]*NestedFilterUnionOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*NestedFilterUnionOne, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalONestedFilterUnionOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionOne(ctx context.Context, v interface{}) (*NestedFilterUnionOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNestedFilterUnionOne(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalONestedFilterUnionTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx context.Context, v interface{}) ([]*NestedFilterUnionTypeOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*NestedFilterUnionTypeOne, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalONestedFilterUnionTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeOne(ctx context.Context, v interface{}) (*NestedFilterUnionTypeOne, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNestedFilterUnionTypeOne(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalONestedFilterUnionTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx context.Context, v interface{}) ([]*NestedFilterUnionTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*NestedFilterUnionTypeTwo, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterUnionTypeTwo(ctx context.Context, v interface{}) (*NestedFilterUnionTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNestedFilterUnionTypeTwo(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
 	if v == nil {
 		return nil, nil
@@ -8110,6 +10396,53 @@ func (ec *executionContext) marshalOTypeOne2ᚖgithubᚗcomᚋajnavarroᚋgqlfil
 	return ec._TypeOne(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalOTypeThree2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThreeᚄ(ctx context.Context, sel ast.SelectionSet, v []*TypeThree) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThree(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
+}
+
 func (ec *executionContext) marshalOTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeThree(ctx context.Context, sel ast.SelectionSet, v *TypeThree) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -8169,6 +10502,60 @@ func (ec *executionContext) marshalOTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfil
 		return graphql.Null
 	}
 	return ec._TypeTwo(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOUnionOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOne(ctx context.Context, sel ast.SelectionSet, v UnionOne) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._UnionOne(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOUnionOne2ᚕgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOneᚄ(ctx context.Context, sel ast.SelectionSet, v []UnionOne) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNUnionOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOne(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

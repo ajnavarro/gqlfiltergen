@@ -36,6 +36,22 @@
 		}
 	}
 
+{{if $td.IsUnion}}
+	// Handle union objects depending of the type
+	tobj := *obj
+	switch objv := tobj.(type) {
+	{{- range $td.Fields }}
+		case {{.FilterField}}:
+		{{if not .IsSlice}}
+			// Handle {{.FilterField}} field
+			toEval{{.FilterField}} := {{.EvalVarWrapping "objv"}}
+			if f.{{.FilterField}} != nil && !f.{{.FilterField}}.Eval({{.EvalCallWrapping (printf "toEval%s" .FilterField)}}) {
+				return false
+			}
+		{{end}}
+	{{end}}
+	}
+{{else}}
 	// Evaluate individual field filters
 	{{- range $td.Fields }}
 		{{if .IsSlice}}
@@ -55,6 +71,7 @@
 		}
 		{{end}}
 	{{- end }}
+{{end}}
 
 	return true
 }

@@ -57,6 +57,7 @@ func (fm *FieldMapping) CallWrapping(field string) string {
 type TypeData struct {
 	TypeName   string
 	FilterName string
+	IsUnion    bool // Whether the type is coming from an union or not
 	Fields     []*FieldMapping
 }
 
