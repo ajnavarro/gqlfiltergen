@@ -105,6 +105,8 @@ type FilterTypeOne struct {
 	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_number_field_filtered field.
 	TypeOneNumberFieldFiltered *FilterNumber `json:"type_one_number_field_filtered,omitempty"`
+	// filter for type_one_string_slice_filtered field.
+	TypeOneStringSliceFiltered *NestedFilterString `json:"type_one_string_slice_filtered,omitempty"`
 	// filter for type_one_number_field_filtered_not_mandatory field.
 	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_time_field_filtered field.
@@ -211,6 +213,8 @@ type FilterUnionTypeTwo struct {
 	TypeStringUnionTwo *FilterString `json:"type_string_union_two,omitempty"`
 	// filter for type_time_union_two field.
 	TypeTimeUnionTwo *FilterTime `json:"type_time_union_two,omitempty"`
+	// filter for type_string_slice_union_two field.
+	TypeStringSliceUnionTwo *NestedFilterString `json:"type_string_slice_union_two,omitempty"`
 }
 
 type InputOne struct {
@@ -221,6 +225,56 @@ type InputOne struct {
 	TypeTwoStringFieldWithNoFilter string    `json:"type_twoString_field_with_no_filter"`
 	TypeTwoNumberFieldWithNoFilter int       `json:"type_twoNumber_field_with_no_filter"`
 	TypeTwoTimeFieldWithNoFilter   time.Time `json:"type_twoTime_field_with_no_filter"`
+}
+
+// Filter type for boolean fields. All added filters here are processed as AND operators.
+type NestedFilterBoolean struct {
+	// Filter a boolean field checking if it exists or not.
+	Exists *bool `json:"exists,omitempty"`
+	// Filter a boolean field checking if it is equals to the specified value.
+	Eq *bool `json:"eq,omitempty"`
+}
+
+// Filter type for number fields. All added filters here are processed as AND operators.
+type NestedFilterNumber struct {
+	// Filter a number field checking if it exists or not.
+	Exists *bool `json:"exists,omitempty"`
+	// Filter a number field checking if it is equals to the specified value.
+	Eq *int `json:"eq,omitempty"`
+	// Filter a number field checking if it is NOT equals to the specified value.
+	Neq *int `json:"neq,omitempty"`
+	// Filter a number field checking if it is greater than the specified value.
+	Gt *int `json:"gt,omitempty"`
+	// Filter a number field checking if it is less than the specified value.
+	Lt *int `json:"lt,omitempty"`
+}
+
+// Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.
+type NestedFilterString struct {
+	// Filter a string field checking if it exists or not.
+	Exists *bool `json:"exists,omitempty"`
+	// Filter a string field checking if it is equals to the specified value.
+	Eq *string `json:"eq,omitempty"`
+	// Filter a string field checking if it is NOT equals to the specified value.
+	Neq *string `json:"neq,omitempty"`
+	// Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.
+	Like *string `json:"like,omitempty"`
+	// Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.
+	Nlike *string `json:"nlike,omitempty"`
+}
+
+// Filter type for time fields. All added filters here are processed as AND operators.
+type NestedFilterTime struct {
+	// Filter a time field checking if it exists or not.
+	Exists *bool `json:"exists,omitempty"`
+	// Filter a time field checking if it is equals to the specified value.
+	Eq *time.Time `json:"eq,omitempty"`
+	// Filter a time field checking if it is NOT equals to the specified value.
+	Neq *time.Time `json:"neq,omitempty"`
+	// Filter a time field checking if it is before than the specified value.
+	Before *time.Time `json:"before,omitempty"`
+	// Filter a time field checking if it is after the specified value.
+	After *time.Time `json:"after,omitempty"`
 }
 
 // filter for TypeOne objects
@@ -237,6 +291,8 @@ type NestedFilterTypeOne struct {
 	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_number_field_filtered field.
 	TypeOneNumberFieldFiltered *FilterNumber `json:"type_one_number_field_filtered,omitempty"`
+	// filter for type_one_string_slice_filtered field.
+	TypeOneStringSliceFiltered *FilterString `json:"type_one_string_slice_filtered,omitempty"`
 	// filter for type_one_number_field_filtered_not_mandatory field.
 	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_time_field_filtered field.
@@ -343,6 +399,8 @@ type NestedFilterUnionTypeTwo struct {
 	TypeStringUnionTwo *FilterString `json:"type_string_union_two,omitempty"`
 	// filter for type_time_union_two field.
 	TypeTimeUnionTwo *FilterTime `json:"type_time_union_two,omitempty"`
+	// filter for type_string_slice_union_two field.
+	TypeStringSliceUnionTwo *NestedFilterString `json:"type_string_slice_union_two,omitempty"`
 }
 
 type Query struct {
@@ -352,6 +410,7 @@ type TypeOne struct {
 	TypeOneStringFieldFiltered              string     `json:"type_one_string_field_filtered"`
 	TypeOneStringFieldFilteredNotMandatory  *string    `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
 	TypeOneNumberFieldFiltered              int        `json:"type_one_number_field_filtered"`
+	TypeOneStringSliceFiltered              []string   `json:"type_one_string_slice_filtered,omitempty"`
 	TypeOneNumberFieldFilteredNotMandatory  *int       `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
 	TypeOneTimeFieldFiltered                time.Time  `json:"type_one_time_field_filtered"`
 	TypeOneTimeFieldFilteredNotMandatory    *time.Time `json:"type_one_time_field_filtered_not_mandatory,omitempty"`
@@ -414,9 +473,10 @@ type UnionTypeThree struct {
 func (UnionTypeThree) IsUnionTwo() {}
 
 type UnionTypeTwo struct {
-	TypeIntUnionTwo    *int       `json:"type_int_union_two,omitempty"`
-	TypeStringUnionTwo *string    `json:"type_string_union_two,omitempty"`
-	TypeTimeUnionTwo   *time.Time `json:"type_time_union_two,omitempty"`
+	TypeIntUnionTwo         *int       `json:"type_int_union_two,omitempty"`
+	TypeStringUnionTwo      *string    `json:"type_string_union_two,omitempty"`
+	TypeTimeUnionTwo        *time.Time `json:"type_time_union_two,omitempty"`
+	TypeStringSliceUnionTwo []string   `json:"type_string_slice_union_two,omitempty"`
 }
 
 func (UnionTypeTwo) IsUnionOne() {}

@@ -5,6 +5,7 @@ type TypeOne {
   type_one_string_field_filtered: String! @filterable
   type_one_string_field_filtered_not_mandatory: String @filterable
   type_one_number_field_filtered: Int! @filterable(extras:[MINMAX])
+  type_one_string_slice_filtered: [String!] @filterable
 
   type_one_number_field_filtered_not_mandatory: Int @filterable
   type_one_time_field_filtered: Time! @filterable
@@ -63,6 +64,7 @@ type UnionTypeTwo {
   type_int_union_two: Int @filterable
   type_string_union_two: String @filterable
   type_time_union_two: Time @filterable
+  type_string_slice_union_two: [String!] @filterable
 }
 
 type UnionTypeTwoPrime {

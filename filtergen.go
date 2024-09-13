@@ -109,10 +109,14 @@ func (f *Plugin) InjectSourceLate(schema *ast.Schema) *ast.Source {
 	}
 
 	initTypes := map[string]*ast.Definition{
-		filterString.Name:  filterString,
-		filterNumber.Name:  filterNumber,
-		filterTime.Name:    filterTime,
-		filterBoolean.Name: filterBoolean,
+		filterStringName:        filterString(filterStringName),
+		nestedFilterStringName:  filterString(nestedFilterStringName),
+		filterNumberName:        filterNumber(filterNumberName),
+		nestedFilterNumberName:  filterNumber(nestedFilterNumberName),
+		filterTimeName:          filterTime(filterTimeName),
+		nestedFilterTimeName:    filterTime(nestedFilterTimeName),
+		filterBooleanName:       filterBoolean(filterBooleanName),
+		nestedFilterBooleanName: filterBoolean(nestedFilterBooleanName),
 	}
 
 	outSchema := &ast.Schema{

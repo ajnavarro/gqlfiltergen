@@ -260,6 +260,86 @@ func (f *FilterTime) Eval(val *time.Time) bool {
 	return true
 }
 
+////////////////////////////// GENERIC NESTED TYPES /////////////////////////////
+
+
+func (f *NestedFilterBoolean) Eval(val *bool) bool {
+	if f == nil {
+		return true
+	}
+
+	return rootEval(val, f.Exists, f.Eq, nil)
+}
+
+func (f *NestedFilterNumber) Eval(val *int) bool {
+	if f == nil {
+		return true
+	}
+
+	if !rootEval(val, f.Exists, f.Eq, f.Neq) {
+		return false
+	}
+
+	if val != nil && f.Gt != nil && *val <= *f.Gt {
+		return false
+	}
+
+	if val != nil && f.Lt != nil && *val >= *f.Lt {
+		return false
+	}
+
+	return true
+}
+
+func (f *NestedFilterString) Eval(val *string) bool {
+	if f == nil {
+		return true
+	}
+
+	if !rootEval(val, f.Exists, f.Eq, f.Neq) {
+		return false
+	}
+
+	if val != nil && f.Like != nil {
+		matched, err := regexp.MatchString(*f.Like, *val)
+		if err != nil || !matched {
+			return false
+		}
+	}
+
+	if val != nil && f.Nlike != nil {
+		matched, err := regexp.MatchString(*f.Nlike, *val)
+		if err != nil || matched {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Eval evaluates the FilterTime conditions against a given time.Time value
+func (f *NestedFilterTime) Eval(val *time.Time) bool {
+	if f == nil {
+		return true
+	}
+
+	if !rootEval(val, f.Exists, f.Eq, f.Neq) {
+		return false
+	}
+
+	// Check if the value is before the specified time
+	if f.Before != nil && !val.Before(*f.Before) {
+		return false
+	}
+
+	// Check if the value is after the specified time
+	if f.After != nil && !val.After(*f.After) {
+		return false
+	}
+
+	return true
+}
+
 // rootEval is a generic function that checks if the provided value matches the filter conditions.
 func rootEval[T comparable](val *T, exists *bool, eq *T, neq *T) bool {
 	// Check the Exists filter

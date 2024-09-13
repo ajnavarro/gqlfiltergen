@@ -209,125 +209,140 @@ func filterDefinition(filterName, objectName string) *ast.Definition {
 }
 
 const (
-	filterStringName  = "FilterString"
-	filterNumberName  = "FilterNumber"
-	filterTimeName    = "FilterTime"
-	filterBooleanName = "FilterBoolean"
+	filterStringName        = "FilterString"
+	filterNumberName        = "FilterNumber"
+	filterTimeName          = "FilterTime"
+	filterBooleanName       = "FilterBoolean"
+	nestedFilterStringName  = "NestedFilterString"
+	nestedFilterNumberName  = "NestedFilterNumber"
+	nestedFilterTimeName    = "NestedFilterTime"
+	nestedFilterBooleanName = "NestedFilterBoolean"
 )
 
-var filterString = &ast.Definition{
-	Kind:        ast.InputObject,
-	Description: "Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.",
-	Name:        filterStringName,
-	Fields: ast.FieldList{
-		&ast.FieldDefinition{
-			Description: "Filter a string field checking if it exists or not.",
-			Name:        "exists",
-			Type:        ast.NamedType("Boolean", nil),
+func filterString(name string) *ast.Definition {
+	return &ast.Definition{
+		Kind:        ast.InputObject,
+		Description: "Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.",
+		Name:        name,
+		Fields: ast.FieldList{
+			&ast.FieldDefinition{
+				Description: "Filter a string field checking if it exists or not.",
+				Name:        "exists",
+				Type:        ast.NamedType("Boolean", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a string field checking if it is equals to the specified value.",
+				Name:        "eq",
+				Type:        ast.NamedType("String", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a string field checking if it is NOT equals to the specified value.",
+				Name:        "neq",
+				Type:        ast.NamedType("String", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.",
+				Name:        "like",
+				Type:        ast.NamedType("String", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.",
+				Name:        "nlike",
+				Type:        ast.NamedType("String", nil),
+			},
 		},
-		&ast.FieldDefinition{
-			Description: "Filter a string field checking if it is equals to the specified value.",
-			Name:        "eq",
-			Type:        ast.NamedType("String", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a string field checking if it is NOT equals to the specified value.",
-			Name:        "neq",
-			Type:        ast.NamedType("String", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.",
-			Name:        "like",
-			Type:        ast.NamedType("String", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.",
-			Name:        "nlike",
-			Type:        ast.NamedType("String", nil),
-		},
-	},
+	}
+
 }
 
-var filterNumber = &ast.Definition{
-	Kind:        ast.InputObject,
-	Description: "Filter type for number fields. All added filters here are processed as AND operators.",
-	Name:        filterNumberName,
-	Fields: ast.FieldList{
-		&ast.FieldDefinition{
-			Description: "Filter a number field checking if it exists or not.",
-			Name:        "exists",
-			Type:        ast.NamedType("Boolean", nil),
+func filterNumber(name string) *ast.Definition {
+	return &ast.Definition{
+		Kind:        ast.InputObject,
+		Description: "Filter type for number fields. All added filters here are processed as AND operators.",
+		Name:        name,
+		Fields: ast.FieldList{
+			&ast.FieldDefinition{
+				Description: "Filter a number field checking if it exists or not.",
+				Name:        "exists",
+				Type:        ast.NamedType("Boolean", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a number field checking if it is equals to the specified value.",
+				Name:        "eq",
+				Type:        ast.NamedType("Int", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a number field checking if it is NOT equals to the specified value.",
+				Name:        "neq",
+				Type:        ast.NamedType("Int", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a number field checking if it is greater than the specified value.",
+				Name:        "gt",
+				Type:        ast.NamedType("Int", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a number field checking if it is less than the specified value.",
+				Name:        "lt",
+				Type:        ast.NamedType("Int", nil),
+			},
 		},
-		&ast.FieldDefinition{
-			Description: "Filter a number field checking if it is equals to the specified value.",
-			Name:        "eq",
-			Type:        ast.NamedType("Int", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a number field checking if it is NOT equals to the specified value.",
-			Name:        "neq",
-			Type:        ast.NamedType("Int", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a number field checking if it is greater than the specified value.",
-			Name:        "gt",
-			Type:        ast.NamedType("Int", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a number field checking if it is less than the specified value.",
-			Name:        "lt",
-			Type:        ast.NamedType("Int", nil),
-		},
-	},
+	}
+
 }
 
-var filterTime = &ast.Definition{
-	Kind:        ast.InputObject,
-	Description: "Filter type for time fields. All added filters here are processed as AND operators.",
-	Name:        filterTimeName,
-	Fields: ast.FieldList{
-		&ast.FieldDefinition{
-			Description: "Filter a time field checking if it exists or not.",
-			Name:        "exists",
-			Type:        ast.NamedType("Boolean", nil),
+func filterTime(name string) *ast.Definition {
+	return &ast.Definition{
+		Kind:        ast.InputObject,
+		Description: "Filter type for time fields. All added filters here are processed as AND operators.",
+		Name:        name,
+		Fields: ast.FieldList{
+			&ast.FieldDefinition{
+				Description: "Filter a time field checking if it exists or not.",
+				Name:        "exists",
+				Type:        ast.NamedType("Boolean", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a time field checking if it is equals to the specified value.",
+				Name:        "eq",
+				Type:        ast.NamedType("Time", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a time field checking if it is NOT equals to the specified value.",
+				Name:        "neq",
+				Type:        ast.NamedType("Time", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a time field checking if it is before than the specified value.",
+				Name:        "before",
+				Type:        ast.NamedType("Time", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a time field checking if it is after the specified value.",
+				Name:        "after",
+				Type:        ast.NamedType("Time", nil),
+			},
 		},
-		&ast.FieldDefinition{
-			Description: "Filter a time field checking if it is equals to the specified value.",
-			Name:        "eq",
-			Type:        ast.NamedType("Time", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a time field checking if it is NOT equals to the specified value.",
-			Name:        "neq",
-			Type:        ast.NamedType("Time", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a time field checking if it is before than the specified value.",
-			Name:        "before",
-			Type:        ast.NamedType("Time", nil),
-		},
-		&ast.FieldDefinition{
-			Description: "Filter a time field checking if it is after the specified value.",
-			Name:        "after",
-			Type:        ast.NamedType("Time", nil),
-		},
-	},
+	}
+
 }
 
-var filterBoolean = &ast.Definition{
-	Kind:        ast.InputObject,
-	Description: "Filter type for boolean fields. All added filters here are processed as AND operators.",
-	Name:        filterBooleanName,
-	Fields: ast.FieldList{
-		&ast.FieldDefinition{
-			Description: "Filter a boolean field checking if it exists or not.",
-			Name:        "exists",
-			Type:        ast.NamedType("Boolean", nil),
+func filterBoolean(name string) *ast.Definition {
+	return &ast.Definition{
+		Kind:        ast.InputObject,
+		Description: "Filter type for boolean fields. All added filters here are processed as AND operators.",
+		Name:        name,
+		Fields: ast.FieldList{
+			&ast.FieldDefinition{
+				Description: "Filter a boolean field checking if it exists or not.",
+				Name:        "exists",
+				Type:        ast.NamedType("Boolean", nil),
+			},
+			&ast.FieldDefinition{
+				Description: "Filter a boolean field checking if it is equals to the specified value.",
+				Name:        "eq",
+				Type:        ast.NamedType("Boolean", nil),
+			},
 		},
-		&ast.FieldDefinition{
-			Description: "Filter a boolean field checking if it is equals to the specified value.",
-			Name:        "eq",
-			Type:        ast.NamedType("Boolean", nil),
-		},
-	},
+	}
 }

@@ -79,6 +79,7 @@ type ComplexityRoot struct {
 		TypeOneStringFieldFiltered              func(childComplexity int) int
 		TypeOneStringFieldFilteredNotMandatory  func(childComplexity int) int
 		TypeOneStringFieldWithNoFilter          func(childComplexity int) int
+		TypeOneStringSliceFiltered              func(childComplexity int) int
 		TypeOneTimeFieldFiltered                func(childComplexity int) int
 		TypeOneTimeFieldFilteredNotMandatory    func(childComplexity int) int
 		TypeOneTimeFieldWithNoFilter            func(childComplexity int) int
@@ -129,9 +130,10 @@ type ComplexityRoot struct {
 	}
 
 	UnionTypeTwo struct {
-		TypeIntUnionTwo    func(childComplexity int) int
-		TypeStringUnionTwo func(childComplexity int) int
-		TypeTimeUnionTwo   func(childComplexity int) int
+		TypeIntUnionTwo         func(childComplexity int) int
+		TypeStringSliceUnionTwo func(childComplexity int) int
+		TypeStringUnionTwo      func(childComplexity int) int
+		TypeTimeUnionTwo        func(childComplexity int) int
 	}
 
 	UnionTypeTwoPrime struct {
@@ -341,6 +343,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.TypeOne.TypeOneStringFieldWithNoFilter(childComplexity), true
+
+	case "TypeOne.type_one_string_slice_filtered":
+		if e.complexity.TypeOne.TypeOneStringSliceFiltered == nil {
+			break
+		}
+
+		return e.complexity.TypeOne.TypeOneStringSliceFiltered(childComplexity), true
 
 	case "TypeOne.type_one_time_field_filtered":
 		if e.complexity.TypeOne.TypeOneTimeFieldFiltered == nil {
@@ -573,6 +582,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.UnionTypeTwo.TypeIntUnionTwo(childComplexity), true
 
+	case "UnionTypeTwo.type_string_slice_union_two":
+		if e.complexity.UnionTypeTwo.TypeStringSliceUnionTwo == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeTwo.TypeStringSliceUnionTwo(childComplexity), true
+
 	case "UnionTypeTwo.type_string_union_two":
 		if e.complexity.UnionTypeTwo.TypeStringUnionTwo == nil {
 			break
@@ -628,6 +644,10 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputFilterUnionTypeOne,
 		ec.unmarshalInputFilterUnionTypeTwo,
 		ec.unmarshalInputInputOne,
+		ec.unmarshalInputNestedFilterBoolean,
+		ec.unmarshalInputNestedFilterNumber,
+		ec.unmarshalInputNestedFilterString,
+		ec.unmarshalInputNestedFilterTime,
 		ec.unmarshalInputNestedFilterTypeOne,
 		ec.unmarshalInputNestedFilterTypeThree,
 		ec.unmarshalInputNestedFilterTypeTwo,
@@ -910,6 +930,10 @@ input FilterTypeOne {
 	"""
 	type_one_number_field_filtered: FilterNumber
 	"""
+	filter for type_one_string_slice_filtered field.
+	"""
+	type_one_string_slice_filtered: NestedFilterString
+	"""
 	filter for type_one_number_field_filtered_not_mandatory field.
 	"""
 	type_one_number_field_filtered_not_mandatory: FilterNumber
@@ -1106,6 +1130,10 @@ input FilterUnionTypeTwo {
 	filter for type_time_union_two field.
 	"""
 	type_time_union_two: FilterTime
+	"""
+	filter for type_string_slice_union_two field.
+	"""
+	type_string_slice_union_two: NestedFilterString
 }
 enum FilterableExtra {
 	"""
@@ -1122,6 +1150,94 @@ input InputOne {
 	type_twoString_field_with_no_filter: String!
 	type_twoNumber_field_with_no_filter: Int!
 	type_twoTime_field_with_no_filter: Time!
+}
+"""
+Filter type for boolean fields. All added filters here are processed as AND operators.
+"""
+input NestedFilterBoolean {
+	"""
+	Filter a boolean field checking if it exists or not.
+	"""
+	exists: Boolean
+	"""
+	Filter a boolean field checking if it is equals to the specified value.
+	"""
+	eq: Boolean
+}
+"""
+Filter type for number fields. All added filters here are processed as AND operators.
+"""
+input NestedFilterNumber {
+	"""
+	Filter a number field checking if it exists or not.
+	"""
+	exists: Boolean
+	"""
+	Filter a number field checking if it is equals to the specified value.
+	"""
+	eq: Int
+	"""
+	Filter a number field checking if it is NOT equals to the specified value.
+	"""
+	neq: Int
+	"""
+	Filter a number field checking if it is greater than the specified value.
+	"""
+	gt: Int
+	"""
+	Filter a number field checking if it is less than the specified value.
+	"""
+	lt: Int
+}
+"""
+Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.
+"""
+input NestedFilterString {
+	"""
+	Filter a string field checking if it exists or not.
+	"""
+	exists: Boolean
+	"""
+	Filter a string field checking if it is equals to the specified value.
+	"""
+	eq: String
+	"""
+	Filter a string field checking if it is NOT equals to the specified value.
+	"""
+	neq: String
+	"""
+	Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.
+	"""
+	like: String
+	"""
+	Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.
+	"""
+	nlike: String
+}
+"""
+Filter type for time fields. All added filters here are processed as AND operators.
+"""
+input NestedFilterTime {
+	"""
+	Filter a time field checking if it exists or not.
+	"""
+	exists: Boolean
+	"""
+	Filter a time field checking if it is equals to the specified value.
+	"""
+	eq: Time
+	"""
+	Filter a time field checking if it is NOT equals to the specified value.
+	"""
+	neq: Time
+	"""
+	Filter a time field checking if it is before than the specified value.
+	"""
+	before: Time
+	"""
+	Filter a time field checking if it is after the specified value.
+	"""
+	after: Time
 }
 """
 filter for TypeOne objects
@@ -1151,6 +1267,10 @@ input NestedFilterTypeOne {
 	filter for type_one_number_field_filtered field.
 	"""
 	type_one_number_field_filtered: FilterNumber
+	"""
+	filter for type_one_string_slice_filtered field.
+	"""
+	type_one_string_slice_filtered: FilterString
 	"""
 	filter for type_one_number_field_filtered_not_mandatory field.
 	"""
@@ -1348,6 +1468,10 @@ input NestedFilterUnionTypeTwo {
 	filter for type_time_union_two field.
 	"""
 	type_time_union_two: FilterTime
+	"""
+	filter for type_string_slice_union_two field.
+	"""
+	type_string_slice_union_two: NestedFilterString
 }
 type Query {
 	testQuery(filter: String!): [Int!]
@@ -1363,6 +1487,7 @@ type TypeOne {
 	type_one_string_field_filtered: String! @filterable
 	type_one_string_field_filtered_not_mandatory: String @filterable
 	type_one_number_field_filtered: Int! @filterable(extras: [MINMAX])
+	type_one_string_slice_filtered: [String!] @filterable
 	type_one_number_field_filtered_not_mandatory: Int @filterable
 	type_one_time_field_filtered: Time! @filterable
 	type_one_time_field_filtered_not_mandatory: Time @filterable
@@ -1418,6 +1543,7 @@ type UnionTypeTwo {
 	type_int_union_two: Int @filterable
 	type_string_union_two: String @filterable
 	type_time_union_two: Time @filterable
+	type_string_slice_union_two: [String!] @filterable
 }
 type UnionTypeTwoPrime {
 	type_int_union_two_prime: Int
@@ -2012,6 +2138,8 @@ func (ec *executionContext) fieldContext_ExternalType_type_one(_ context.Context
 				return ec.fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 			case "type_one_number_field_filtered":
 				return ec.fieldContext_TypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_string_slice_filtered":
+				return ec.fieldContext_TypeOne_type_one_string_slice_filtered(ctx, field)
 			case "type_one_number_field_filtered_not_mandatory":
 				return ec.fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 			case "type_one_time_field_filtered":
@@ -2205,6 +2333,8 @@ func (ec *executionContext) fieldContext_Query_testFilter(ctx context.Context, f
 				return ec.fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 			case "type_one_number_field_filtered":
 				return ec.fieldContext_TypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_string_slice_filtered":
+				return ec.fieldContext_TypeOne_type_one_string_slice_filtered(ctx, field)
 			case "type_one_number_field_filtered_not_mandatory":
 				return ec.fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 			case "type_one_time_field_filtered":
@@ -2503,6 +2633,8 @@ func (ec *executionContext) fieldContext_Subscription_testSubFilter(ctx context.
 				return ec.fieldContext_TypeOne_type_one_string_field_filtered_not_mandatory(ctx, field)
 			case "type_one_number_field_filtered":
 				return ec.fieldContext_TypeOne_type_one_number_field_filtered(ctx, field)
+			case "type_one_string_slice_filtered":
+				return ec.fieldContext_TypeOne_type_one_string_slice_filtered(ctx, field)
 			case "type_one_number_field_filtered_not_mandatory":
 				return ec.fieldContext_TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field)
 			case "type_one_time_field_filtered":
@@ -2727,6 +2859,67 @@ func (ec *executionContext) fieldContext_TypeOne_type_one_number_field_filtered(
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _TypeOne_type_one_string_slice_filtered(ctx context.Context, field graphql.CollectedField, obj *TypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TypeOne_type_one_string_slice_filtered(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeOneStringSliceFiltered, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]string); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []string`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_TypeOne_type_one_string_slice_filtered(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "TypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -5090,6 +5283,67 @@ func (ec *executionContext) fieldContext_UnionTypeTwo_type_time_union_two(_ cont
 	return fc, nil
 }
 
+func (ec *executionContext) _UnionTypeTwo_type_string_slice_union_two(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeTwo_type_string_slice_union_two(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeStringSliceUnionTwo, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]string); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []string`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeTwo_type_string_slice_union_two(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeTwo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _UnionTypeTwoPrime_type_int_union_two_prime(ctx context.Context, field graphql.CollectedField, obj *UnionTypeTwoPrime) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_UnionTypeTwoPrime_type_int_union_two_prime(ctx, field)
 	if err != nil {
@@ -7282,7 +7536,7 @@ func (ec *executionContext) unmarshalInputFilterTypeOne(ctx context.Context, obj
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_one_string_field_filtered", "type_one_string_field_filtered_not_mandatory", "type_one_number_field_filtered", "type_one_number_field_filtered_not_mandatory", "type_one_time_field_filtered", "type_one_time_field_filtered_not_mandatory", "type_one_boolean_field_filtered", "type_one_boolean_field_filtered_not_mandatory", "type_one_slice_with_type_twos"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_one_string_field_filtered", "type_one_string_field_filtered_not_mandatory", "type_one_number_field_filtered", "type_one_string_slice_filtered", "type_one_number_field_filtered_not_mandatory", "type_one_time_field_filtered", "type_one_time_field_filtered_not_mandatory", "type_one_boolean_field_filtered", "type_one_boolean_field_filtered_not_mandatory", "type_one_slice_with_type_twos"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7331,6 +7585,13 @@ func (ec *executionContext) unmarshalInputFilterTypeOne(ctx context.Context, obj
 				return it, err
 			}
 			it.TypeOneNumberFieldFiltered = data
+		case "type_one_string_slice_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_string_slice_filtered"))
+			data, err := ec.unmarshalONestedFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneStringSliceFiltered = data
 		case "type_one_number_field_filtered_not_mandatory":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_number_field_filtered_not_mandatory"))
 			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
@@ -7683,7 +7944,7 @@ func (ec *executionContext) unmarshalInputFilterUnionTypeTwo(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_two", "type_string_union_two", "type_time_union_two"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_two", "type_string_union_two", "type_time_union_two", "type_string_slice_union_two"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7732,6 +7993,13 @@ func (ec *executionContext) unmarshalInputFilterUnionTypeTwo(ctx context.Context
 				return it, err
 			}
 			it.TypeTimeUnionTwo = data
+		case "type_string_slice_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_string_slice_union_two"))
+			data, err := ec.unmarshalONestedFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeStringSliceUnionTwo = data
 		}
 	}
 
@@ -7807,6 +8075,205 @@ func (ec *executionContext) unmarshalInputInputOne(ctx context.Context, obj inte
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputNestedFilterBoolean(ctx context.Context, obj interface{}) (NestedFilterBoolean, error) {
+	var it NestedFilterBoolean
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterNumber(ctx context.Context, obj interface{}) (NestedFilterNumber, error) {
+	var it NestedFilterNumber
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq", "neq", "gt", "lt"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		case "neq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Neq = data
+		case "gt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gt"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Gt = data
+		case "lt":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("lt"))
+			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Lt = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterString(ctx context.Context, obj interface{}) (NestedFilterString, error) {
+	var it NestedFilterString
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq", "neq", "like", "nlike"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		case "neq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Neq = data
+		case "like":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("like"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Like = data
+		case "nlike":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nlike"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Nlike = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterTime(ctx context.Context, obj interface{}) (NestedFilterTime, error) {
+	var it NestedFilterTime
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"exists", "eq", "neq", "before", "after"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "exists":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("exists"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Exists = data
+		case "eq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("eq"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Eq = data
+		case "neq":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Neq = data
+		case "before":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Before = data
+		case "after":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
+			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.After = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputNestedFilterTypeOne(ctx context.Context, obj interface{}) (NestedFilterTypeOne, error) {
 	var it NestedFilterTypeOne
 	asMap := map[string]interface{}{}
@@ -7814,7 +8281,7 @@ func (ec *executionContext) unmarshalInputNestedFilterTypeOne(ctx context.Contex
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_one_string_field_filtered", "type_one_string_field_filtered_not_mandatory", "type_one_number_field_filtered", "type_one_number_field_filtered_not_mandatory", "type_one_time_field_filtered", "type_one_time_field_filtered_not_mandatory", "type_one_boolean_field_filtered", "type_one_boolean_field_filtered_not_mandatory", "type_one_slice_with_type_twos"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_one_string_field_filtered", "type_one_string_field_filtered_not_mandatory", "type_one_number_field_filtered", "type_one_string_slice_filtered", "type_one_number_field_filtered_not_mandatory", "type_one_time_field_filtered", "type_one_time_field_filtered_not_mandatory", "type_one_boolean_field_filtered", "type_one_boolean_field_filtered_not_mandatory", "type_one_slice_with_type_twos"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7863,6 +8330,13 @@ func (ec *executionContext) unmarshalInputNestedFilterTypeOne(ctx context.Contex
 				return it, err
 			}
 			it.TypeOneNumberFieldFiltered = data
+		case "type_one_string_slice_filtered":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_string_slice_filtered"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeOneStringSliceFiltered = data
 		case "type_one_number_field_filtered_not_mandatory":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_one_number_field_filtered_not_mandatory"))
 			data, err := ec.unmarshalOFilterNumber2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNumber(ctx, v)
@@ -8215,7 +8689,7 @@ func (ec *executionContext) unmarshalInputNestedFilterUnionTypeTwo(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_two", "type_string_union_two", "type_time_union_two"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_two", "type_string_union_two", "type_time_union_two", "type_string_slice_union_two"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -8264,6 +8738,13 @@ func (ec *executionContext) unmarshalInputNestedFilterUnionTypeTwo(ctx context.C
 				return it, err
 			}
 			it.TypeTimeUnionTwo = data
+		case "type_string_slice_union_two":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_string_slice_union_two"))
+			data, err := ec.unmarshalONestedFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeStringSliceUnionTwo = data
 		}
 	}
 
@@ -8557,6 +9038,8 @@ func (ec *executionContext) _TypeOne(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "type_one_string_slice_filtered":
+			out.Values[i] = ec._TypeOne_type_one_string_slice_filtered(ctx, field, obj)
 		case "type_one_number_field_filtered_not_mandatory":
 			out.Values[i] = ec._TypeOne_type_one_number_field_filtered_not_mandatory(ctx, field, obj)
 		case "type_one_time_field_filtered":
@@ -8912,6 +9395,8 @@ func (ec *executionContext) _UnionTypeTwo(ctx context.Context, sel ast.Selection
 			out.Values[i] = ec._UnionTypeTwo_type_string_union_two(ctx, field, obj)
 		case "type_time_union_two":
 			out.Values[i] = ec._UnionTypeTwo_type_time_union_two(ctx, field, obj)
+		case "type_string_slice_union_two":
+			out.Values[i] = ec._UnionTypeTwo_type_string_slice_union_two(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -10142,6 +10627,14 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) unmarshalONestedFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterString(ctx context.Context, v interface{}) (*NestedFilterString, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNestedFilterString(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, v interface{}) ([]*NestedFilterTypeOne, error) {
 	if v == nil {
 		return nil, nil
@@ -10308,6 +10801,44 @@ func (ec *executionContext) unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcom�
 	}
 	res, err := ec.unmarshalInputNestedFilterUnionTypeTwo(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
