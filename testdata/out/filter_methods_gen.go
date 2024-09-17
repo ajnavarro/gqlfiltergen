@@ -113,6 +113,12 @@ func (f *NestedFilterUnionTypeOne) Eval(obj *UnionTypeOne) bool {
 		return false
 	}
 
+	// Handle TypeNested field
+	toEvalTypeNested := obj.TypeNested
+	if f.TypeNested != nil && !f.TypeNested.Eval(toEvalTypeNested) {
+		return false
+	}
+
 	// Handle TypeIntUnionOne field
 	toEvalTypeIntUnionOne := toIntPtr(obj.TypeIntUnionOne)
 	if f.TypeIntUnionOne != nil && !f.TypeIntUnionOne.Eval(toEvalTypeIntUnionOne) {
@@ -493,6 +499,89 @@ func (f *NestedFilterTypeOne) MinMaxTypeOneNumberFieldFiltered() (min *int, max 
 	return min, max
 }
 
+func (f *NestedFilterNestedTypeTwo) Eval(obj *NestedTypeTwo) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle ValString field
+	toEvalValString := obj.ValString
+	if f.ValString != nil && !f.ValString.Eval(&toEvalValString) {
+		return false
+	}
+
+	return true
+}
+
+func (f *NestedFilterNestedType) Eval(obj *NestedType) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle NestedOnNested slice
+	if f.NestedOnNested != nil {
+		for _, elem := range obj.NestedOnNested {
+			if !f.NestedOnNested.Eval(elem) {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
 func (f *FilterUnionTypeTwo) Eval(obj *UnionTypeTwo) bool {
 	// Evaluate logical operators first
 	if len(f.And) > 0 {
@@ -594,6 +683,12 @@ func (f *FilterUnionTypeOne) Eval(obj *UnionTypeOne) bool {
 	// Handle TypeStringUnionOne field
 	toEvalTypeStringUnionOne := obj.TypeStringUnionOne
 	if f.TypeStringUnionOne != nil && !f.TypeStringUnionOne.Eval(toEvalTypeStringUnionOne) {
+		return false
+	}
+
+	// Handle TypeNested field
+	toEvalTypeNested := obj.TypeNested
+	if f.TypeNested != nil && !f.TypeNested.Eval(toEvalTypeNested) {
 		return false
 	}
 
@@ -975,6 +1070,89 @@ func (f *FilterTypeOne) MinMaxTypeOneNumberFieldFiltered() (min *int, max *int) 
 	}
 
 	return min, max
+}
+
+func (f *FilterNestedTypeTwo) Eval(obj *NestedTypeTwo) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle ValString field
+	toEvalValString := obj.ValString
+	if f.ValString != nil && !f.ValString.Eval(&toEvalValString) {
+		return false
+	}
+
+	return true
+}
+
+func (f *FilterNestedType) Eval(obj *NestedType) bool {
+	// Evaluate logical operators first
+	if len(f.And) > 0 {
+		for _, subFilter := range f.And {
+			if !subFilter.Eval(obj) {
+				return false
+			}
+		}
+	}
+
+	if len(f.Or) > 0 {
+		orResult := false
+		for _, subFilter := range f.Or {
+			if subFilter.Eval(obj) {
+				orResult = true
+				break
+			}
+		}
+		if !orResult {
+			return false
+		}
+	}
+
+	if f.Not != nil {
+		if f.Not.Eval(obj) {
+			return false
+		}
+	}
+
+	// Evaluate individual field filters
+
+	// Handle NestedOnNested slice
+	if f.NestedOnNested != nil {
+		for _, elem := range obj.NestedOnNested {
+			if !f.NestedOnNested.Eval(elem) {
+				return false
+			}
+		}
+	}
+
+	return true
 }
 
 func (f *FilterExternalType) Eval(obj *ExternalType) bool {

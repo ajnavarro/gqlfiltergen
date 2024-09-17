@@ -113,7 +113,7 @@ func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed
 			}
 
 			var isSlice bool
-			var isSliceElemPointer bool
+			var isSliceBasicType bool
 			var isNested bool
 			var isUnion bool
 
@@ -126,8 +126,11 @@ func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed
 			case field != nil:
 				fd = field
 			case f.Type.NamedType == "": // it is a list
+				if possibleUnion, ok := ot[f.Type.Elem.NamedType]; ok {
+					isUnion = possibleUnion.Definition.Kind == ast.Union
+				}
 				fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.Elem.NamedType), nil)
-				isSliceElemPointer = !f.Type.Elem.NonNull
+				isSliceBasicType = isBasicType(f.Type.Elem.NamedType)
 				isSlice = true
 			case isUnion:
 				fd.Type = ast.NamedType(generateMainFilterDefinitionLoop(ot, processed, seen, true, f.Type.NamedType), nil)
@@ -139,12 +142,14 @@ func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed
 			objDef.Fields = append(objDef.Fields, fd)
 
 			tf := &FieldMapping{
-				Field:              f.Name,
-				TypeName:           fd.Type.Name(),
-				IsSlice:            isSlice,
-				IsNested:           isNested,
-				IsPointer:          !f.Type.NonNull && !isUnion,
-				IsSliceElemPointer: isSliceElemPointer,
+				Field:    f.Name,
+				TypeName: fd.Type.Name(),
+
+				IsSlice:          isSlice,
+				IsNested:         isNested,
+				IsPointer:        !f.Type.NonNull,
+				IsSliceBasicType: isSliceBasicType,
+				IsUnion:          isUnion,
 
 				IsMinmaxeable: pf.IsMinmaxeable,
 			}
@@ -161,6 +166,19 @@ func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed
 	}
 
 	return filterName
+}
+
+func isBasicType(t string) bool {
+	switch t {
+	case "String":
+		return true
+	case "Int":
+		return true
+	case "Boolean":
+		return true
+	}
+
+	return false
 }
 
 func processField(name, typeName string) *ast.FieldDefinition {

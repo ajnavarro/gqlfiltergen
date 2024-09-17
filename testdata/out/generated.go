@@ -63,6 +63,30 @@ type FilterInt struct {
 	Lt *int `json:"lt,omitempty"`
 }
 
+// filter for NestedType objects
+type FilterNestedType struct {
+	// logical operator for NestedType that will combine two or more conditions, returning true if all of them are true.
+	And []*FilterNestedType `json:"_and,omitempty"`
+	// logical operator for NestedType that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*FilterNestedType `json:"_or,omitempty"`
+	// logical operator for NestedType that will reverse conditions.
+	Not *FilterNestedType `json:"_not,omitempty"`
+	// filter for nested_on_nested field.
+	NestedOnNested *NestedFilterNestedTypeTwo `json:"nested_on_nested,omitempty"`
+}
+
+// filter for NestedTypeTwo objects
+type FilterNestedTypeTwo struct {
+	// logical operator for NestedTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	And []*FilterNestedTypeTwo `json:"_and,omitempty"`
+	// logical operator for NestedTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*FilterNestedTypeTwo `json:"_or,omitempty"`
+	// logical operator for NestedTypeTwo that will reverse conditions.
+	Not *FilterNestedTypeTwo `json:"_not,omitempty"`
+	// filter for val_string field.
+	ValString *FilterString `json:"val_string,omitempty"`
+}
+
 // Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.
 type FilterString struct {
 	// Filter a string field checking if it exists or not.
@@ -197,6 +221,8 @@ type FilterUnionTypeOne struct {
 	TypeStringUnionOne *FilterString `json:"type_string_union_one,omitempty"`
 	// filter for type_time_union_one field.
 	TypeTimeUnionOne *FilterTime `json:"type_time_union_one,omitempty"`
+	// filter for type_nested field.
+	TypeNested *NestedFilterNestedType `json:"type_nested,omitempty"`
 }
 
 // filter for UnionTypeTwo objects
@@ -225,6 +251,30 @@ type InputOne struct {
 	TypeTwoStringFieldWithNoFilter string    `json:"type_twoString_field_with_no_filter"`
 	TypeTwoNumberFieldWithNoFilter int       `json:"type_twoNumber_field_with_no_filter"`
 	TypeTwoTimeFieldWithNoFilter   time.Time `json:"type_twoTime_field_with_no_filter"`
+}
+
+// filter for NestedType objects
+type NestedFilterNestedType struct {
+	// logical operator for NestedType that will combine two or more conditions, returning true if all of them are true.
+	And []*NestedFilterNestedType `json:"_and,omitempty"`
+	// logical operator for NestedType that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*NestedFilterNestedType `json:"_or,omitempty"`
+	// logical operator for NestedType that will reverse conditions.
+	Not *NestedFilterNestedType `json:"_not,omitempty"`
+	// filter for nested_on_nested field.
+	NestedOnNested *NestedFilterNestedTypeTwo `json:"nested_on_nested,omitempty"`
+}
+
+// filter for NestedTypeTwo objects
+type NestedFilterNestedTypeTwo struct {
+	// logical operator for NestedTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	And []*NestedFilterNestedTypeTwo `json:"_and,omitempty"`
+	// logical operator for NestedTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	Or []*NestedFilterNestedTypeTwo `json:"_or,omitempty"`
+	// logical operator for NestedTypeTwo that will reverse conditions.
+	Not *NestedFilterNestedTypeTwo `json:"_not,omitempty"`
+	// filter for val_string field.
+	ValString *FilterString `json:"val_string,omitempty"`
 }
 
 // filter for TypeOne objects
@@ -333,6 +383,8 @@ type NestedFilterUnionTypeOne struct {
 	TypeStringUnionOne *FilterString `json:"type_string_union_one,omitempty"`
 	// filter for type_time_union_one field.
 	TypeTimeUnionOne *FilterTime `json:"type_time_union_one,omitempty"`
+	// filter for type_nested field.
+	TypeNested *NestedFilterNestedType `json:"type_nested,omitempty"`
 }
 
 // filter for UnionTypeTwo objects
@@ -353,6 +405,14 @@ type NestedFilterUnionTypeTwo struct {
 	TypeStringSliceUnionTwo *FilterString `json:"type_string_slice_union_two,omitempty"`
 }
 
+type NestedType struct {
+	NestedOnNested []*NestedTypeTwo `json:"nested_on_nested,omitempty"`
+}
+
+type NestedTypeTwo struct {
+	ValString string `json:"val_string"`
+}
+
 type Query struct {
 }
 
@@ -369,7 +429,7 @@ type TypeOne struct {
 	TypeOneStringFieldWithNoFilter          string     `json:"type_one_string_field_with_no_filter"`
 	TypeOneNumberFieldWithNoFilter          int        `json:"type_one_number_field_with_no_filter"`
 	TypeOneTimeFieldWithNoFilter            time.Time  `json:"type_one_time_field_with_no_filter"`
-	TypeOneSliceWithTypeTwos                []*TypeTwo `json:"type_one_slice_with_type_twos"`
+	TypeOneSliceWithTypeTwos                []*TypeTwo `json:"type_one_slice_with_type_twos,omitempty"`
 }
 
 type TypeThree struct {
@@ -393,7 +453,7 @@ type TypeTwo struct {
 	TypeTwoStringFieldWithNoFilter   string     `json:"type_twoString_field_with_no_filter"`
 	TypeTwoNumberFieldWithNoFilter   int        `json:"type_twoNumber_field_with_no_filter"`
 	TypeTwoTimeFieldWithNoFilter     time.Time  `json:"type_twoTime_field_with_no_filter"`
-	TypeTwoSliceWithTypeTwos         []*TypeTwo `json:"type_two_slice_with_type_twos"`
+	TypeTwoSliceWithTypeTwos         []*TypeTwo `json:"type_two_slice_with_type_twos,omitempty"`
 	TypeTwoWithTypeThree             *TypeThree `json:"type_two_with_type_three"`
 	TypeTwoWithTypeThreeNotMandatory *TypeThree `json:"type_two_with_type_three_not_mandatory,omitempty"`
 }
@@ -407,9 +467,10 @@ type UnionTypeFour struct {
 func (UnionTypeFour) IsUnionTwo() {}
 
 type UnionTypeOne struct {
-	TypeIntUnionOne    *int       `json:"type_int_union_one,omitempty"`
-	TypeStringUnionOne *string    `json:"type_string_union_one,omitempty"`
-	TypeTimeUnionOne   *time.Time `json:"type_time_union_one,omitempty"`
+	TypeIntUnionOne    *int        `json:"type_int_union_one,omitempty"`
+	TypeStringUnionOne *string     `json:"type_string_union_one,omitempty"`
+	TypeTimeUnionOne   *time.Time  `json:"type_time_union_one,omitempty"`
+	TypeNested         *NestedType `json:"type_nested"`
 }
 
 func (UnionTypeOne) IsUnionOne() {}

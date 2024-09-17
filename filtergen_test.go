@@ -46,17 +46,17 @@ func TestFiltersGeneration(t *testing.T) {
 			{
 				Or: []*out.FilterTypeOne{
 					{
-						TypeOneNumberFieldFiltered: &out.FilterNumber{
+						TypeOneNumberFieldFiltered: &out.FilterInt{
 							Eq: &eqlValueInt,
 						},
 					},
 					{
-						TypeOneNumberFieldFiltered: &out.FilterNumber{
+						TypeOneNumberFieldFiltered: &out.FilterInt{
 							Exists: &nexists,
 						},
 					},
 					{
-						TypeOneNumberFieldFiltered: &out.FilterNumber{
+						TypeOneNumberFieldFiltered: &out.FilterInt{
 							Eq: &minmax1,
 						},
 					},

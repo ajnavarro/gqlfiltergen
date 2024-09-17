@@ -58,6 +58,14 @@ type ComplexityRoot struct {
 		TypeOne     func(childComplexity int) int
 	}
 
+	NestedType struct {
+		NestedOnNested func(childComplexity int) int
+	}
+
+	NestedTypeTwo struct {
+		ValString func(childComplexity int) int
+	}
+
 	Query struct {
 		TestFilter      func(childComplexity int, filter FilterTypeOne) int
 		TestFilterThree func(childComplexity int, filter FilterTypeThree) int
@@ -119,6 +127,7 @@ type ComplexityRoot struct {
 
 	UnionTypeOne struct {
 		TypeIntUnionOne    func(childComplexity int) int
+		TypeNested         func(childComplexity int) int
 		TypeStringUnionOne func(childComplexity int) int
 		TypeTimeUnionOne   func(childComplexity int) int
 	}
@@ -220,6 +229,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.ExternalType.TypeOne(childComplexity), true
+
+	case "NestedType.nested_on_nested":
+		if e.complexity.NestedType.NestedOnNested == nil {
+			break
+		}
+
+		return e.complexity.NestedType.NestedOnNested(childComplexity), true
+
+	case "NestedTypeTwo.val_string":
+		if e.complexity.NestedTypeTwo.ValString == nil {
+			break
+		}
+
+		return e.complexity.NestedTypeTwo.ValString(childComplexity), true
 
 	case "Query.testFilter":
 		if e.complexity.Query.TestFilter == nil {
@@ -540,6 +563,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.UnionTypeOne.TypeIntUnionOne(childComplexity), true
 
+	case "UnionTypeOne.type_nested":
+		if e.complexity.UnionTypeOne.TypeNested == nil {
+			break
+		}
+
+		return e.complexity.UnionTypeOne.TypeNested(childComplexity), true
+
 	case "UnionTypeOne.type_string_union_one":
 		if e.complexity.UnionTypeOne.TypeStringUnionOne == nil {
 			break
@@ -635,6 +665,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputFilterBoolean,
 		ec.unmarshalInputFilterExternalType,
 		ec.unmarshalInputFilterInt,
+		ec.unmarshalInputFilterNestedType,
+		ec.unmarshalInputFilterNestedTypeTwo,
 		ec.unmarshalInputFilterString,
 		ec.unmarshalInputFilterTime,
 		ec.unmarshalInputFilterTypeOne,
@@ -644,6 +676,8 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputFilterUnionTypeOne,
 		ec.unmarshalInputFilterUnionTypeTwo,
 		ec.unmarshalInputInputOne,
+		ec.unmarshalInputNestedFilterNestedType,
+		ec.unmarshalInputNestedFilterNestedTypeTwo,
 		ec.unmarshalInputNestedFilterTypeOne,
 		ec.unmarshalInputNestedFilterTypeThree,
 		ec.unmarshalInputNestedFilterTypeTwo,
@@ -846,6 +880,48 @@ input FilterInt {
 	Filter a number field checking if it is less than the specified value.
 	"""
 	lt: Int
+}
+"""
+filter for NestedType objects
+"""
+input FilterNestedType {
+	"""
+	logical operator for NestedType that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [FilterNestedType]
+	"""
+	logical operator for NestedType that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [FilterNestedType]
+	"""
+	logical operator for NestedType that will reverse conditions.
+	"""
+	_not: FilterNestedType
+	"""
+	filter for nested_on_nested field.
+	"""
+	nested_on_nested: NestedFilterNestedTypeTwo
+}
+"""
+filter for NestedTypeTwo objects
+"""
+input FilterNestedTypeTwo {
+	"""
+	logical operator for NestedTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [FilterNestedTypeTwo]
+	"""
+	logical operator for NestedTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [FilterNestedTypeTwo]
+	"""
+	logical operator for NestedTypeTwo that will reverse conditions.
+	"""
+	_not: FilterNestedTypeTwo
+	"""
+	filter for val_string field.
+	"""
+	val_string: FilterString
 }
 """
 Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.
@@ -1097,6 +1173,10 @@ input FilterUnionTypeOne {
 	filter for type_time_union_one field.
 	"""
 	type_time_union_one: FilterTime
+	"""
+	filter for type_nested field.
+	"""
+	type_nested: NestedFilterNestedType
 }
 """
 filter for UnionTypeTwo objects
@@ -1146,6 +1226,48 @@ input InputOne {
 	type_twoString_field_with_no_filter: String!
 	type_twoNumber_field_with_no_filter: Int!
 	type_twoTime_field_with_no_filter: Time!
+}
+"""
+filter for NestedType objects
+"""
+input NestedFilterNestedType {
+	"""
+	logical operator for NestedType that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [NestedFilterNestedType]
+	"""
+	logical operator for NestedType that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [NestedFilterNestedType]
+	"""
+	logical operator for NestedType that will reverse conditions.
+	"""
+	_not: NestedFilterNestedType
+	"""
+	filter for nested_on_nested field.
+	"""
+	nested_on_nested: NestedFilterNestedTypeTwo
+}
+"""
+filter for NestedTypeTwo objects
+"""
+input NestedFilterNestedTypeTwo {
+	"""
+	logical operator for NestedTypeTwo that will combine two or more conditions, returning true if all of them are true.
+	"""
+	_and: [NestedFilterNestedTypeTwo]
+	"""
+	logical operator for NestedTypeTwo that will combine two or more conditions, returning true if at least one of them is true.
+	"""
+	_or: [NestedFilterNestedTypeTwo]
+	"""
+	logical operator for NestedTypeTwo that will reverse conditions.
+	"""
+	_not: NestedFilterNestedTypeTwo
+	"""
+	filter for val_string field.
+	"""
+	val_string: FilterString
 }
 """
 filter for TypeOne objects
@@ -1347,6 +1469,10 @@ input NestedFilterUnionTypeOne {
 	filter for type_time_union_one field.
 	"""
 	type_time_union_one: FilterTime
+	"""
+	filter for type_nested field.
+	"""
+	type_nested: NestedFilterNestedType
 }
 """
 filter for UnionTypeTwo objects
@@ -1381,6 +1507,12 @@ input NestedFilterUnionTypeTwo {
 	"""
 	type_string_slice_union_two: FilterString
 }
+type NestedType {
+	nested_on_nested: [NestedTypeTwo!] @filterable
+}
+type NestedTypeTwo {
+	val_string: String! @filterable
+}
 type Query {
 	testQuery(filter: String!): [Int!]
 	testQueryObject(filter: InputOne!): [TypeTwo!]
@@ -1404,7 +1536,7 @@ type TypeOne {
 	type_one_string_field_with_no_filter: String!
 	type_one_number_field_with_no_filter: Int!
 	type_one_time_field_with_no_filter: Time!
-	type_one_slice_with_type_twos: [TypeTwo]! @filterable
+	type_one_slice_with_type_twos: [TypeTwo!] @filterable
 }
 type TypeThree {
 	type_three_string_field_filtered: String! @filterable
@@ -1426,7 +1558,7 @@ type TypeTwo {
 	type_twoString_field_with_no_filter: String!
 	type_twoNumber_field_with_no_filter: Int!
 	type_twoTime_field_with_no_filter: Time!
-	type_two_slice_with_type_twos: [TypeTwo]! @filterable
+	type_two_slice_with_type_twos: [TypeTwo!] @filterable
 	type_two_with_type_three: TypeThree! @filterable
 	type_two_with_type_three_not_mandatory: TypeThree @filterable
 }
@@ -1441,6 +1573,7 @@ type UnionTypeOne {
 	type_int_union_one: Int @filterable
 	type_string_union_one: String @filterable
 	type_time_union_one: Time @filterable
+	type_nested: NestedType! @filterable
 }
 type UnionTypeThree {
 	type_int_union_one: Int
@@ -2068,6 +2201,135 @@ func (ec *executionContext) fieldContext_ExternalType_type_one(_ context.Context
 				return ec.fieldContext_TypeOne_type_one_slice_with_type_twos(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type TypeOne", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedType_nested_on_nested(ctx context.Context, field graphql.CollectedField, obj *NestedType) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedType_nested_on_nested(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.NestedOnNested, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.([]*NestedTypeTwo); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be []*github.com/ajnavarro/gqlfiltergen/testdata/out.NestedTypeTwo`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*NestedTypeTwo)
+	fc.Result = res
+	return ec.marshalONestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedTypeTwoᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedType_nested_on_nested(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedType",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "val_string":
+				return ec.fieldContext_NestedTypeTwo_val_string(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedTypeTwo", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NestedTypeTwo_val_string(ctx context.Context, field graphql.CollectedField, obj *NestedTypeTwo) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NestedTypeTwo_val_string(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.ValString, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(string); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be string`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NestedTypeTwo_val_string(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NestedTypeTwo",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -3317,14 +3579,11 @@ func (ec *executionContext) _TypeOne_type_one_slice_with_type_twos(ctx context.C
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.([]*TypeTwo)
 	fc.Result = res
-	return ec.marshalNTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx, field.Selections, res)
+	return ec.marshalOTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwoᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TypeOne_type_one_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -4365,14 +4624,11 @@ func (ec *executionContext) _TypeTwo_type_two_slice_with_type_twos(ctx context.C
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
 	res := resTmp.([]*TypeTwo)
 	fc.Result = res
-	return ec.marshalNTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx, field.Selections, res)
+	return ec.marshalOTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwoᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_TypeTwo_type_two_slice_with_type_twos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -4880,6 +5136,74 @@ func (ec *executionContext) fieldContext_UnionTypeOne_type_time_union_one(_ cont
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Time does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _UnionTypeOne_type_nested(ctx context.Context, field graphql.CollectedField, obj *UnionTypeOne) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_UnionTypeOne_type_nested(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		directive0 := func(rctx context.Context) (interface{}, error) {
+			ctx = rctx // use context from middleware stack in children
+			return obj.TypeNested, nil
+		}
+		directive1 := func(ctx context.Context) (interface{}, error) {
+			if ec.directives.Filterable == nil {
+				return nil, errors.New("directive filterable is not implemented")
+			}
+			return ec.directives.Filterable(ctx, obj, directive0, nil)
+		}
+
+		tmp, err := directive1(rctx)
+		if err != nil {
+			return nil, graphql.ErrorOnPath(ctx, err)
+		}
+		if tmp == nil {
+			return nil, nil
+		}
+		if data, ok := tmp.(*NestedType); ok {
+			return data, nil
+		}
+		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/ajnavarro/gqlfiltergen/testdata/out.NestedType`, tmp)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*NestedType)
+	fc.Result = res
+	return ec.marshalNNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedType(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_UnionTypeOne_type_nested(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "UnionTypeOne",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "nested_on_nested":
+				return ec.fieldContext_NestedType_nested_on_nested(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NestedType", field.Name)
 		},
 	}
 	return fc, nil
@@ -7327,6 +7651,102 @@ func (ec *executionContext) unmarshalInputFilterInt(ctx context.Context, obj int
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputFilterNestedType(ctx context.Context, obj interface{}) (FilterNestedType, error) {
+	var it FilterNestedType
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "nested_on_nested"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterNestedType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterNestedType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "nested_on_nested":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nested_on_nested"))
+			data, err := ec.unmarshalONestedFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NestedOnNested = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputFilterNestedTypeTwo(ctx context.Context, obj interface{}) (FilterNestedTypeTwo, error) {
+	var it FilterNestedTypeTwo
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "val_string"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalOFilterNestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalOFilterNestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalOFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "val_string":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("val_string"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ValString = data
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputFilterString(ctx context.Context, obj interface{}) (FilterString, error) {
 	var it FilterString
 	asMap := map[string]interface{}{}
@@ -7790,7 +8210,7 @@ func (ec *executionContext) unmarshalInputFilterUnionTypeOne(ctx context.Context
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_one", "type_string_union_one", "type_time_union_one"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_one", "type_string_union_one", "type_time_union_one", "type_nested"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7839,6 +8259,13 @@ func (ec *executionContext) unmarshalInputFilterUnionTypeOne(ctx context.Context
 				return it, err
 			}
 			it.TypeTimeUnionOne = data
+		case "type_nested":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_nested"))
+			data, err := ec.unmarshalONestedFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeNested = data
 		}
 	}
 
@@ -7977,6 +8404,102 @@ func (ec *executionContext) unmarshalInputInputOne(ctx context.Context, obj inte
 				return it, err
 			}
 			it.TypeTwoTimeFieldWithNoFilter = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterNestedType(ctx context.Context, obj interface{}) (NestedFilterNestedType, error) {
+	var it NestedFilterNestedType
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "nested_on_nested"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterNestedType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterNestedType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "nested_on_nested":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nested_on_nested"))
+			data, err := ec.unmarshalONestedFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NestedOnNested = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNestedFilterNestedTypeTwo(ctx context.Context, obj interface{}) (NestedFilterNestedTypeTwo, error) {
+	var it NestedFilterNestedTypeTwo
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "val_string"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "_and":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_and"))
+			data, err := ec.unmarshalONestedFilterNestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.And = data
+		case "_or":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_or"))
+			data, err := ec.unmarshalONestedFilterNestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Or = data
+		case "_not":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("_not"))
+			data, err := ec.unmarshalONestedFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Not = data
+		case "val_string":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("val_string"))
+			data, err := ec.unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.ValString = data
 		}
 	}
 
@@ -8336,7 +8859,7 @@ func (ec *executionContext) unmarshalInputNestedFilterUnionTypeOne(ctx context.C
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_one", "type_string_union_one", "type_time_union_one"}
+	fieldsInOrder := [...]string{"_and", "_or", "_not", "type_int_union_one", "type_string_union_one", "type_time_union_one", "type_nested"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -8385,6 +8908,13 @@ func (ec *executionContext) unmarshalInputNestedFilterUnionTypeOne(ctx context.C
 				return it, err
 			}
 			it.TypeTimeUnionOne = data
+		case "type_nested":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type_nested"))
+			data, err := ec.unmarshalONestedFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TypeNested = data
 		}
 	}
 
@@ -8555,6 +9085,81 @@ func (ec *executionContext) _ExternalType(ctx context.Context, sel ast.Selection
 			out.Values[i] = ec._ExternalType_number_list(ctx, field, obj)
 		case "type_one":
 			out.Values[i] = ec._ExternalType_type_one(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var nestedTypeImplementors = []string{"NestedType"}
+
+func (ec *executionContext) _NestedType(ctx context.Context, sel ast.SelectionSet, obj *NestedType) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, nestedTypeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("NestedType")
+		case "nested_on_nested":
+			out.Values[i] = ec._NestedType_nested_on_nested(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var nestedTypeTwoImplementors = []string{"NestedTypeTwo"}
+
+func (ec *executionContext) _NestedTypeTwo(ctx context.Context, sel ast.SelectionSet, obj *NestedTypeTwo) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, nestedTypeTwoImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("NestedTypeTwo")
+		case "val_string":
+			out.Values[i] = ec._NestedTypeTwo_val_string(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -8782,9 +9387,6 @@ func (ec *executionContext) _TypeOne(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "type_one_slice_with_type_twos":
 			out.Values[i] = ec._TypeOne_type_one_slice_with_type_twos(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -8934,9 +9536,6 @@ func (ec *executionContext) _TypeTwo(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "type_two_slice_with_type_twos":
 			out.Values[i] = ec._TypeTwo_type_two_slice_with_type_twos(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
 		case "type_two_with_type_three":
 			out.Values[i] = ec._TypeTwo_type_two_with_type_three(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -9024,6 +9623,11 @@ func (ec *executionContext) _UnionTypeOne(ctx context.Context, sel ast.Selection
 			out.Values[i] = ec._UnionTypeOne_type_string_union_one(ctx, field, obj)
 		case "type_time_union_one":
 			out.Values[i] = ec._UnionTypeOne_type_time_union_one(ctx, field, obj)
+		case "type_nested":
+			out.Values[i] = ec._UnionTypeOne_type_nested(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -9580,6 +10184,26 @@ func (ec *executionContext) marshalNInt2int64(ctx context.Context, sel ast.Selec
 	return res
 }
 
+func (ec *executionContext) marshalNNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedType(ctx context.Context, sel ast.SelectionSet, v *NestedType) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._NestedType(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedTypeTwo(ctx context.Context, sel ast.SelectionSet, v *NestedTypeTwo) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._NestedTypeTwo(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalString(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -9632,44 +10256,6 @@ func (ec *executionContext) marshalNTypeThree2ᚖgithubᚗcomᚋajnavarroᚋgqlf
 		return graphql.Null
 	}
 	return ec._TypeThree(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx context.Context, sel ast.SelectionSet, v []*TypeTwo) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalOTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	return ret
 }
 
 func (ec *executionContext) marshalNTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx context.Context, sel ast.SelectionSet, v *TypeTwo) graphql.Marshaler {
@@ -10015,6 +10601,62 @@ func (ec *executionContext) unmarshalOFilterInt2ᚖgithubᚗcomᚋajnavarroᚋgq
 	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) unmarshalOFilterNestedType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedType(ctx context.Context, v interface{}) ([]*FilterNestedType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*FilterNestedType, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedType(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalOFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedType(ctx context.Context, v interface{}) (*FilterNestedType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputFilterNestedType(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalOFilterNestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedTypeTwo(ctx context.Context, v interface{}) ([]*FilterNestedTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*FilterNestedTypeTwo, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalOFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedTypeTwo(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalOFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterNestedTypeTwo(ctx context.Context, v interface{}) (*FilterNestedTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputFilterNestedTypeTwo(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalOFilterString2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐFilterString(ctx context.Context, v interface{}) (*FilterString, error) {
 	if v == nil {
 		return nil, nil
@@ -10336,6 +10978,62 @@ func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) unmarshalONestedFilterNestedType2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx context.Context, v interface{}) ([]*NestedFilterNestedType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*NestedFilterNestedType, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalONestedFilterNestedType2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedType(ctx context.Context, v interface{}) (*NestedFilterNestedType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNestedFilterNestedType(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalONestedFilterNestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx context.Context, v interface{}) ([]*NestedFilterNestedTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]*NestedFilterNestedTypeTwo, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalONestedFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) unmarshalONestedFilterNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterNestedTypeTwo(ctx context.Context, v interface{}) (*NestedFilterNestedTypeTwo, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalInputNestedFilterNestedTypeTwo(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalONestedFilterTypeOne2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedFilterTypeOne(ctx context.Context, v interface{}) ([]*NestedFilterTypeOne, error) {
 	if v == nil {
 		return nil, nil
@@ -10502,6 +11200,53 @@ func (ec *executionContext) unmarshalONestedFilterUnionTypeTwo2ᚖgithubᚗcom�
 	}
 	res, err := ec.unmarshalInputNestedFilterUnionTypeTwo(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalONestedTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedTypeTwoᚄ(ctx context.Context, sel ast.SelectionSet, v []*NestedTypeTwo) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNNestedTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐNestedTypeTwo(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
@@ -10727,13 +11472,6 @@ func (ec *executionContext) marshalOTypeTwo2ᚕᚖgithubᚗcomᚋajnavarroᚋgql
 	}
 
 	return ret
-}
-
-func (ec *executionContext) marshalOTypeTwo2ᚖgithubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐTypeTwo(ctx context.Context, sel ast.SelectionSet, v *TypeTwo) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec._TypeTwo(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOUnionOne2githubᚗcomᚋajnavarroᚋgqlfiltergenᚋtestdataᚋoutᚐUnionOne(ctx context.Context, sel ast.SelectionSet, v UnionOne) graphql.Marshaler {

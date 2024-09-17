@@ -17,7 +17,7 @@ type TypeOne {
   type_one_number_field_with_no_filter: Int!
   type_one_time_field_with_no_filter: Time!
 
-  type_one_slice_with_type_twos: [TypeTwo]! @filterable
+  type_one_slice_with_type_twos: [TypeTwo!] @filterable
 }
 
 type TypeTwo {
@@ -30,7 +30,7 @@ type TypeTwo {
   type_twoNumber_field_with_no_filter: Int!
   type_twoTime_field_with_no_filter: Time!
 
-  type_two_slice_with_type_twos: [TypeTwo]! @filterable
+  type_two_slice_with_type_twos: [TypeTwo!] @filterable
 
   type_two_with_type_three: TypeThree! @filterable
   type_two_with_type_three_not_mandatory: TypeThree @filterable
@@ -58,6 +58,16 @@ type UnionTypeOne {
   type_int_union_one: Int @filterable
   type_string_union_one: String @filterable
   type_time_union_one: Time @filterable
+
+  type_nested: NestedType! @filterable
+}
+
+type NestedType {
+  nested_on_nested: [NestedTypeTwo!] @filterable
+}
+
+type NestedTypeTwo {
+  val_string: String! @filterable
 }
 
 type UnionTypeTwo {
