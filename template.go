@@ -25,7 +25,7 @@ func (fm *FieldMapping) EvalVarWrapping(code string) string {
 		code += "()"
 	}
 
-	if fm.TypeName == filterNumberName {
+	if fm.TypeName == filterIntName {
 		return fmt.Sprintf("%s(%s)", toIntPtrFunction, code)
 	}
 
@@ -33,7 +33,7 @@ func (fm *FieldMapping) EvalVarWrapping(code string) string {
 }
 
 func (fm *FieldMapping) EvalCallWrapping(code string) string {
-	if !fm.IsPointer && !fm.IsNested && !fm.IsSlice && fm.TypeName != filterNumberName {
+	if !fm.IsPointer && !fm.IsNested && !fm.IsSlice && fm.TypeName != filterIntName {
 		return fmt.Sprintf("%s%s", "&", code)
 	}
 

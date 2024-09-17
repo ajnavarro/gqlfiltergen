@@ -34,23 +34,23 @@ type FilterExternalType struct {
 	// logical operator for ExternalType that will reverse conditions.
 	Not *FilterExternalType `json:"_not,omitempty"`
 	// filter for number_one field.
-	NumberOne *FilterNumber `json:"number_one,omitempty"`
+	NumberOne *FilterInt `json:"number_one,omitempty"`
 	// filter for number_two field.
-	NumberTwo *FilterNumber `json:"number_two,omitempty"`
+	NumberTwo *FilterInt `json:"number_two,omitempty"`
 	// filter for number_three field.
-	NumberThree *FilterNumber `json:"number_three,omitempty"`
+	NumberThree *FilterInt `json:"number_three,omitempty"`
 	// filter for number_four field.
-	NumberFour *FilterNumber `json:"number_four,omitempty"`
+	NumberFour *FilterInt `json:"number_four,omitempty"`
 	// filter for number_five field.
-	NumberFive *FilterNumber `json:"number_five,omitempty"`
+	NumberFive *FilterInt `json:"number_five,omitempty"`
 	// filter for number_list field.
-	NumberList *FilterNumber `json:"number_list,omitempty"`
+	NumberList *FilterInt `json:"number_list,omitempty"`
 	// filter for type_one field.
 	TypeOne *NestedFilterTypeOne `json:"type_one,omitempty"`
 }
 
 // Filter type for number fields. All added filters here are processed as AND operators.
-type FilterNumber struct {
+type FilterInt struct {
 	// Filter a number field checking if it exists or not.
 	Exists *bool `json:"exists,omitempty"`
 	// Filter a number field checking if it is equals to the specified value.
@@ -104,11 +104,11 @@ type FilterTypeOne struct {
 	// filter for type_one_string_field_filtered_not_mandatory field.
 	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_number_field_filtered field.
-	TypeOneNumberFieldFiltered *FilterNumber `json:"type_one_number_field_filtered,omitempty"`
+	TypeOneNumberFieldFiltered *FilterInt `json:"type_one_number_field_filtered,omitempty"`
 	// filter for type_one_string_slice_filtered field.
-	TypeOneStringSliceFiltered *NestedFilterString `json:"type_one_string_slice_filtered,omitempty"`
+	TypeOneStringSliceFiltered *FilterString `json:"type_one_string_slice_filtered,omitempty"`
 	// filter for type_one_number_field_filtered_not_mandatory field.
-	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
+	TypeOneNumberFieldFilteredNotMandatory *FilterInt `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_time_field_filtered field.
 	TypeOneTimeFieldFiltered *FilterTime `json:"type_one_time_field_filtered,omitempty"`
 	// filter for type_one_time_field_filtered_not_mandatory field.
@@ -132,7 +132,7 @@ type FilterTypeThree struct {
 	// filter for type_three_string_field_filtered field.
 	TypeThreeStringFieldFiltered *FilterString `json:"type_three_string_field_filtered,omitempty"`
 	// filter for type_three_number_field_filtered field.
-	TypeThreeNumberFieldFiltered *FilterNumber `json:"type_three_number_field_filtered,omitempty"`
+	TypeThreeNumberFieldFiltered *FilterInt `json:"type_three_number_field_filtered,omitempty"`
 	// filter for type_three_time_field_filtered field.
 	TypeThreeTimeFieldFiltered *FilterTime `json:"type_three_time_field_filtered,omitempty"`
 	// filter for type_three_boolean_field_filtered field.
@@ -156,7 +156,7 @@ type FilterTypeTwo struct {
 	// filter for type_two_string_field_filtered field.
 	TypeTwoStringFieldFiltered *FilterString `json:"type_two_string_field_filtered,omitempty"`
 	// filter for type_two_number_field_filtered field.
-	TypeTwoNumberFieldFiltered *FilterNumber `json:"type_two_number_field_filtered,omitempty"`
+	TypeTwoNumberFieldFiltered *FilterInt `json:"type_two_number_field_filtered,omitempty"`
 	// filter for type_two_time_field_filtered field.
 	TypeTwoTimeFieldFiltered *FilterTime `json:"type_two_time_field_filtered,omitempty"`
 	// filter for type_two_boolean_field_filtered field.
@@ -192,7 +192,7 @@ type FilterUnionTypeOne struct {
 	// logical operator for UnionTypeOne that will reverse conditions.
 	Not *FilterUnionTypeOne `json:"_not,omitempty"`
 	// filter for type_int_union_one field.
-	TypeIntUnionOne *FilterNumber `json:"type_int_union_one,omitempty"`
+	TypeIntUnionOne *FilterInt `json:"type_int_union_one,omitempty"`
 	// filter for type_string_union_one field.
 	TypeStringUnionOne *FilterString `json:"type_string_union_one,omitempty"`
 	// filter for type_time_union_one field.
@@ -208,13 +208,13 @@ type FilterUnionTypeTwo struct {
 	// logical operator for UnionTypeTwo that will reverse conditions.
 	Not *FilterUnionTypeTwo `json:"_not,omitempty"`
 	// filter for type_int_union_two field.
-	TypeIntUnionTwo *FilterNumber `json:"type_int_union_two,omitempty"`
+	TypeIntUnionTwo *FilterInt `json:"type_int_union_two,omitempty"`
 	// filter for type_string_union_two field.
 	TypeStringUnionTwo *FilterString `json:"type_string_union_two,omitempty"`
 	// filter for type_time_union_two field.
 	TypeTimeUnionTwo *FilterTime `json:"type_time_union_two,omitempty"`
 	// filter for type_string_slice_union_two field.
-	TypeStringSliceUnionTwo *NestedFilterString `json:"type_string_slice_union_two,omitempty"`
+	TypeStringSliceUnionTwo *FilterString `json:"type_string_slice_union_two,omitempty"`
 }
 
 type InputOne struct {
@@ -225,56 +225,6 @@ type InputOne struct {
 	TypeTwoStringFieldWithNoFilter string    `json:"type_twoString_field_with_no_filter"`
 	TypeTwoNumberFieldWithNoFilter int       `json:"type_twoNumber_field_with_no_filter"`
 	TypeTwoTimeFieldWithNoFilter   time.Time `json:"type_twoTime_field_with_no_filter"`
-}
-
-// Filter type for boolean fields. All added filters here are processed as AND operators.
-type NestedFilterBoolean struct {
-	// Filter a boolean field checking if it exists or not.
-	Exists *bool `json:"exists,omitempty"`
-	// Filter a boolean field checking if it is equals to the specified value.
-	Eq *bool `json:"eq,omitempty"`
-}
-
-// Filter type for number fields. All added filters here are processed as AND operators.
-type NestedFilterNumber struct {
-	// Filter a number field checking if it exists or not.
-	Exists *bool `json:"exists,omitempty"`
-	// Filter a number field checking if it is equals to the specified value.
-	Eq *int `json:"eq,omitempty"`
-	// Filter a number field checking if it is NOT equals to the specified value.
-	Neq *int `json:"neq,omitempty"`
-	// Filter a number field checking if it is greater than the specified value.
-	Gt *int `json:"gt,omitempty"`
-	// Filter a number field checking if it is less than the specified value.
-	Lt *int `json:"lt,omitempty"`
-}
-
-// Filter type for string fields. It contains a variety of filter types for string types. All added filters here are processed as AND operators.
-type NestedFilterString struct {
-	// Filter a string field checking if it exists or not.
-	Exists *bool `json:"exists,omitempty"`
-	// Filter a string field checking if it is equals to the specified value.
-	Eq *string `json:"eq,omitempty"`
-	// Filter a string field checking if it is NOT equals to the specified value.
-	Neq *string `json:"neq,omitempty"`
-	// Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.
-	Like *string `json:"like,omitempty"`
-	// Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.
-	Nlike *string `json:"nlike,omitempty"`
-}
-
-// Filter type for time fields. All added filters here are processed as AND operators.
-type NestedFilterTime struct {
-	// Filter a time field checking if it exists or not.
-	Exists *bool `json:"exists,omitempty"`
-	// Filter a time field checking if it is equals to the specified value.
-	Eq *time.Time `json:"eq,omitempty"`
-	// Filter a time field checking if it is NOT equals to the specified value.
-	Neq *time.Time `json:"neq,omitempty"`
-	// Filter a time field checking if it is before than the specified value.
-	Before *time.Time `json:"before,omitempty"`
-	// Filter a time field checking if it is after the specified value.
-	After *time.Time `json:"after,omitempty"`
 }
 
 // filter for TypeOne objects
@@ -290,11 +240,11 @@ type NestedFilterTypeOne struct {
 	// filter for type_one_string_field_filtered_not_mandatory field.
 	TypeOneStringFieldFilteredNotMandatory *FilterString `json:"type_one_string_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_number_field_filtered field.
-	TypeOneNumberFieldFiltered *FilterNumber `json:"type_one_number_field_filtered,omitempty"`
+	TypeOneNumberFieldFiltered *FilterInt `json:"type_one_number_field_filtered,omitempty"`
 	// filter for type_one_string_slice_filtered field.
 	TypeOneStringSliceFiltered *FilterString `json:"type_one_string_slice_filtered,omitempty"`
 	// filter for type_one_number_field_filtered_not_mandatory field.
-	TypeOneNumberFieldFilteredNotMandatory *FilterNumber `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
+	TypeOneNumberFieldFilteredNotMandatory *FilterInt `json:"type_one_number_field_filtered_not_mandatory,omitempty"`
 	// filter for type_one_time_field_filtered field.
 	TypeOneTimeFieldFiltered *FilterTime `json:"type_one_time_field_filtered,omitempty"`
 	// filter for type_one_time_field_filtered_not_mandatory field.
@@ -318,7 +268,7 @@ type NestedFilterTypeThree struct {
 	// filter for type_three_string_field_filtered field.
 	TypeThreeStringFieldFiltered *FilterString `json:"type_three_string_field_filtered,omitempty"`
 	// filter for type_three_number_field_filtered field.
-	TypeThreeNumberFieldFiltered *FilterNumber `json:"type_three_number_field_filtered,omitempty"`
+	TypeThreeNumberFieldFiltered *FilterInt `json:"type_three_number_field_filtered,omitempty"`
 	// filter for type_three_time_field_filtered field.
 	TypeThreeTimeFieldFiltered *FilterTime `json:"type_three_time_field_filtered,omitempty"`
 	// filter for type_three_boolean_field_filtered field.
@@ -342,7 +292,7 @@ type NestedFilterTypeTwo struct {
 	// filter for type_two_string_field_filtered field.
 	TypeTwoStringFieldFiltered *FilterString `json:"type_two_string_field_filtered,omitempty"`
 	// filter for type_two_number_field_filtered field.
-	TypeTwoNumberFieldFiltered *FilterNumber `json:"type_two_number_field_filtered,omitempty"`
+	TypeTwoNumberFieldFiltered *FilterInt `json:"type_two_number_field_filtered,omitempty"`
 	// filter for type_two_time_field_filtered field.
 	TypeTwoTimeFieldFiltered *FilterTime `json:"type_two_time_field_filtered,omitempty"`
 	// filter for type_two_boolean_field_filtered field.
@@ -378,7 +328,7 @@ type NestedFilterUnionTypeOne struct {
 	// logical operator for UnionTypeOne that will reverse conditions.
 	Not *NestedFilterUnionTypeOne `json:"_not,omitempty"`
 	// filter for type_int_union_one field.
-	TypeIntUnionOne *FilterNumber `json:"type_int_union_one,omitempty"`
+	TypeIntUnionOne *FilterInt `json:"type_int_union_one,omitempty"`
 	// filter for type_string_union_one field.
 	TypeStringUnionOne *FilterString `json:"type_string_union_one,omitempty"`
 	// filter for type_time_union_one field.
@@ -394,13 +344,13 @@ type NestedFilterUnionTypeTwo struct {
 	// logical operator for UnionTypeTwo that will reverse conditions.
 	Not *NestedFilterUnionTypeTwo `json:"_not,omitempty"`
 	// filter for type_int_union_two field.
-	TypeIntUnionTwo *FilterNumber `json:"type_int_union_two,omitempty"`
+	TypeIntUnionTwo *FilterInt `json:"type_int_union_two,omitempty"`
 	// filter for type_string_union_two field.
 	TypeStringUnionTwo *FilterString `json:"type_string_union_two,omitempty"`
 	// filter for type_time_union_two field.
 	TypeTimeUnionTwo *FilterTime `json:"type_time_union_two,omitempty"`
 	// filter for type_string_slice_union_two field.
-	TypeStringSliceUnionTwo *NestedFilterString `json:"type_string_slice_union_two,omitempty"`
+	TypeStringSliceUnionTwo *FilterString `json:"type_string_slice_union_two,omitempty"`
 }
 
 type Query struct {

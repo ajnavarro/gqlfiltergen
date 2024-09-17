@@ -32,6 +32,11 @@ func generateMainFilterDefinition(ot map[string]*ProcessingObject) map[string]*A
 }
 
 func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed map[string]*AstAndTemplateData, seen map[string]bool, nested bool, objectName string) string {
+	field := processField(objectName, objectName)
+	if field != nil {
+		return field.Type.NamedType
+	}
+
 	filterName := fmt.Sprintf("Filter%s", objectName)
 	if nested {
 		filterName = fmt.Sprintf("NestedFilter%s", objectName)
@@ -52,16 +57,12 @@ func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed
 	}
 
 	pfs, ok := ot[objectName]
+	if !ok {
+		panic(fmt.Errorf("error creating field for type %q. Check that you added some fields as @filterable", objectName))
+	}
 
-	switch {
-
-	case !ok: // it might be a field
-		field := processField(objectName, objectName)
-		if field == nil {
-			panic(fmt.Errorf("error creating field for type %q. Check that you added some fields as @filterable", objectName))
-		}
-		return field.Type.NamedType
-	case pfs.Definition.Kind == ast.Union:
+	switch pfs.Definition.Kind {
+	case ast.Union:
 		isFiltered := false
 		for _, t := range pfs.Definition.Types {
 			if _, ok := ot[t]; !ok {
@@ -98,7 +99,7 @@ func generateMainFilterDefinitionLoop(ot map[string]*ProcessingObject, processed
 		}
 
 		return filterName
-	case pfs.Definition.Kind == ast.Object:
+	case ast.Object:
 		for _, pf := range pfs.Fields {
 			f := pf.Field
 
@@ -171,7 +172,7 @@ func processField(name, typeName string) *ast.FieldDefinition {
 	case "String":
 		fd.Type = ast.NamedType(filterStringName, nil)
 	case "Int":
-		fd.Type = ast.NamedType(filterNumberName, nil)
+		fd.Type = ast.NamedType(filterIntName, nil)
 	case "Time":
 		fd.Type = ast.NamedType(filterTimeName, nil)
 	case "Boolean":
@@ -209,14 +210,10 @@ func filterDefinition(filterName, objectName string) *ast.Definition {
 }
 
 const (
-	filterStringName        = "FilterString"
-	filterNumberName        = "FilterNumber"
-	filterTimeName          = "FilterTime"
-	filterBooleanName       = "FilterBoolean"
-	nestedFilterStringName  = "NestedFilterString"
-	nestedFilterNumberName  = "NestedFilterNumber"
-	nestedFilterTimeName    = "NestedFilterTime"
-	nestedFilterBooleanName = "NestedFilterBoolean"
+	filterStringName  = "FilterString"
+	filterIntName     = "FilterInt"
+	filterTimeName    = "FilterTime"
+	filterBooleanName = "FilterBoolean"
 )
 
 func filterString(name string) *ast.Definition {
