@@ -52,14 +52,12 @@
 
 	tobj := *obj
 	{{- range $td.Fields }}
-    if f.{{.FilterField}} != nil {
-         if uObj, ok := tobj.({{.FilterField}}); ok {
-            matchedType = true
-            if !f.{{.FilterField}}.Eval(&uObj) {
-                return false
-            }
-        }
-    }
+	if uObj, ok := tobj.({{.FilterField}}); ok {
+		matchedType = true
+		if f.{{.FilterField}} != nil && !f.{{.FilterField}}.Eval(&uObj) {
+			return false
+		}
+	}
 	{{end}}
 	// If the object is of a type not specified in filters and filters are specified, ignore this element
     if !matchedType {
