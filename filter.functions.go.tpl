@@ -69,11 +69,17 @@
 		{{if .IsSlice}}
 		// Handle {{.FilterField}} slice
 		if f.{{.FilterField}} != nil {
+			elemMatch{{.FilterField}} := false
 			for _, elem := range obj.{{.CallWrapping .FilterField}} {
-				if !f.{{.FilterField}}.Eval({{.EvalCallWrapping "elem"}}) {
-					return false
+				if f.{{.FilterField}}.Eval({{.EvalCallWrapping "elem"}}) {
+					elemMatch{{.FilterField}} = true
 				}
 			}
+
+			if !elemMatch{{.FilterField}} {
+				return false
+			}
+
 		}		
 		{{else}}
 		// Handle {{.FilterField}} field

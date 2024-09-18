@@ -170,7 +170,41 @@ func TestFiltersGeneration(t *testing.T) {
 		},
 	}
 
-	require.Equal(t, false, f2.Eval(tus))
+	require.Equal(t, true, f2.Eval(tus))
+
+	f3 := &out.FilterTypeThree{
+		TypeUnionSlice: &out.NestedFilterUnionOne{
+			And: []*out.NestedFilterUnionOne{
+				{
+					UnionTypeOne: &out.NestedFilterUnionTypeOne{
+						TypeStringUnionOne: &out.FilterString{
+							Eq: &valOne,
+						},
+					},
+				},
+				{
+					UnionTypeTwo: &out.NestedFilterUnionTypeTwo{
+						TypeStringUnionTwo: &out.FilterString{
+							Eq: &valTwo,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	tus = &out.TypeThree{
+		TypeUnionSlice: []out.UnionOne{
+			out.UnionTypeTwo{
+				TypeStringUnionTwo: &valTwo,
+			},
+			out.UnionTypeOne{
+				TypeStringUnionOne: &ignored,
+			},
+		},
+	}
+
+	require.Equal(t, false, f3.Eval(tus))
 }
 
 func goBuild(t *testing.T, path string) error {

@@ -54,11 +54,17 @@ func (f *NestedFilterUnionTypeTwo) Eval(obj *UnionTypeTwo) bool {
 
 	// Handle TypeStringSliceUnionTwo slice
 	if f.TypeStringSliceUnionTwo != nil {
+		elemMatchTypeStringSliceUnionTwo := false
 		for _, elem := range obj.TypeStringSliceUnionTwo {
-			if !f.TypeStringSliceUnionTwo.Eval(&elem) {
-				return false
+			if f.TypeStringSliceUnionTwo.Eval(&elem) {
+				elemMatchTypeStringSliceUnionTwo = true
 			}
 		}
+
+		if !elemMatchTypeStringSliceUnionTwo {
+			return false
+		}
+
 	}
 
 	// Handle TypeIntUnionTwo field
@@ -250,11 +256,17 @@ func (f *NestedFilterTypeTwo) Eval(obj *TypeTwo) bool {
 
 	// Handle TypeTwoSliceWithTypeTwos slice
 	if f.TypeTwoSliceWithTypeTwos != nil {
+		elemMatchTypeTwoSliceWithTypeTwos := false
 		for _, elem := range obj.TypeTwoSliceWithTypeTwos {
-			if !f.TypeTwoSliceWithTypeTwos.Eval(elem) {
-				return false
+			if f.TypeTwoSliceWithTypeTwos.Eval(elem) {
+				elemMatchTypeTwoSliceWithTypeTwos = true
 			}
 		}
+
+		if !elemMatchTypeTwoSliceWithTypeTwos {
+			return false
+		}
+
 	}
 
 	// Handle TypeTwoNumberFieldFiltered field
@@ -305,11 +317,17 @@ func (f *NestedFilterTypeThree) Eval(obj *TypeThree) bool {
 
 	// Handle TypeUnionSlice slice
 	if f.TypeUnionSlice != nil {
+		elemMatchTypeUnionSlice := false
 		for _, elem := range obj.TypeUnionSlice {
-			if !f.TypeUnionSlice.Eval(&elem) {
-				return false
+			if f.TypeUnionSlice.Eval(&elem) {
+				elemMatchTypeUnionSlice = true
 			}
 		}
+
+		if !elemMatchTypeUnionSlice {
+			return false
+		}
+
 	}
 
 	// Handle TypeUnionNotMandatory field
@@ -396,11 +414,17 @@ func (f *NestedFilterTypeOne) Eval(obj *TypeOne) bool {
 
 	// Handle TypeOneStringSliceFiltered slice
 	if f.TypeOneStringSliceFiltered != nil {
+		elemMatchTypeOneStringSliceFiltered := false
 		for _, elem := range obj.TypeOneStringSliceFiltered {
-			if !f.TypeOneStringSliceFiltered.Eval(&elem) {
-				return false
+			if f.TypeOneStringSliceFiltered.Eval(&elem) {
+				elemMatchTypeOneStringSliceFiltered = true
 			}
 		}
+
+		if !elemMatchTypeOneStringSliceFiltered {
+			return false
+		}
+
 	}
 
 	// Handle TypeOneStringFieldFilteredNotMandatory field
@@ -417,11 +441,17 @@ func (f *NestedFilterTypeOne) Eval(obj *TypeOne) bool {
 
 	// Handle TypeOneSliceWithTypeTwos slice
 	if f.TypeOneSliceWithTypeTwos != nil {
+		elemMatchTypeOneSliceWithTypeTwos := false
 		for _, elem := range obj.TypeOneSliceWithTypeTwos {
-			if !f.TypeOneSliceWithTypeTwos.Eval(elem) {
-				return false
+			if f.TypeOneSliceWithTypeTwos.Eval(elem) {
+				elemMatchTypeOneSliceWithTypeTwos = true
 			}
 		}
+
+		if !elemMatchTypeOneSliceWithTypeTwos {
+			return false
+		}
+
 	}
 
 	// Handle TypeOneNumberFieldFilteredNotMandatory field
@@ -584,11 +614,17 @@ func (f *NestedFilterNestedType) Eval(obj *NestedType) bool {
 
 	// Handle NestedOnNested slice
 	if f.NestedOnNested != nil {
+		elemMatchNestedOnNested := false
 		for _, elem := range obj.NestedOnNested {
-			if !f.NestedOnNested.Eval(elem) {
-				return false
+			if f.NestedOnNested.Eval(elem) {
+				elemMatchNestedOnNested = true
 			}
 		}
+
+		if !elemMatchNestedOnNested {
+			return false
+		}
+
 	}
 
 	return true
@@ -639,11 +675,17 @@ func (f *FilterUnionTypeTwo) Eval(obj *UnionTypeTwo) bool {
 
 	// Handle TypeStringSliceUnionTwo slice
 	if f.TypeStringSliceUnionTwo != nil {
+		elemMatchTypeStringSliceUnionTwo := false
 		for _, elem := range obj.TypeStringSliceUnionTwo {
-			if !f.TypeStringSliceUnionTwo.Eval(&elem) {
-				return false
+			if f.TypeStringSliceUnionTwo.Eval(&elem) {
+				elemMatchTypeStringSliceUnionTwo = true
 			}
 		}
+
+		if !elemMatchTypeStringSliceUnionTwo {
+			return false
+		}
+
 	}
 
 	// Handle TypeIntUnionTwo field
@@ -835,11 +877,17 @@ func (f *FilterTypeTwo) Eval(obj *TypeTwo) bool {
 
 	// Handle TypeTwoSliceWithTypeTwos slice
 	if f.TypeTwoSliceWithTypeTwos != nil {
+		elemMatchTypeTwoSliceWithTypeTwos := false
 		for _, elem := range obj.TypeTwoSliceWithTypeTwos {
-			if !f.TypeTwoSliceWithTypeTwos.Eval(elem) {
-				return false
+			if f.TypeTwoSliceWithTypeTwos.Eval(elem) {
+				elemMatchTypeTwoSliceWithTypeTwos = true
 			}
 		}
+
+		if !elemMatchTypeTwoSliceWithTypeTwos {
+			return false
+		}
+
 	}
 
 	// Handle TypeTwoNumberFieldFiltered field
@@ -890,11 +938,17 @@ func (f *FilterTypeThree) Eval(obj *TypeThree) bool {
 
 	// Handle TypeUnionSlice slice
 	if f.TypeUnionSlice != nil {
+		elemMatchTypeUnionSlice := false
 		for _, elem := range obj.TypeUnionSlice {
-			if !f.TypeUnionSlice.Eval(&elem) {
-				return false
+			if f.TypeUnionSlice.Eval(&elem) {
+				elemMatchTypeUnionSlice = true
 			}
 		}
+
+		if !elemMatchTypeUnionSlice {
+			return false
+		}
+
 	}
 
 	// Handle TypeUnionNotMandatory field
@@ -981,11 +1035,17 @@ func (f *FilterTypeOne) Eval(obj *TypeOne) bool {
 
 	// Handle TypeOneStringSliceFiltered slice
 	if f.TypeOneStringSliceFiltered != nil {
+		elemMatchTypeOneStringSliceFiltered := false
 		for _, elem := range obj.TypeOneStringSliceFiltered {
-			if !f.TypeOneStringSliceFiltered.Eval(&elem) {
-				return false
+			if f.TypeOneStringSliceFiltered.Eval(&elem) {
+				elemMatchTypeOneStringSliceFiltered = true
 			}
 		}
+
+		if !elemMatchTypeOneStringSliceFiltered {
+			return false
+		}
+
 	}
 
 	// Handle TypeOneStringFieldFilteredNotMandatory field
@@ -1002,11 +1062,17 @@ func (f *FilterTypeOne) Eval(obj *TypeOne) bool {
 
 	// Handle TypeOneSliceWithTypeTwos slice
 	if f.TypeOneSliceWithTypeTwos != nil {
+		elemMatchTypeOneSliceWithTypeTwos := false
 		for _, elem := range obj.TypeOneSliceWithTypeTwos {
-			if !f.TypeOneSliceWithTypeTwos.Eval(elem) {
-				return false
+			if f.TypeOneSliceWithTypeTwos.Eval(elem) {
+				elemMatchTypeOneSliceWithTypeTwos = true
 			}
 		}
+
+		if !elemMatchTypeOneSliceWithTypeTwos {
+			return false
+		}
+
 	}
 
 	// Handle TypeOneNumberFieldFilteredNotMandatory field
@@ -1169,11 +1235,17 @@ func (f *FilterNestedType) Eval(obj *NestedType) bool {
 
 	// Handle NestedOnNested slice
 	if f.NestedOnNested != nil {
+		elemMatchNestedOnNested := false
 		for _, elem := range obj.NestedOnNested {
-			if !f.NestedOnNested.Eval(elem) {
-				return false
+			if f.NestedOnNested.Eval(elem) {
+				elemMatchNestedOnNested = true
 			}
 		}
+
+		if !elemMatchNestedOnNested {
+			return false
+		}
+
 	}
 
 	return true
@@ -1236,11 +1308,17 @@ func (f *FilterExternalType) Eval(obj *ExternalType) bool {
 
 	// Handle NumberList slice
 	if f.NumberList != nil {
+		elemMatchNumberList := false
 		for _, elem := range obj.NumberList() {
-			if !f.NumberList.Eval(&elem) {
-				return false
+			if f.NumberList.Eval(&elem) {
+				elemMatchNumberList = true
 			}
 		}
+
+		if !elemMatchNumberList {
+			return false
+		}
+
 	}
 
 	// Handle NumberFour field
