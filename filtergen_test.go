@@ -148,6 +148,29 @@ func TestFiltersGeneration(t *testing.T) {
 	}
 
 	require.Equal(t, true, f2.Eval(tus))
+
+	tus = &out.TypeThree{
+		TypeUnionSlice: []out.UnionOne{
+			out.UnionTypeTwo{
+				TypeStringUnionTwo: &valTwo,
+			},
+		},
+	}
+
+	require.Equal(t, true, f2.Eval(tus))
+
+	tus = &out.TypeThree{
+		TypeUnionSlice: []out.UnionOne{
+			out.UnionTypeTwo{
+				TypeStringUnionTwo: &valTwo,
+			},
+			out.UnionTypeOne{
+				TypeStringUnionOne: &ignored,
+			},
+		},
+	}
+
+	require.Equal(t, false, f2.Eval(tus))
 }
 
 func goBuild(t *testing.T, path string) error {

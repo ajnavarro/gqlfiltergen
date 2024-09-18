@@ -38,19 +38,33 @@
 
 {{if $td.IsUnion}}
 	// Handle union objects depending of the type
+
+	// Check if any filters are specified
+	filtersSpecified := {{- range $td.Fields }} f.{{.FilterField}} != nil || {{end}} false
+
+    // If no filters are specified for any types, accept all objects
+    if !filtersSpecified {
+        return true
+    }
+
+ 	// Evaluate specified type filters
+    matchedType := false
+
 	tobj := *obj
-	switch objv := tobj.(type) {
 	{{- range $td.Fields }}
-		case {{.FilterField}}:
-		{{if not .IsSlice}}
-			// Handle {{.FilterField}} field
-			toEval{{.FilterField}} := {{.EvalVarWrapping "objv"}}
-			if f.{{.FilterField}} != nil && !f.{{.FilterField}}.Eval({{.EvalCallWrapping (printf "toEval%s" .FilterField)}}) {
-				return false
-			}
-		{{end}}
+    if f.{{.FilterField}} != nil {
+         if uObj, ok := tobj.({{.FilterField}}); ok {
+            matchedType = true
+            if !f.{{.FilterField}}.Eval(&uObj) {
+                return false
+            }
+        }
+    }
 	{{end}}
-	}
+	// If the object is of a type not specified in filters and filters are specified, ignore this element
+    if !matchedType {
+        return true
+    }
 {{else}}
 	// Evaluate individual field filters
 	{{- range $td.Fields }}

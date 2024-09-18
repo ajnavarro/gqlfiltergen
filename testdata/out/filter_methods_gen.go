@@ -158,24 +158,40 @@ func (f *NestedFilterUnionOne) Eval(obj *UnionOne) bool {
 	}
 
 	// Handle union objects depending of the type
+
+	// Check if any filters are specified
+	filtersSpecified := f.UnionTypeOne != nil || f.UnionTypeTwo != nil || false
+
+	// If no filters are specified for any types, accept all objects
+	if !filtersSpecified {
+		return true
+	}
+
+	// Evaluate specified type filters
+	matchedType := false
+
 	tobj := *obj
-	switch objv := tobj.(type) {
-	case UnionTypeOne:
-
-		// Handle UnionTypeOne field
-		toEvalUnionTypeOne := objv
-		if f.UnionTypeOne != nil && !f.UnionTypeOne.Eval(&toEvalUnionTypeOne) {
-			return false
+	if f.UnionTypeOne != nil {
+		if uObj, ok := tobj.(UnionTypeOne); ok {
+			matchedType = true
+			if !f.UnionTypeOne.Eval(&uObj) {
+				return false
+			}
 		}
+	}
 
-	case UnionTypeTwo:
-
-		// Handle UnionTypeTwo field
-		toEvalUnionTypeTwo := objv
-		if f.UnionTypeTwo != nil && !f.UnionTypeTwo.Eval(&toEvalUnionTypeTwo) {
-			return false
+	if f.UnionTypeTwo != nil {
+		if uObj, ok := tobj.(UnionTypeTwo); ok {
+			matchedType = true
+			if !f.UnionTypeTwo.Eval(&uObj) {
+				return false
+			}
 		}
+	}
 
+	// If the object is of a type not specified in filters and filters are specified, ignore this element
+	if !matchedType {
+		return true
 	}
 
 	return true
@@ -731,24 +747,40 @@ func (f *FilterUnionOne) Eval(obj *UnionOne) bool {
 	}
 
 	// Handle union objects depending of the type
+
+	// Check if any filters are specified
+	filtersSpecified := f.UnionTypeOne != nil || f.UnionTypeTwo != nil || false
+
+	// If no filters are specified for any types, accept all objects
+	if !filtersSpecified {
+		return true
+	}
+
+	// Evaluate specified type filters
+	matchedType := false
+
 	tobj := *obj
-	switch objv := tobj.(type) {
-	case UnionTypeOne:
-
-		// Handle UnionTypeOne field
-		toEvalUnionTypeOne := objv
-		if f.UnionTypeOne != nil && !f.UnionTypeOne.Eval(&toEvalUnionTypeOne) {
-			return false
+	if f.UnionTypeOne != nil {
+		if uObj, ok := tobj.(UnionTypeOne); ok {
+			matchedType = true
+			if !f.UnionTypeOne.Eval(&uObj) {
+				return false
+			}
 		}
+	}
 
-	case UnionTypeTwo:
-
-		// Handle UnionTypeTwo field
-		toEvalUnionTypeTwo := objv
-		if f.UnionTypeTwo != nil && !f.UnionTypeTwo.Eval(&toEvalUnionTypeTwo) {
-			return false
+	if f.UnionTypeTwo != nil {
+		if uObj, ok := tobj.(UnionTypeTwo); ok {
+			matchedType = true
+			if !f.UnionTypeTwo.Eval(&uObj) {
+				return false
+			}
 		}
+	}
 
+	// If the object is of a type not specified in filters and filters are specified, ignore this element
+	if !matchedType {
+		return true
 	}
 
 	return true
