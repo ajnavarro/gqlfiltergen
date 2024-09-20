@@ -251,18 +251,8 @@ func filterString(name string) *ast.Definition {
 				Type:        ast.NamedType("String", nil),
 			},
 			&ast.FieldDefinition{
-				Description: "Filter a string field checking if it is NOT equals to the specified value.",
-				Name:        "neq",
-				Type:        ast.NamedType("String", nil),
-			},
-			&ast.FieldDefinition{
 				Description: "Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.",
 				Name:        "like",
-				Type:        ast.NamedType("String", nil),
-			},
-			&ast.FieldDefinition{
-				Description: "Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.",
-				Name:        "nlike",
 				Type:        ast.NamedType("String", nil),
 			},
 		},
@@ -284,11 +274,6 @@ func filterNumber(name string) *ast.Definition {
 			&ast.FieldDefinition{
 				Description: "Filter a number field checking if it is equals to the specified value.",
 				Name:        "eq",
-				Type:        ast.NamedType("Int", nil),
-			},
-			&ast.FieldDefinition{
-				Description: "Filter a number field checking if it is NOT equals to the specified value.",
-				Name:        "neq",
 				Type:        ast.NamedType("Int", nil),
 			},
 			&ast.FieldDefinition{
@@ -320,11 +305,6 @@ func filterTime(name string) *ast.Definition {
 			&ast.FieldDefinition{
 				Description: "Filter a time field checking if it is equals to the specified value.",
 				Name:        "eq",
-				Type:        ast.NamedType("Time", nil),
-			},
-			&ast.FieldDefinition{
-				Description: "Filter a time field checking if it is NOT equals to the specified value.",
-				Name:        "neq",
 				Type:        ast.NamedType("Time", nil),
 			},
 			&ast.FieldDefinition{

@@ -869,10 +869,6 @@ input FilterInt {
 	"""
 	eq: Int
 	"""
-	Filter a number field checking if it is NOT equals to the specified value.
-	"""
-	neq: Int
-	"""
 	Filter a number field checking if it is greater than the specified value.
 	"""
 	gt: Int
@@ -936,17 +932,9 @@ input FilterString {
 	"""
 	eq: String
 	"""
-	Filter a string field checking if it is NOT equals to the specified value.
-	"""
-	neq: String
-	"""
 	Filter a string field checking if it is like the specified value. You can use standard Go RegEx expressions here.
 	"""
 	like: String
-	"""
-	Filter a string field checking if it is NOT like the specified value. You can use standard Go RegEx expressions here.
-	"""
-	nlike: String
 }
 """
 Filter type for time fields. All added filters here are processed as AND operators.
@@ -960,10 +948,6 @@ input FilterTime {
 	Filter a time field checking if it is equals to the specified value.
 	"""
 	eq: Time
-	"""
-	Filter a time field checking if it is NOT equals to the specified value.
-	"""
-	neq: Time
 	"""
 	Filter a time field checking if it is before than the specified value.
 	"""
@@ -7603,7 +7587,7 @@ func (ec *executionContext) unmarshalInputFilterInt(ctx context.Context, obj int
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"exists", "eq", "neq", "gt", "lt"}
+	fieldsInOrder := [...]string{"exists", "eq", "gt", "lt"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7624,13 +7608,6 @@ func (ec *executionContext) unmarshalInputFilterInt(ctx context.Context, obj int
 				return it, err
 			}
 			it.Eq = data
-		case "neq":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
-			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Neq = data
 		case "gt":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("gt"))
 			data, err := ec.unmarshalOInt2ᚖint(ctx, v)
@@ -7754,7 +7731,7 @@ func (ec *executionContext) unmarshalInputFilterString(ctx context.Context, obj 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"exists", "eq", "neq", "like", "nlike"}
+	fieldsInOrder := [...]string{"exists", "eq", "like"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7775,13 +7752,6 @@ func (ec *executionContext) unmarshalInputFilterString(ctx context.Context, obj 
 				return it, err
 			}
 			it.Eq = data
-		case "neq":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Neq = data
 		case "like":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("like"))
 			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
@@ -7789,13 +7759,6 @@ func (ec *executionContext) unmarshalInputFilterString(ctx context.Context, obj 
 				return it, err
 			}
 			it.Like = data
-		case "nlike":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nlike"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Nlike = data
 		}
 	}
 
@@ -7809,7 +7772,7 @@ func (ec *executionContext) unmarshalInputFilterTime(ctx context.Context, obj in
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"exists", "eq", "neq", "before", "after"}
+	fieldsInOrder := [...]string{"exists", "eq", "before", "after"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -7830,13 +7793,6 @@ func (ec *executionContext) unmarshalInputFilterTime(ctx context.Context, obj in
 				return it, err
 			}
 			it.Eq = data
-		case "neq":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("neq"))
-			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)
-			if err != nil {
-				return it, err
-			}
-			it.Neq = data
 		case "before":
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
 			data, err := ec.unmarshalOTime2ᚖtimeᚐTime(ctx, v)

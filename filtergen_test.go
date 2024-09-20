@@ -3,6 +3,7 @@ package gqlfiltergen
 import (
 	_ "embed"
 	"errors"
+	"os"
 	"os/exec"
 	"testing"
 
@@ -16,9 +17,9 @@ import (
 //go:embed testdata/injectSchema.graphql
 var injectedSchema string
 
-func TestFiltersGeneration(t *testing.T) {
+func TestMain(m *testing.M) {
 	cfg, err := config.LoadConfig("testdata/gqlgen.yml")
-	require.NoError(t, err)
+	checkErr(err)
 
 	p := NewPlugin(&Options{
 		InjectCodeAfter: injectedSchema,
@@ -27,9 +28,31 @@ func TestFiltersGeneration(t *testing.T) {
 	err = api.Generate(cfg,
 		api.AddPlugin(p),
 	)
-	require.NoError(t, err)
+	checkErr(err)
 
-	require.NoError(t, goBuild(t, "./testdata/out/"))
+	checkErr(goBuild("./testdata/out/"))
+
+	os.Exit(m.Run())
+}
+
+func goBuild(path string) error {
+	cmd := exec.Command("go", "build", path)
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return errors.New(string(out))
+	}
+
+	return nil
+}
+
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func TestFiltersStandard(t *testing.T) {
+	t.Parallel()
 
 	nexists := false
 
@@ -110,8 +133,10 @@ func TestFiltersGeneration(t *testing.T) {
 
 	require.Equal(t, &eqlValueInt, min)
 	require.Equal(t, &minmax1, max)
+}
 
-	// test union
+func TestFiltersUnion(t *testing.T) {
+	t.Parallel()
 
 	valOne := "valOne"
 	valTwo := "valTwo"
@@ -205,15 +230,4 @@ func TestFiltersGeneration(t *testing.T) {
 	}
 
 	require.Equal(t, false, f3.Eval(tus))
-}
-
-func goBuild(t *testing.T, path string) error {
-	t.Helper()
-	cmd := exec.Command("go", "build", path)
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return errors.New(string(out))
-	}
-
-	return nil
 }
