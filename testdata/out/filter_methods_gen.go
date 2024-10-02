@@ -183,10 +183,22 @@ func (f *NestedFilterUnionOne) Eval(obj *UnionOne) bool {
 			return true
 		}
 	}
+	if uObj, ok := tobj.(*UnionTypeOne); ok {
+		matchedType = true
+		if f.UnionTypeOne != nil && f.UnionTypeOne.Eval(uObj) {
+			return true
+		}
+	}
 
 	if uObj, ok := tobj.(UnionTypeTwo); ok {
 		matchedType = true
 		if f.UnionTypeTwo != nil && f.UnionTypeTwo.Eval(&uObj) {
+			return true
+		}
+	}
+	if uObj, ok := tobj.(*UnionTypeTwo); ok {
+		matchedType = true
+		if f.UnionTypeTwo != nil && f.UnionTypeTwo.Eval(uObj) {
 			return true
 		}
 	}
@@ -804,10 +816,22 @@ func (f *FilterUnionOne) Eval(obj *UnionOne) bool {
 			return true
 		}
 	}
+	if uObj, ok := tobj.(*UnionTypeOne); ok {
+		matchedType = true
+		if f.UnionTypeOne != nil && f.UnionTypeOne.Eval(uObj) {
+			return true
+		}
+	}
 
 	if uObj, ok := tobj.(UnionTypeTwo); ok {
 		matchedType = true
 		if f.UnionTypeTwo != nil && f.UnionTypeTwo.Eval(&uObj) {
+			return true
+		}
+	}
+	if uObj, ok := tobj.(*UnionTypeTwo); ok {
+		matchedType = true
+		if f.UnionTypeTwo != nil && f.UnionTypeTwo.Eval(uObj) {
 			return true
 		}
 	}

@@ -58,6 +58,12 @@
 			return true
 		}
 	}
+	if uObj, ok := tobj.(*{{.FilterField}}); ok {
+		matchedType = true
+		if f.{{.FilterField}} != nil && f.{{.FilterField}}.Eval(uObj) {
+			return true
+		}
+	}
 	{{end}}
 	// If the object is of a type specified in filters but didn't match, return false.
     if matchedType {
