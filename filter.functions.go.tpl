@@ -135,15 +135,9 @@
 					if min == nil || *f.{{.FilterField}}.Gt < *min {
 						min = f.{{.FilterField}}.Gt
 					}
-					if max == nil || *f.{{.FilterField}}.Gt > *max {
-						max = f.{{.FilterField}}.Gt
-					}
 				}
 
 				if f.{{.FilterField}}.Lt != nil {
-					if min == nil || *f.{{.FilterField}}.Lt < *min {
-						min = f.{{.FilterField}}.Lt
-					}
 					if max == nil || *f.{{.FilterField}}.Lt > *max {
 						max = f.{{.FilterField}}.Lt
 					}

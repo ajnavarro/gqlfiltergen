@@ -526,15 +526,9 @@ func (f *NestedFilterTypeOne) MinMaxTypeOneNumberFieldFiltered() (min *int, max 
 			if min == nil || *f.TypeOneNumberFieldFiltered.Gt < *min {
 				min = f.TypeOneNumberFieldFiltered.Gt
 			}
-			if max == nil || *f.TypeOneNumberFieldFiltered.Gt > *max {
-				max = f.TypeOneNumberFieldFiltered.Gt
-			}
 		}
 
 		if f.TypeOneNumberFieldFiltered.Lt != nil {
-			if min == nil || *f.TypeOneNumberFieldFiltered.Lt < *min {
-				min = f.TypeOneNumberFieldFiltered.Lt
-			}
 			if max == nil || *f.TypeOneNumberFieldFiltered.Lt > *max {
 				max = f.TypeOneNumberFieldFiltered.Lt
 			}
@@ -1159,15 +1153,9 @@ func (f *FilterTypeOne) MinMaxTypeOneNumberFieldFiltered() (min *int, max *int) 
 			if min == nil || *f.TypeOneNumberFieldFiltered.Gt < *min {
 				min = f.TypeOneNumberFieldFiltered.Gt
 			}
-			if max == nil || *f.TypeOneNumberFieldFiltered.Gt > *max {
-				max = f.TypeOneNumberFieldFiltered.Gt
-			}
 		}
 
 		if f.TypeOneNumberFieldFiltered.Lt != nil {
-			if min == nil || *f.TypeOneNumberFieldFiltered.Lt < *min {
-				min = f.TypeOneNumberFieldFiltered.Lt
-			}
 			if max == nil || *f.TypeOneNumberFieldFiltered.Lt > *max {
 				max = f.TypeOneNumberFieldFiltered.Lt
 			}

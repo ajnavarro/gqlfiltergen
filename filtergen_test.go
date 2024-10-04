@@ -133,6 +133,55 @@ func TestFiltersStandard(t *testing.T) {
 
 	require.Equal(t, &eqlValueInt, min)
 	require.Equal(t, &minmax1, max)
+
+}
+
+func TestMinMaxWhenNoMax(t *testing.T) {
+	t.Parallel()
+
+	var min = 10000
+	f1 := &out.FilterTypeOne{
+		Or: []*out.FilterTypeOne{
+			{
+				Or: []*out.FilterTypeOne{
+
+					{
+						TypeOneNumberFieldFiltered: &out.FilterInt{
+							Gt: &min,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	mi, ma := f1.MinMaxTypeOneNumberFieldFiltered()
+	require.Equal(t, &min, mi)
+	require.Nil(t, ma)
+}
+
+func TestMinMaxOnEq(t *testing.T) {
+	t.Parallel()
+
+	var val = 10000
+	f1 := &out.FilterTypeOne{
+		Or: []*out.FilterTypeOne{
+			{
+				Or: []*out.FilterTypeOne{
+
+					{
+						TypeOneNumberFieldFiltered: &out.FilterInt{
+							Eq: &val,
+						},
+					},
+				},
+			},
+		},
+	}
+
+	mi, ma := f1.MinMaxTypeOneNumberFieldFiltered()
+	require.Equal(t, &val, mi)
+	require.Equal(t, &val, ma)
 }
 
 func TestFiltersUnion(t *testing.T) {
